@@ -7,6 +7,7 @@ import { useCurrentUser } from '../auth/useCurrentUser';
 import { isCatalogId } from '../lakes/catalogSchemas';
 import { catalogError } from '../lakes/catalogError';
 import { useLakeDetail } from '../lakes/useLakeDetail';
+import { lakeFeature } from '../map/geometry';
 import { OfflineNotice } from '../offline/OfflineNotice';
 import { ObservationForm } from './ObservationForm';
 import { observationStore } from './observationStore';
@@ -112,6 +113,7 @@ export function ObservationScreen({ lakeId }: { lakeId: string }) {
             key={context}
             lakeId={lakeId}
             lakeName={lake.data.name}
+            lakeFeature={lakeFeature(lake.data)}
             initial={local.initial}
             durability={observationStore.durability}
             onSave={save}
