@@ -11,7 +11,12 @@ import type { LakeMapProps } from './mapTypes';
 import { AsyncState } from '../../components/AsyncState';
 import { tokens } from '../../theme/tokens';
 
-export function LakeMap({ feature = null, stations, onSelect }: LakeMapProps) {
+export function LakeMap({
+  feature = null,
+  stations,
+  estimates,
+  onSelect,
+}: LakeMapProps) {
   const bounds = useMemo(
     () => (feature ? lakeBounds(feature) : undefined),
     [feature],
@@ -79,6 +84,20 @@ export function LakeMap({ feature = null, stations, onSelect }: LakeMapProps) {
               paint={{
                 'circle-radius': 7,
                 'circle-color': '#D85A14',
+                'circle-stroke-width': 2,
+                'circle-stroke-color': '#FFFFFF',
+              }}
+            />
+          </GeoJSONSource>
+        )}
+        {estimates && (
+          <GeoJSONSource id="estimates" data={estimates}>
+            <Layer
+              id="estimate-markers"
+              type="circle"
+              paint={{
+                'circle-radius': 8,
+                'circle-color': '#6A42B8',
                 'circle-stroke-width': 2,
                 'circle-stroke-color': '#FFFFFF',
               }}

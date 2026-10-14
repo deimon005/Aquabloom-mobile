@@ -7,8 +7,25 @@ jest.mock('@maplibre/maplibre-react-native', () => {
     Map: View,
     Camera: () => null,
     GeoJSONSource: View,
-    Layer: () => null,
+    Layer: (props: object) => <View testID="map-layer" {...props} />,
   };
+});
+
+it('renders estimate points with a different marker style from stations', async () => {
+  await render(
+    <LakeMap
+      stations={{ type: 'FeatureCollection', features: [] }}
+      estimates={{ type: 'FeatureCollection', features: [] }}
+    />,
+  );
+  const layers = screen.getAllByTestId('map-layer');
+  const station = layers.find((layer) => layer.props.id === 'station-markers');
+  const estimate = layers.find(
+    (layer) => layer.props.id === 'estimate-markers',
+  );
+  expect(station?.props.paint['circle-color']).not.toBe(
+    estimate?.props.paint['circle-color'],
+  );
 });
 
 it('shows loading, accepts native success and recovers from a failed load', async () => {

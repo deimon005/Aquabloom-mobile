@@ -4,12 +4,14 @@ import { LakeMap } from '../LakeMap';
 import { useLakes } from '../../lakes/useLakes';
 import { useLakeDetail } from '../../lakes/useLakeDetail';
 import { useStations } from '../../lakes/useStations';
+import { useLakeEstimates } from '../../scientific/useLakeEstimates';
 import { lake, station } from '../../lakes/__tests__/fixtures';
 
 jest.mock('../LakeMap', () => ({ LakeMap: jest.fn(() => null) }));
 jest.mock('../../lakes/useLakes');
 jest.mock('../../lakes/useLakeDetail');
 jest.mock('../../lakes/useStations');
+jest.mock('../../scientific/useLakeEstimates');
 jest.mock('expo-router', () => ({
   Link: jest.requireActual('react-native').Text,
 }));
@@ -29,6 +31,11 @@ const validLake = {
 };
 const latestMap = () => jest.mocked(LakeMap).mock.calls.at(-1)![0];
 beforeEach(() => {
+  jest.mocked(useLakeEstimates).mockReturnValue({
+    data: { items: [] },
+    isPending: false,
+    isError: false,
+  } as unknown as ReturnType<typeof useLakeEstimates>);
   jest.mocked(useStations).mockReturnValue({
     data: [],
     isPending: false,
@@ -48,6 +55,43 @@ beforeEach(() => {
         isError: false,
       }) as unknown as ReturnType<typeof useLakeDetail>,
   );
+});
+it('passes coordinate-bearing estimates as map points separate from stations', async () => {
+  jest.mocked(useLakeEstimates).mockReturnValue({
+    data: {
+      items: [
+        {
+          id: '22222222-2222-4222-8222-222222222222',
+          lake_id: lake.id,
+          point_id: 'P-01',
+          latitude: -39.3,
+          longitude: -72.1,
+          value: 4.2,
+          unit: 'mg/m³',
+          variable: 'chlorophyll-a',
+          observed_at: '2026-10-14T12:30:00Z',
+          status: 'experimental',
+          warnings: [],
+        },
+      ],
+    },
+    isPending: false,
+    isError: false,
+  } as unknown as ReturnType<typeof useLakeEstimates>);
+  await render(<MapScreen />);
+  await fireEvent.press(
+    screen.getByLabelText(`Mostrar ${lake.name} en el mapa`),
+  );
+  expect(latestMap().estimates?.features[0].properties.id).toBe(
+    '22222222-2222-4222-8222-222222222222',
+  );
+  expect(latestMap().estimates?.features[0].geometry.coordinates).toEqual([
+    -72.1, -39.3,
+  ]);
+  expect(latestMap().stations?.features).toEqual([]);
+  expect(
+    screen.getByText('1 estimaciones con coordenadas válidas'),
+  ).toBeTruthy();
 });
 it('loads a selected lake, passes its polygon to the map and supports pagination', async () => {
   await render(<MapScreen />);

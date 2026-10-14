@@ -5,10 +5,11 @@ import { AsyncState } from '../../components/AsyncState';
 import { useLakes } from '../lakes/useLakes';
 import { useLakeDetail } from '../lakes/useLakeDetail';
 import { useStations } from '../lakes/useStations';
+import { useLakeEstimates } from '../scientific/useLakeEstimates';
 import { OfflineNotice } from '../offline/OfflineNotice';
 import { catalogError } from '../lakes/catalogError';
 import { LakeMap } from './LakeMap';
-import { lakeFeature, stationFeatures } from './geometry';
+import { estimateFeatures, lakeFeature, stationFeatures } from './geometry';
 import type { MapSelection } from './mapTypes';
 import { MapInfoSheet } from './MapInfoSheet';
 
@@ -19,6 +20,7 @@ export function MapScreen() {
   const lakes = useLakes({ page, page_size: 20 });
   const detail = useLakeDetail(selectedId);
   const stations = useStations(selectedId);
+  const estimates = useLakeEstimates(selectedId);
   const markers = useMemo(
     () =>
       stationFeatures(
@@ -30,6 +32,14 @@ export function MapScreen() {
   const feature = useMemo(
     () => (detail.data && !detail.isError ? lakeFeature(detail.data) : null),
     [detail.data, detail.isError],
+  );
+  const estimateMarkers = useMemo(
+    () =>
+      estimateFeatures(
+        estimates.isError ? [] : (estimates.data?.items ?? []),
+        selectedId,
+      ),
+    [estimates.data, estimates.isError, selectedId],
   );
   const selectedStation =
     selection?.kind === 'station' && !stations.isError
@@ -139,6 +149,21 @@ export function MapScreen() {
               )}
             </>
           ))}
+        {!!selectedId &&
+          (estimates.isPending ? (
+            <AsyncState kind="loading" message="Cargando estimaciones…" />
+          ) : estimates.isError ? (
+            <AsyncState
+              kind="error"
+              message="No pudimos consultar las estimaciones de este lago."
+              onRetry={() => estimates.refetch()}
+            />
+          ) : (
+            <Text>
+              {estimateMarkers.features.length} estimaciones con coordenadas
+              válidas
+            </Text>
+          ))}
       </ScrollView>
       {!!selectedId && (
         <ScrollView
@@ -158,7 +183,12 @@ export function MapScreen() {
           ))}
         </ScrollView>
       )}
-      <LakeMap feature={feature} stations={markers} onSelect={setSelection} />
+      <LakeMap
+        feature={feature}
+        stations={markers}
+        estimates={estimateMarkers}
+        onSelect={setSelection}
+      />
       {showSheet && detail.data && (
         <MapInfoSheet
           lake={detail.data}

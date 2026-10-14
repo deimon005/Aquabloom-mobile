@@ -1,5 +1,42 @@
-import { lakeFeature, lakeBounds, stationFeatures } from '../geometry';
+import {
+  estimateFeatures,
+  lakeFeature,
+  lakeBounds,
+  stationFeatures,
+} from '../geometry';
 import { lake, station } from '../../lakes/__tests__/fixtures';
+import type { EstimatePoint } from '../../scientific/estimatesApi';
+
+it('maps only valid estimate coordinates and retains the result identifier', () => {
+  const estimate: EstimatePoint = {
+    id: '22222222-2222-4222-8222-222222222222',
+    lake_id: lake.id,
+    point_id: 'P-01',
+    longitude: -72.1,
+    latitude: -39.3,
+    value: 4.2,
+    unit: 'mg/m³',
+    variable: 'chlorophyll-a',
+    observed_at: '2026-10-14T12:30:00Z',
+    status: 'experimental',
+    warnings: [],
+  };
+  const result = estimateFeatures(
+    [
+      estimate,
+      { ...estimate, id: 'missing', longitude: null },
+      { ...estimate, id: 'invalid', latitude: 120 },
+      { ...estimate, id: 'other-lake', lake_id: 'another-lake' },
+    ],
+    lake.id,
+  );
+  expect(result.features).toHaveLength(1);
+  expect(result.features[0].properties).toEqual({
+    id: estimate.id,
+    pointId: 'P-01',
+  });
+  expect(result.features[0].geometry.coordinates).toEqual([-72.1, -39.3]);
+});
 
 it('retains station IDs and excludes invalid points and stations from other lakes', () => {
   const valid = {
