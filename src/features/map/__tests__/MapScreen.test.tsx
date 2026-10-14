@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react-native';
+import { act, fireEvent, render, screen } from '@testing-library/react-native';
 import { MapScreen } from '../MapScreen';
 import { LakeMap } from '../LakeMap';
 import { useLakes } from '../../lakes/useLakes';
@@ -92,6 +92,19 @@ it('passes coordinate-bearing estimates as map points separate from stations', a
   expect(
     screen.getByText('1 estimaciones con coordenadas válidas'),
   ).toBeTruthy();
+  await act(async () =>
+    latestMap().onSelect?.({
+      kind: 'estimate',
+      id: '22222222-2222-4222-8222-222222222222',
+    }),
+  );
+  expect(screen.getByText('Estimación P-01')).toBeTruthy();
+  expect(
+    screen.getByText('Identificador: 22222222-2222-4222-8222-222222222222'),
+  ).toBeTruthy();
+  expect(screen.getByText(/4.2 mg\/m³/)).toBeTruthy();
+  await fireEvent.press(screen.getByText('Cerrar estimación'));
+  expect(screen.queryByText('Estimación P-01')).toBeNull();
 });
 it('loads a selected lake, passes its polygon to the map and supports pagination', async () => {
   await render(<MapScreen />);

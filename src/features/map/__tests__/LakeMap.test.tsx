@@ -6,9 +6,42 @@ jest.mock('@maplibre/maplibre-react-native', () => {
   return {
     Map: View,
     Camera: () => null,
-    GeoJSONSource: View,
+    GeoJSONSource: (props: object) => <View testID="map-source" {...props} />,
     Layer: (props: object) => <View testID="map-layer" {...props} />,
   };
+});
+
+it('selects only a marker that belongs to the displayed estimate collection', async () => {
+  const onSelect = jest.fn();
+  await render(
+    <LakeMap
+      estimates={{
+        type: 'FeatureCollection',
+        features: [
+          {
+            type: 'Feature',
+            properties: { id: 'estimate-1', pointId: 'P-01' },
+            geometry: { type: 'Point', coordinates: [-72, -39] },
+          },
+        ],
+      }}
+      onSelect={onSelect}
+    />,
+  );
+  const source = screen
+    .getAllByTestId('map-source')
+    .find((item) => item.props.id === 'estimates');
+  const stopPropagation = jest.fn();
+  await fireEvent(source!, 'onPress', {
+    stopPropagation,
+    nativeEvent: { features: [{ properties: { id: 'estimate-1' } }] },
+  });
+  expect(onSelect).toHaveBeenCalledWith({ kind: 'estimate', id: 'estimate-1' });
+  await fireEvent(source!, 'onPress', {
+    stopPropagation,
+    nativeEvent: { features: [{ properties: { id: 'unknown' } }] },
+  });
+  expect(onSelect).toHaveBeenCalledTimes(1);
 });
 
 it('renders estimate points with a different marker style from stations', async () => {

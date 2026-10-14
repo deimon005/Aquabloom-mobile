@@ -91,7 +91,19 @@ export function LakeMap({
           </GeoJSONSource>
         )}
         {estimates && (
-          <GeoJSONSource id="estimates" data={estimates}>
+          <GeoJSONSource
+            id="estimates"
+            data={estimates}
+            onPress={(event) => {
+              event.stopPropagation();
+              const id = event.nativeEvent.features[0]?.properties?.id;
+              if (
+                typeof id === 'string' &&
+                estimates.features.some((item) => item.properties.id === id)
+              )
+                onSelect?.({ kind: 'estimate', id });
+            }}
+          >
             <Layer
               id="estimate-markers"
               type="circle"

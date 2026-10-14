@@ -12,6 +12,7 @@ import { LakeMap } from './LakeMap';
 import { estimateFeatures, lakeFeature, stationFeatures } from './geometry';
 import type { MapSelection } from './mapTypes';
 import { MapInfoSheet } from './MapInfoSheet';
+import { EstimateInfoSheet } from './EstimateInfoSheet';
 
 export function MapScreen() {
   const [page, setPage] = useState(1);
@@ -46,6 +47,15 @@ export function MapScreen() {
       ? stations.data?.find(
           (station) =>
             station.id === selection.id && station.lake_id === selectedId,
+        )
+      : undefined;
+  const selectedEstimate =
+    selection?.kind === 'estimate' &&
+    !estimates.isError &&
+    estimateMarkers.features.some((item) => item.properties.id === selection.id)
+      ? estimates.data?.items.find(
+          (estimate) =>
+            estimate.id === selection.id && estimate.lake_id === selectedId,
         )
       : undefined;
   const showSheet =
@@ -193,6 +203,12 @@ export function MapScreen() {
         <MapInfoSheet
           lake={detail.data}
           station={selectedStation}
+          onClose={() => setSelection(null)}
+        />
+      )}
+      {selectedEstimate && (
+        <EstimateInfoSheet
+          estimate={selectedEstimate}
           onClose={() => setSelection(null)}
         />
       )}
