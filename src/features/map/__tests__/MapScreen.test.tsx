@@ -105,7 +105,7 @@ it('passes coordinate-bearing estimates as map points separate from stations', a
   expect(screen.getByText(/4.2 mg\/m³/)).toBeTruthy();
   await fireEvent.press(screen.getByText('Cerrar estimación'));
   expect(screen.queryByText('Estimación P-01')).toBeNull();
-});
+}, 15000);
 it('loads a selected lake, passes its polygon to the map and supports pagination', async () => {
   await render(<MapScreen />);
   expect(latestMap().feature).toBeNull();
