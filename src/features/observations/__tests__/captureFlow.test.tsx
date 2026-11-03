@@ -6,6 +6,8 @@ import type {
   StoredObservation,
 } from '../observationSchema';
 
+jest.mock('../../map/LakeMap', () => ({ LakeMap: () => null }));
+
 jest.mock('../captureServices', () => ({ captureServices: {} }));
 const lakeId = '11111111-1111-4111-8111-111111111111';
 const location = {
@@ -209,6 +211,9 @@ it('replaces one photo, adds current coordinates and saves a complete local pend
   await fireEvent.press(
     screen.getByRole('button', { name: 'Capturar ubicación' }),
   );
+  expect(
+    screen.getByLabelText('Mapa de posición capturada y lago seleccionado'),
+  ).toBeTruthy();
   expect(
     screen.getByRole('button', { name: 'Finalizar observación' }),
   ).toBeEnabled();

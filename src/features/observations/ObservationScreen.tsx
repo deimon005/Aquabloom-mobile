@@ -9,6 +9,7 @@ import { useCurrentUser } from '../auth/useCurrentUser';
 import { isCatalogId } from '../lakes/catalogSchemas';
 import { catalogError } from '../lakes/catalogError';
 import { useLakeDetail } from '../lakes/useLakeDetail';
+import { lakeFeature } from '../map/geometry';
 import { OfflineNotice } from '../offline/OfflineNotice';
 import { ObservationForm } from './ObservationForm';
 import { observationStore } from './observationStore';
@@ -266,6 +267,7 @@ function ObservationEditor({ lakeId }: { lakeId: string }) {
             key={`${context}:${editor}`}
             lakeId={lakeId}
             lakeName={lake.data?.name ?? lakeId}
+            lakeFeature={lake.data ? lakeFeature(lake.data) : null}
             initial={local.initial}
             durability={observationStore.durability}
             onSave={save}

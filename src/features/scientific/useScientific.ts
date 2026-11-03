@@ -78,7 +78,18 @@ export function useScientificJob(jobId: string, source: ScientificSource) {
     enabled: Boolean(user) && isCatalogId(jobId) && source !== 'disabled',
     queryFn: ({ signal }) => loadJob(source, jobId, signal),
     retry: false,
-    // Manual refresh: no guessed progress and no training/job creation request.
-    staleTime: 0,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    refetchInterval: ({ state }) => {
+      if (
+        source !== 'proposal' ||
+        state.status === 'error' ||
+        state.dataUpdateCount >= 30
+      )
+        return false;
+      return state.data?.status === 'queued' || state.data?.status === 'running'
+        ? 5_000
+        : false;
+    },
   });
 }

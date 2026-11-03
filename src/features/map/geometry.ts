@@ -7,6 +7,7 @@ import type {
   Polygon,
 } from 'geojson';
 import type { LakeDetail, Station } from '../lakes/types';
+import type { EstimatePoint } from '../scientific/estimatesApi';
 
 const position = z
   .tuple([z.number().min(-180).max(180), z.number().min(-90).max(90)])
@@ -40,6 +41,37 @@ export type StationFeatures = FeatureCollection<
   Point,
   { id: string; name: string }
 >;
+export type EstimateFeatures = FeatureCollection<
+  Point,
+  { id: string; pointId: string }
+>;
+
+export function estimateFeatures(
+  estimates: EstimatePoint[],
+  lakeId: string,
+): EstimateFeatures {
+  const features: EstimateFeatures['features'] = [];
+  for (const estimate of estimates) {
+    if (estimate.lake_id.toLowerCase() !== lakeId.toLowerCase()) continue;
+    if (
+      typeof estimate.longitude !== 'number' ||
+      typeof estimate.latitude !== 'number'
+    )
+      continue;
+    const parsed = point.safeParse({
+      type: 'Point',
+      coordinates: [estimate.longitude, estimate.latitude],
+    });
+    if (!parsed.success) continue;
+    features.push({
+      type: 'Feature',
+      id: estimate.id,
+      properties: { id: estimate.id, pointId: estimate.point_id },
+      geometry: parsed.data,
+    });
+  }
+  return { type: 'FeatureCollection', features };
+}
 export function stationFeatures(
   stations: Station[],
   lakeId: string,

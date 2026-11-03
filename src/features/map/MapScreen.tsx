@@ -5,12 +5,15 @@ import { AsyncState } from '../../components/AsyncState';
 import { useLakes } from '../lakes/useLakes';
 import { useLakeDetail } from '../lakes/useLakeDetail';
 import { useStations } from '../lakes/useStations';
+import { useEstimates } from '../scientific/useScientific';
+import { scientificSource } from '../scientific/scientificSource';
 import { OfflineNotice } from '../offline/OfflineNotice';
 import { catalogError } from '../lakes/catalogError';
 import { LakeMap } from './LakeMap';
-import { lakeFeature, stationFeatures } from './geometry';
+import { estimateFeatures, lakeFeature, stationFeatures } from './geometry';
 import type { MapSelection } from './mapTypes';
 import { MapInfoSheet } from './MapInfoSheet';
+import { EstimateInfoSheet } from './EstimateInfoSheet';
 
 export function MapScreen() {
   const [page, setPage] = useState(1);
@@ -19,6 +22,8 @@ export function MapScreen() {
   const lakes = useLakes({ page, page_size: 20 });
   const detail = useLakeDetail(selectedId);
   const stations = useStations(selectedId);
+  const source = scientificSource(undefined);
+  const estimates = useEstimates(selectedId, source);
   const markers = useMemo(
     () =>
       stationFeatures(
@@ -31,11 +36,28 @@ export function MapScreen() {
     () => (detail.data && !detail.isError ? lakeFeature(detail.data) : null),
     [detail.data, detail.isError],
   );
+  const estimateMarkers = useMemo(
+    () =>
+      estimateFeatures(
+        estimates.isError ? [] : (estimates.data?.items ?? []),
+        selectedId,
+      ),
+    [estimates.data, estimates.isError, selectedId],
+  );
   const selectedStation =
     selection?.kind === 'station' && !stations.isError
       ? stations.data?.find(
           (station) =>
             station.id === selection.id && station.lake_id === selectedId,
+        )
+      : undefined;
+  const selectedEstimate =
+    selection?.kind === 'estimate' &&
+    !estimates.isError &&
+    estimateMarkers.features.some((item) => item.properties.id === selection.id)
+      ? estimates.data?.items.find(
+          (estimate) =>
+            estimate.id === selection.id && estimate.lake_id === selectedId,
         )
       : undefined;
   const showSheet =
@@ -139,6 +161,38 @@ export function MapScreen() {
               )}
             </>
           ))}
+        {!!selectedId &&
+          (source === 'disabled' ? (
+            <Text>Consulta científica remota deshabilitada.</Text>
+          ) : estimates.isPending ? (
+            <AsyncState kind="loading" message="Cargando estimaciones…" />
+          ) : estimates.isError ? (
+            <AsyncState
+              kind="error"
+              message="No pudimos consultar las estimaciones de este lago."
+              onRetry={() => estimates.refetch()}
+            />
+          ) : !estimates.data?.items.length ? (
+            <AsyncState
+              kind="empty"
+              message="No hay estimaciones para este lago."
+            />
+          ) : !estimateMarkers.features.length ? (
+            <AsyncState
+              kind="empty"
+              message="Las estimaciones no tienen coordenadas para mostrar en el mapa."
+            />
+          ) : (
+            <Text>
+              {estimateMarkers.features.length} estimaciones con coordenadas
+              válidas
+            </Text>
+          ))}
+        {source === 'proposal' &&
+          !estimates.isError &&
+          estimates.savedAt !== undefined && (
+            <OfflineNotice savedAt={estimates.savedAt} />
+          )}
       </ScrollView>
       {!!selectedId && (
         <ScrollView
@@ -158,11 +212,22 @@ export function MapScreen() {
           ))}
         </ScrollView>
       )}
-      <LakeMap feature={feature} stations={markers} onSelect={setSelection} />
+      <LakeMap
+        feature={feature}
+        stations={markers}
+        estimates={estimateMarkers}
+        onSelect={setSelection}
+      />
       {showSheet && detail.data && (
         <MapInfoSheet
           lake={detail.data}
           station={selectedStation}
+          onClose={() => setSelection(null)}
+        />
+      )}
+      {selectedEstimate && (
+        <EstimateInfoSheet
+          estimate={selectedEstimate}
           onClose={() => setSelection(null)}
         />
       )}

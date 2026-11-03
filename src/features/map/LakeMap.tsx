@@ -11,10 +11,41 @@ import type { LakeMapProps } from './mapTypes';
 import { AsyncState } from '../../components/AsyncState';
 import { tokens } from '../../theme/tokens';
 
-export function LakeMap({ feature = null, stations, onSelect }: LakeMapProps) {
-  const bounds = useMemo(
-    () => (feature ? lakeBounds(feature) : undefined),
-    [feature],
+export function LakeMap({
+  feature = null,
+  stations,
+  estimates,
+  observationLocation,
+  onSelect,
+}: LakeMapProps) {
+  const bounds = useMemo(() => {
+    if (!feature) return undefined;
+    const [west, south, east, north] = lakeBounds(feature);
+    if (!observationLocation)
+      return [west, south, east, north] as [number, number, number, number];
+    return [
+      Math.min(west, observationLocation.longitude),
+      Math.min(south, observationLocation.latitude),
+      Math.max(east, observationLocation.longitude),
+      Math.max(north, observationLocation.latitude),
+    ] as [number, number, number, number];
+  }, [feature, observationLocation]);
+  const capturedPoint = useMemo(
+    () =>
+      observationLocation
+        ? {
+            type: 'Feature' as const,
+            properties: {},
+            geometry: {
+              type: 'Point' as const,
+              coordinates: [
+                observationLocation.longitude,
+                observationLocation.latitude,
+              ],
+            },
+          }
+        : null,
+    [observationLocation],
   );
   const [attempt, setAttempt] = useState(0);
   const [status, setStatus] = useState<'loading' | 'ready' | 'error'>(
@@ -80,6 +111,46 @@ export function LakeMap({ feature = null, stations, onSelect }: LakeMapProps) {
                 'circle-radius': 7,
                 'circle-color': '#D85A14',
                 'circle-stroke-width': 2,
+                'circle-stroke-color': '#FFFFFF',
+              }}
+            />
+          </GeoJSONSource>
+        )}
+        {estimates && (
+          <GeoJSONSource
+            id="estimates"
+            data={estimates}
+            onPress={(event) => {
+              event.stopPropagation();
+              const id = event.nativeEvent.features[0]?.properties?.id;
+              if (
+                typeof id === 'string' &&
+                estimates.features.some((item) => item.properties.id === id)
+              )
+                onSelect?.({ kind: 'estimate', id });
+            }}
+          >
+            <Layer
+              id="estimate-markers"
+              type="circle"
+              paint={{
+                'circle-radius': 8,
+                'circle-color': '#6A42B8',
+                'circle-stroke-width': 2,
+                'circle-stroke-color': '#FFFFFF',
+              }}
+            />
+          </GeoJSONSource>
+        )}
+        {capturedPoint && (
+          <GeoJSONSource id="captured-location" data={capturedPoint}>
+            <Layer
+              id="captured-location-marker"
+              type="circle"
+              paint={{
+                'circle-radius': 9,
+                'circle-color': '#2656C7',
+                'circle-stroke-width': 3,
                 'circle-stroke-color': '#FFFFFF',
               }}
             />

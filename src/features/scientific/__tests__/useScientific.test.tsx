@@ -175,3 +175,22 @@ it('uses the authorized snapshot if connectivity drops during a request', async 
     source: 'cache',
   });
 });
+
+it('polls active remote jobs and stops for terminal jobs, errors, and the update limit', async () => {
+  await render(<Probe source="proposal" />);
+  const interval = query.mock.calls[1][0].refetchInterval;
+  for (const status of ['queued', 'running']) {
+    expect(interval({ state: { data: { status }, dataUpdateCount: 1 } })).toBe(
+      5000,
+    );
+  }
+  for (const status of ['completed', 'failed', 'cancelled']) {
+    expect(interval({ state: { data: { status }, dataUpdateCount: 1 } })).toBe(
+      false,
+    );
+  }
+  expect(interval({ state: { status: 'error' } })).toBe(false);
+  expect(
+    interval({ state: { data: { status: 'running' }, dataUpdateCount: 30 } }),
+  ).toBe(false);
+});

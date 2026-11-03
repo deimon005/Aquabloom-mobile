@@ -2,6 +2,8 @@ import { useEffect, useId, useRef, useState } from 'react';
 import { StyleSheet, Text, TextInput, View } from 'react-native';
 import { AppButton } from '../../components/AppButton';
 import { tokens } from '../../theme/tokens';
+import { LakeMap } from '../map/LakeMap';
+import type { LakeFeature } from '../map/geometry';
 import { DraftStatus } from './DraftStatus';
 import { PhotoPreview } from './PhotoPreview';
 import { captureServices } from './captureServices';
@@ -23,6 +25,7 @@ export type DraftPhase = 'editing' | 'saving' | 'saved';
 type Props = {
   lakeId: string;
   lakeName: string;
+  lakeFeature?: LakeFeature | null;
   initial?: StoredObservation | null;
   durability: 'device' | 'session';
   onSave: (values: ObservationValues) => Promise<StoredObservation>;
@@ -33,6 +36,7 @@ type Props = {
 export function ObservationForm({
   lakeId,
   lakeName,
+  lakeFeature,
   initial,
   durability,
   onSave,
@@ -255,11 +259,23 @@ export function ObservationForm({
           ubicación.
         </Text>
         {location ? (
-          <Text style={styles.muted}>
-            Latitud: {location.latitude.toFixed(6)} · Longitud:{' '}
-            {location.longitude.toFixed(6)} · Precisión:{' '}
-            {location.accuracy.toFixed(1)} m
-          </Text>
+          <>
+            <Text style={styles.muted}>
+              Latitud: {location.latitude.toFixed(6)} · Longitud:{' '}
+              {location.longitude.toFixed(6)} · Precisión:{' '}
+              {location.accuracy.toFixed(1)} m
+            </Text>
+            <Text style={styles.muted}>
+              Punto azul: posición capturada. Contorno turquesa: lago
+              seleccionado.
+            </Text>
+            <View
+              style={styles.locationMap}
+              accessibilityLabel="Mapa de posición capturada y lago seleccionado"
+            >
+              <LakeMap feature={lakeFeature} observationLocation={location} />
+            </View>
+          </>
         ) : (
           <Text style={styles.muted}>Sin ubicación capturada.</Text>
         )}
@@ -350,4 +366,5 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: tokens.colors.border,
   },
+  locationMap: { height: 240, overflow: 'hidden', borderRadius: tokens.radius },
 });

@@ -5,6 +5,8 @@ import { useLakeDetail } from '../../lakes/useLakeDetail';
 import { observationStore } from '../observationStore';
 import { photoPersistence } from '../photoPersistence';
 
+jest.mock('../../map/LakeMap', () => ({ LakeMap: () => null }));
+
 jest.mock('../../auth/useCurrentUser');
 jest.mock('../captureServices', () => ({
   captureServices: {
