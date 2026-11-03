@@ -56,6 +56,12 @@
       ],
       "@maplibre/maplibre-react-native"
     ],
-    "scheme": "aquabloom"
+    "scheme": "aquabloom",
+    "owner": "deimon005",
+    "extra": {
+      "eas": {
+        "projectId": "a74e1336-41eb-4ee3-bcb6-6b208d1a19f2"
+      }
+    }
   }
 }
