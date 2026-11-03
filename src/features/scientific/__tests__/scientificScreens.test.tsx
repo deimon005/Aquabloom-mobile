@@ -236,3 +236,16 @@ it('rejects malformed detail/job links before rendering data', async () => {
     screen.getByText('El identificador del trabajo no es válido.'),
   ).toBeTruthy();
 });
+
+it('labels cached estimates and includes the snapshot date', async () => {
+  const savedAt = Date.UTC(2026, 10, 3, 12);
+  estimates.mockReturnValue({ data: { items: [estimate] }, savedAt });
+  await render(<EstimatesScreen lakeId={lakeId} demo="1" />);
+  expect(
+    screen.getByText(
+      'Sin conexión. Mostrando datos guardados el ' +
+        new Date(savedAt).toLocaleString('es-CL') +
+        '.',
+    ),
+  ).toBeTruthy();
+});

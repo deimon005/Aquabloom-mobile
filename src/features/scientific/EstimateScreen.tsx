@@ -1,3 +1,4 @@
+import { OfflineNotice } from '../offline/OfflineNotice';
 import { Link } from 'expo-router';
 import { Screen } from '../../components/Screen';
 import { AsyncState } from '../../components/AsyncState';
@@ -25,6 +26,9 @@ export function EstimateScreen({
   return (
     <Screen title="Detalle trazable de estimación">
       <ScientificNotice source={source} />
+      {query.savedAt !== undefined && !query.isError ? (
+        <OfflineNotice savedAt={query.savedAt} />
+      ) : null}
       {!isCatalogId(lakeId) || !isCatalogId(estimateId) ? (
         <AsyncState
           kind="error"

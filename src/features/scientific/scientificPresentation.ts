@@ -1,3 +1,4 @@
+import { OfflineCacheMissError } from '../offline/cache';
 import { ApiError } from '../../lib/http';
 import type { ScientificJobStatus } from './jobsApi';
 
@@ -15,6 +16,7 @@ export function scientificDate(value: string) {
   return new Date(value).toLocaleString('es-CL', { timeZone: 'UTC' }) + ' UTC';
 }
 export function scientificError(error: unknown) {
+  if (error instanceof OfflineCacheMissError) return error.message;
   if (error instanceof ApiError) {
     if (error.status === 401)
       return 'Tu sesión venció. Inicia sesión nuevamente.';

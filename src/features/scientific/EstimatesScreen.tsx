@@ -1,3 +1,4 @@
+import { OfflineNotice } from '../offline/OfflineNotice';
 import { useState } from 'react';
 import { Text, TextInput, View } from 'react-native';
 import { Link, router } from 'expo-router';
@@ -25,6 +26,9 @@ export function EstimatesScreen({
   return (
     <Screen title="Estimaciones del lago">
       <ScientificNotice source={source} />
+      {query.savedAt !== undefined && !query.isError ? (
+        <OfflineNotice savedAt={query.savedAt} />
+      ) : null}
       <Text>Lago: {lakeId}</Text>
       {!isCatalogId(lakeId) ? (
         <AsyncState kind="error" message="El enlace del lago no es válido." />
@@ -51,7 +55,7 @@ export function EstimatesScreen({
           message={scientificError(query.error)}
           onRetry={() => void query.refetch()}
         />
-      ) : query.isPending ? (
+      ) : query.isPending || !query.data ? (
         <AsyncState kind="loading" message="Cargando estimaciones…" />
       ) : !query.data.items.length ? (
         <AsyncState
