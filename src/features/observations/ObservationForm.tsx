@@ -7,6 +7,7 @@ import type { LakeFeature } from '../map/geometry';
 import { DraftStatus } from './DraftStatus';
 import { PhotoPreview } from './PhotoPreview';
 import { captureServices } from './captureServices';
+import { captureCompleteness } from './captureCompleteness';
 import {
   CaptureError,
   captureMessage,
@@ -81,6 +82,11 @@ export function ObservationForm({
   const pending = useRef(false);
   const isSaving = phase === 'saving';
   const busy = disabled || isSaving || capturing !== null || openingSettings;
+  const completeness = captureCompleteness(
+    photoUri,
+    unavailablePhotoUri,
+    location !== null,
+  );
 
   async function captureField(kind: 'photo' | 'location') {
     if (pending.current || disabled) return;
@@ -199,7 +205,8 @@ export function ObservationForm({
   }
 
   async function save(complete = false) {
-    if (pending.current || disabled) return;
+    if (pending.current || disabled || (complete && !completeness.complete))
+      return;
     const observedAt = parseObservationDate(dateText);
     const result = (
       complete ? completeObservationSchema : observationDraftSchema
@@ -261,16 +268,14 @@ export function ObservationForm({
         {lakeName}
       </Text>
       <Text style={styles.muted}>
-        Borrador local · Pendiente de envío y validación. Una observación o
-        fotografía no constituye una medición validada.
+        Una observación o fotografía no constituye una medición validada.
       </Text>
-      <DraftStatus phase={phase} savedAt={savedAt} durability={durability} />
-      {!location || !photoUri || unavailablePhotoUri === photoUri ? (
-        <Text accessibilityLiveRegion="polite" style={styles.muted}>
-          Borrador incompleto: falta fotografía disponible y/o ubicación. No es
-          una captura finalizada.
-        </Text>
-      ) : null}
+      <DraftStatus
+        phase={phase}
+        savedAt={savedAt}
+        durability={durability}
+        captureStatus={completeness.message}
+      />
       <View style={styles.field}>
         <Text nativeID={dateLabelId} style={styles.label}>
           Fecha y hora de la observación
@@ -388,23 +393,12 @@ export function ObservationForm({
         {isSaving ? 'Guardando…' : 'Guardar borrador local'}
       </AppButton>
       <AppButton
-        disabled={
-          busy ||
-          phase === 'saved' ||
-          !location ||
-          !photoUri ||
-          unavailablePhotoUri === photoUri
-        }
+        disabled={busy || phase === 'saved' || !completeness.complete}
         variant="secondary"
         onPress={() => void save(true)}
       >
         Finalizar observación
       </AppButton>
-      <Text style={styles.muted}>
-        {location && photoUri
-          ? 'La captura completa se guarda como borrador local pendiente de envío y validación.'
-          : 'Para finalizar faltan ubicación y fotografía. El guardado local no envía ni valida datos.'}
-      </Text>
     </View>
   );
 }

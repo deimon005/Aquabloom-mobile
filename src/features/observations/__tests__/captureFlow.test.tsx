@@ -204,7 +204,7 @@ it.each(['denied', 'settings'] as const)(
     );
     expect(save.mock.calls[0][0].location).toBeNull();
     expect(
-      screen.getByText(/Borrador incompleto: falta fotografía disponible/),
+      screen.getByText('Captura incompleta · Falta ubicación.'),
     ).toBeTruthy();
   },
 );
@@ -328,6 +328,11 @@ it('replaces one photo, adds current coordinates and saves a complete local pend
     photoUri: 'file:///camera/replacement.jpg',
   });
   expect(screen.getByText('Guardado local · Pendiente de envío')).toBeTruthy();
+  expect(
+    screen.getByText(
+      'Foto y ubicación disponibles. Esto no implica envío ni validación.',
+    ),
+  ).toBeTruthy();
   expect(screen.getByText('Sin envío al servidor · No validado')).toBeTruthy();
 });
 it('keeps a previous location and photograph after failures and permits retry', async () => {
@@ -410,6 +415,9 @@ it('blocks finalization when the selected photograph cannot be previewed', async
     screen.getByText(
       'La fotografía no está disponible para vista previa. Reemplázala antes de completar la observación.',
     ),
+  ).toBeTruthy();
+  expect(
+    screen.getByText('Captura incompleta · Falta una fotografía disponible.'),
   ).toBeTruthy();
   capture.takePhoto.mockResolvedValue({
     ...photo,

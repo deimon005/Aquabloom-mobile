@@ -6,10 +6,12 @@ export function DraftStatus({
   phase,
   savedAt,
   durability,
+  captureStatus,
 }: {
   phase: DraftPhase;
   savedAt: string | null;
   durability: 'device' | 'session';
+  captureStatus: string;
 }) {
   return (
     <View style={styles.status}>
@@ -19,6 +21,9 @@ export function DraftStatus({
           : phase === 'saved'
             ? 'Guardado local · Pendiente de envío'
             : 'En edición · Cambios sin guardar'}
+      </Text>
+      <Text accessibilityLiveRegion="polite" style={styles.text}>
+        {captureStatus}
       </Text>
       <Text style={styles.text}>Sin envío al servidor · No validado</Text>
       {phase === 'editing' && savedAt ? (

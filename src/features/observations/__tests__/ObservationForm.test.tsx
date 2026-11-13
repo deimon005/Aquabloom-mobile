@@ -53,6 +53,12 @@ it('shows the chosen lake and keeps finalization disabled until capture is compl
     screen.getByRole('button', { name: 'Tomar fotografía' }),
   ).toBeEnabled();
   expect(screen.getByText('Sin envío al servidor · No validado')).toBeTruthy();
+  expect(
+    screen.getByText(
+      'Captura incompleta · Faltan fotografía disponible y ubicación.',
+    ),
+  ).toBeTruthy();
+  expect(screen.queryByText('Guardado local · Pendiente de envío')).toBeNull();
 });
 it('saves only valid input and returns to editing after a later change', async () => {
   const save = await mount();
