@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import { useState, type ReactNode } from 'react';
 import {
   Pressable,
   StyleSheet,
@@ -25,12 +25,15 @@ export function AppButton({
   style,
   variant = 'primary',
 }: AppButtonProps) {
+  const [focused, setFocused] = useState(false);
   return (
     <Pressable
       accessibilityHint={accessibilityHint}
       accessibilityRole="button"
       accessibilityState={{ disabled }}
       disabled={disabled}
+      onFocus={() => setFocused(true)}
+      onBlur={() => setFocused(false)}
       onPress={onPress}
       style={({ pressed }) => [
         styles.base,
@@ -38,6 +41,7 @@ export function AppButton({
         pressed && !disabled && styles.pressed,
         disabled && styles.disabled,
         style,
+        focused && !disabled && styles.focused,
       ]}
     >
       <Text
@@ -81,4 +85,10 @@ const styles = StyleSheet.create({
   },
   pressed: { opacity: 0.72 },
   disabled: { opacity: 0.52 },
+  focused: {
+    outlineColor: tokens.colors.text,
+    outlineOffset: 2,
+    outlineStyle: 'solid',
+    outlineWidth: 3,
+  },
 });

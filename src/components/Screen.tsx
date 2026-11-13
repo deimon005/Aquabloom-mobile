@@ -38,7 +38,6 @@ export function Screen({
         >
           <Text
             accessibilityRole="header"
-            maxFontSizeMultiplier={2}
             style={[styles.title, layout.isCompact && styles.compactTitle]}
           >
             {title}

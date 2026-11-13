@@ -25,4 +25,21 @@ describe('AppButton', () => {
     await fireEvent.press(button);
     expect(onPress).not.toHaveBeenCalled();
   });
+
+  it('marca el foco sin cambiar el área táctil y lo retira al salir', async () => {
+    await render(
+      <AppButton onPress={jest.fn()}>Guardar borrador local</AppButton>,
+    );
+    const button = screen.getByRole('button', {
+      name: 'Guardar borrador local',
+    });
+    await fireEvent(button, 'focus');
+    expect(button).toHaveStyle({
+      minHeight: 48,
+      outlineWidth: 3,
+      outlineOffset: 2,
+    });
+    await fireEvent(button, 'blur');
+    expect(button).not.toHaveStyle({ outlineWidth: 3 });
+  });
 });
