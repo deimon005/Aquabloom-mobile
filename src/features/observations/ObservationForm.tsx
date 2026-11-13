@@ -58,7 +58,11 @@ export function ObservationForm({
   );
   const [location, setLocation] = useState(initial?.values.location ?? null);
   const [capturing, setCapturing] = useState<'photo' | 'location' | null>(null);
-  const [captureNotice, setCaptureNotice] = useState<string | null>(null);
+  const [captureNotice, setCaptureNotice] = useState<{
+    field: 'photo' | 'location';
+    message: string;
+    requiresSettings?: boolean;
+  } | null>(null);
   const active = useRef(true);
   useEffect(() => {
     active.current = true;
@@ -96,9 +100,11 @@ export function ObservationForm({
         const photo = await capture.takePhoto();
         if (!active.current) return;
         if (!photo) {
-          setCaptureNotice(
-            'Captura cancelada. Conservamos la fotografía anterior y los demás campos.',
-          );
+          setCaptureNotice({
+            field: kind,
+            message:
+              'Captura cancelada. Conservamos la fotografía anterior y los demás campos.',
+          });
           return;
         }
         setPhotoUri(photo.uri);
@@ -111,11 +117,40 @@ export function ObservationForm({
       setPhase('editing');
       setErrors({});
     } catch (error) {
-      if (active.current) setCaptureNotice(captureMessage(error));
+      if (active.current) {
+        setCaptureNotice({
+          field: kind,
+          message: captureMessage(error),
+          requiresSettings:
+            error instanceof CaptureError && error.kind === 'settings',
+        });
+      }
     } finally {
       pending.current = false;
       if (active.current) setCapturing(null);
     }
+  }
+
+  function captureFeedback(field: 'photo' | 'location') {
+    if (capturing === field) {
+      return (
+        <Text accessibilityLiveRegion="polite" style={styles.muted}>
+          {field === 'photo'
+            ? 'Capturando fotografía…'
+            : 'Capturando ubicación…'}
+        </Text>
+      );
+    }
+    if (captureNotice?.field !== field) return null;
+    return (
+      <Text
+        accessibilityRole="alert"
+        accessibilityLiveRegion="assertive"
+        style={styles.muted}
+      >
+        {captureNotice.message}
+      </Text>
+    );
   }
 
   async function save(complete = false) {
@@ -286,6 +321,7 @@ export function ObservationForm({
         >
           {location ? 'Actualizar ubicación' : 'Capturar ubicación'}
         </AppButton>
+        {captureFeedback('location')}
       </View>
       <PhotoPreview
         uri={photoUri}
@@ -293,18 +329,7 @@ export function ObservationForm({
         onCapture={() => void captureField('photo')}
         onUnavailable={setUnavailablePhotoUri}
       />
-      {capturing ? (
-        <Text accessibilityLiveRegion="polite" style={styles.muted}>
-          {capturing === 'photo'
-            ? 'Capturando fotografía…'
-            : 'Capturando ubicación…'}
-        </Text>
-      ) : null}
-      {captureNotice ? (
-        <Text accessibilityRole="alert" style={styles.muted}>
-          {captureNotice}
-        </Text>
-      ) : null}
+      {captureFeedback('photo')}
       {errors.save ? (
         <Text accessibilityRole="alert" style={styles.error}>
           {errors.save}

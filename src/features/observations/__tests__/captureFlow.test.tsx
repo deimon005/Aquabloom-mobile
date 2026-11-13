@@ -59,6 +59,8 @@ it.each([true, false])(
       screen.getByLabelText('Nota de terreno'),
       'Nota conservada',
     );
+    const date = screen.getByLabelText('Fecha y hora de la observación').props
+      .value;
     await fireEvent.press(
       screen.getByRole('button', { name: 'Tomar fotografía' }),
     );
@@ -70,6 +72,15 @@ it.each([true, false])(
       ),
     ).toBeTruthy();
     expect(capture.takePhoto).not.toHaveBeenCalled();
+    expect(screen.getByRole('alert')).toHaveProp(
+      'accessibilityLiveRegion',
+      'assertive',
+    );
+    expect(screen.getByLabelText('Fecha y hora de la observación')).toHaveProp(
+      'value',
+      date,
+    );
+    expect(save).not.toHaveBeenCalled();
     expect(screen.getByLabelText('Nota de terreno').props.value).toBe(
       'Nota conservada',
     );
@@ -79,6 +90,34 @@ it.each([true, false])(
     expect(save.mock.calls[0][0].photoUri).toBeNull();
   },
 );
+it('retries a temporary camera denial without resetting the edited fields', async () => {
+  const { capture, save } = await fixture();
+  capture.cameraPermission.mockResolvedValueOnce({
+    granted: false,
+    canAskAgain: true,
+  });
+  await fireEvent.changeText(
+    screen.getByLabelText('Nota de terreno'),
+    'Seguir después de denegar',
+  );
+  await fireEvent.press(
+    screen.getByRole('button', { name: 'Tomar fotografía' }),
+  );
+  expect(screen.getByRole('alert')).toBeTruthy();
+  await fireEvent.press(
+    screen.getByRole('button', { name: 'Tomar fotografía' }),
+  );
+  expect(screen.queryByRole('alert')).toBeNull();
+  expect(screen.getByLabelText('Nota de terreno')).toHaveProp(
+    'value',
+    'Seguir después de denegar',
+  );
+  expect(
+    screen.getByLabelText('Vista previa de la fotografía de terreno'),
+  ).toBeTruthy();
+  expect(capture.takePhoto).toHaveBeenCalledTimes(1);
+  expect(save).not.toHaveBeenCalled();
+});
 it('cancels a replacement without discarding the old photo, note or timestamp', async () => {
   const initial = saved({
     lakeId,
