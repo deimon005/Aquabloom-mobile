@@ -180,7 +180,7 @@ it('does not open storage or the form for an invalid lake', async () => {
   expect(observationStore.latest).not.toHaveBeenCalled();
 });
 it('keeps unsaved edits and pending local state across catalog failure and reconnect', async () => {
-  const online = jest.mocked(useLakeDetail).getMockImplementation()!();
+  const online = jest.mocked(useLakeDetail).getMockImplementation()!(lakeId);
   const view = await render(<ObservationScreen lakeId={lakeId} />);
   const note = await screen.findByLabelText('Nota de terreno');
   await fireEvent.changeText(note, 'Conservar la nota sin conexión');

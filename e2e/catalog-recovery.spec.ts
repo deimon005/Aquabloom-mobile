@@ -52,6 +52,7 @@ test('catalog recovers after bounded startup failures and opens Panguipulli with
   await expect(page.getByText('private startup diagnostics')).toHaveCount(0);
   await retry.focus();
   await expect(retry).toBeFocused();
+  await expect(retry).toHaveCSS('outline-width', '3px');
   await page.keyboard.press('Enter');
   const lakeButton = page.getByRole('button', {
     name: 'Ver detalle de Lago Panguipulli, Los Ríos',

@@ -80,9 +80,18 @@ test('lake to authenticated observation, validation, local save and recovery', a
       exact: true,
     }),
   ).toBeVisible();
+  await expect(
+    page.getByLabel('Fecha y hora de la observación', { exact: true }),
+  ).toBeFocused();
   await page
     .getByLabel('Fecha y hora de la observación', { exact: true })
     .fill('2026-10-07 14:30');
+  await page
+    .getByLabel('Fecha y hora de la observación', { exact: true })
+    .press('Enter');
+  await expect(
+    page.getByRole('textbox', { name: 'Nota de terreno', exact: true }),
+  ).toBeFocused();
   await page
     .getByRole('textbox', { name: 'Nota de terreno', exact: true })
     .fill('Nota de demostración guardada localmente');
@@ -104,6 +113,8 @@ test('lake to authenticated observation, validation, local save and recovery', a
   await expect(
     page.getByRole('button', { name: 'Finalizar observación', exact: true }),
   ).toBeDisabled();
+  await page.context().setOffline(true);
+  await expect(page.getByText('Sin conexión', { exact: true })).toBeVisible();
   await page
     .getByRole('button', { name: 'Guardar borrador local', exact: true })
     .click();
@@ -115,6 +126,21 @@ test('lake to authenticated observation, validation, local save and recovery', a
   await expect(
     page.getByText('Sin envío al servidor · No validado', { exact: true }),
   ).toBeVisible();
+  await expect(
+    page.getByText(
+      'Captura incompleta · Faltan fotografía disponible y ubicación.',
+      { exact: true },
+    ),
+  ).toBeVisible();
+  await page.context().setOffline(false);
+  await expect(page.getByText('Sin conexión', { exact: true })).toHaveCount(0);
+  await expect(
+    page.getByText('Guardado local · Pendiente de envío', { exact: true }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole('textbox', { name: 'Nota de terreno', exact: true }),
+  ).toHaveValue('Nota de demostración guardada localmente');
+  expect(writes).toEqual([]);
   await page.screenshot({
     path: testInfo.outputPath('observation-saved.png'),
     fullPage: true,
