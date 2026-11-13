@@ -67,3 +67,24 @@ Los E2E interceptan HTTP para provocar 503, falta de estaciones y reconexión;
 no consumen producción. Los resultados de Jest, SQLite y la introspección de
 permisos no reemplazan el ensayo nativo. La exportación genera un bundle,
 no un APK instalado.
+
+### Resultado local del 13 de noviembre
+
+- `pnpm run check`: formato, ESLint, TypeScript, 282 pruebas Jest en 47
+  suites, 29 pruebas SQLite/archivos temporales y 2 controles de permisos
+  generados.
+- `pnpm run test:e2e`: 4 recorridos aprobados. Incluye los tres 503 y la
+  recuperación sin reinicio, la ficha vacía de Panguipulli, foco de fecha y
+  nota, y guardado offline con reconexión sin escrituras HTTP.
+- `pnpm run export:android`: bundle Hermes de 4,9 MB, 1667 módulos y 30
+  assets. No equivale a instalación ni prueba de permisos físicos.
+
+**Total: 317 comprobaciones automatizadas aprobadas.** Se instaló el
+Chromium de la versión local de Playwright mediante pnpm; el primer intento
+de E2E no arrancó por falta de ese binario. Los recorridos también
+detectaron dos problemas reales: el scroll web quitaba el foco solicitado
+y la suscripción web no reaccionaba siempre a `offline`. Se corrigieron
+ambos y se repitió la suite sin quitar aserciones.
+
+El lineup se confirmó en Linear. No se cambiaron estados de tarjetas,
+no se abrió PR y no se modificó `main` en esta entrega.
