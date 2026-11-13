@@ -6,15 +6,17 @@ export function AsyncState({
   kind,
   message,
   onRetry,
+  retrying = false,
 }: {
   kind: 'loading' | 'error' | 'empty';
   message: string;
   onRetry?: () => void;
+  retrying?: boolean;
 }) {
   return (
     <View
       accessibilityLiveRegion={kind === 'error' ? 'assertive' : 'polite'}
-      accessibilityState={{ busy: kind === 'loading' }}
+      accessibilityState={{ busy: kind === 'loading' || retrying }}
       style={styles.container}
     >
       {kind === 'loading' && (
@@ -37,9 +39,10 @@ export function AsyncState({
       {kind === 'error' && onRetry && (
         <AppButton
           accessibilityHint="Vuelve a ejecutar la operación que falló"
+          disabled={retrying}
           onPress={onRetry}
         >
-          Reintentar
+          {retrying ? 'Reintentando…' : 'Reintentar'}
         </AppButton>
       )}
     </View>

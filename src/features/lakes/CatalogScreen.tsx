@@ -17,12 +17,16 @@ import type { LakeFilters } from './types';
 import { useLakes } from './useLakes';
 import { OfflineNotice } from '../offline/OfflineNotice';
 import { catalogError } from './catalogError';
+import { isCatalogStartupError } from './catalogRecovery';
 
 const initialFilters: LakeFilters = { page: 1, page_size: 20 };
 
 function readableCatalogError(error: unknown) {
   if (error instanceof Error && error.message.includes('EXPO_PUBLIC_API_URL')) {
     return error.message;
+  }
+  if (isCatalogStartupError(error)) {
+    return 'La API no respondió a tiempo o sigue iniciando. Puedes reintentar sin cerrar la aplicación.';
   }
   return catalogError(error, 'el catálogo');
 }
@@ -100,21 +104,26 @@ export function CatalogScreen() {
         </View>
       </View>
 
-      {lakes.isOffline && !lakes.isError ? (
+      {lakes.isOffline && !lakes.isError && !lakes.isPlaceholderData ? (
         <OfflineNotice savedAt={lakes.savedAt} />
       ) : null}
-      {lakes.isPending ? (
-        <AsyncState kind="loading" message="Cargando catálogo de lagos…" />
+      {lakes.isPending || lakes.isPlaceholderData ? (
+        <AsyncState
+          kind="loading"
+          message={
+            isCatalogStartupError(lakes.failureReason)
+              ? 'Esperando respuesta de la API. Estamos reintentando el catálogo…'
+              : lakes.isPlaceholderData
+                ? 'Buscando lagos con los nuevos filtros…'
+                : 'Cargando catálogo de lagos…'
+          }
+        />
       ) : lakes.isError ? (
         <AsyncState
           kind="error"
           message={readableCatalogError(lakes.error)}
-          onRetry={() => void lakes.refetch()}
-        />
-      ) : lakes.isPlaceholderData ? (
-        <AsyncState
-          kind="loading"
-          message="Buscando lagos con los nuevos filtros…"
+          retrying={lakes.isFetching}
+          onRetry={() => void lakes.refetch({ cancelRefetch: false })}
         />
       ) : !lakes.data || lakes.data.items.length === 0 ? (
         <AsyncState

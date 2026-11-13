@@ -8,6 +8,7 @@ import { fetchLakes } from './lakesApi';
 import type { LakeFilters } from './types';
 import { cachedCatalog } from '../offline/catalogCache';
 import { lakeListSchema } from './catalogSchemas';
+import { catalogRetryDelay, shouldRetryCatalog } from './catalogRecovery';
 
 export const lakeKeys = {
   all: ['lakes'] as const,
@@ -28,6 +29,8 @@ export function lakesQueryOptions(
     queryKey,
     networkMode: 'always' as const,
     refetchOnReconnect: 'always' as const,
+    retry: shouldRetryCatalog,
+    retryDelay: catalogRetryDelay,
     queryFn: ({ signal }: QueryFunctionContext<LakesQueryKey>) =>
       cachedCatalog(
         queryKey,

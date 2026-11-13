@@ -2,6 +2,7 @@ import { fireEvent, render } from '@testing-library/react-native';
 import { router } from 'expo-router';
 import { CatalogScreen } from '../CatalogScreen';
 import { useLakes } from '../useLakes';
+import { ApiError } from '../../../lib/http';
 
 jest.mock('expo-router', () => ({ router: { push: jest.fn() } }));
 jest.mock('../useLakes', () => ({ useLakes: jest.fn() }));
@@ -97,6 +98,28 @@ describe('CatalogScreen', () => {
     });
     await fireEvent.press(view.getByRole('button', { name: 'Limpiar' }));
     expect(mockedUseLakes).toHaveBeenLastCalledWith({ page: 1, page_size: 20 });
+  });
+
+  it('anuncia espera por arranque y evita duplicar el reintento', async () => {
+    const failure = new ApiError(503, 'private startup diagnostics');
+    mockedUseLakes.mockReturnValue(
+      queryResult({ isPending: true, failureReason: failure }),
+    );
+    const view = await render(<CatalogScreen />);
+    expect(view.getByText(/Esperando respuesta de la API/)).toBeTruthy();
+    mockedUseLakes.mockReturnValue(
+      queryResult({ isError: true, isFetching: true, error: failure }),
+    );
+    await view.rerender(<CatalogScreen />);
+    expect(view.getByRole('button', { name: 'Reintentando…' })).toBeDisabled();
+    mockedUseLakes.mockReturnValue(
+      queryResult({ isError: true, error: failure }),
+    );
+    await view.rerender(<CatalogScreen />);
+    expect(view.getByText(/sin cerrar la aplicación/)).toBeTruthy();
+    expect(view.queryByText('private startup diagnostics')).toBeNull();
+    await fireEvent.press(view.getByRole('button', { name: 'Reintentar' }));
+    expect(refetch).toHaveBeenCalledWith({ cancelRefetch: false });
   });
 
   it('muestra resultados accesibles y navega a la ficha del lago', async () => {

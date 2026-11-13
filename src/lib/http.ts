@@ -5,6 +5,13 @@ export class NetworkError extends Error {
   }
 }
 
+export class RequestTimeoutError extends Error {
+  constructor() {
+    super('La API tardó demasiado en responder.');
+    this.name = 'RequestTimeoutError';
+  }
+}
+
 export class ApiError extends Error {
   constructor(
     public readonly status: number,
@@ -74,7 +81,7 @@ export function createHttpClient(
       }
     } catch (error) {
       if (init.signal?.aborted) throw error;
-      if (timedOut) throw new Error('La API tardó demasiado en responder.');
+      if (timedOut) throw new RequestTimeoutError();
       if (error instanceof ApiError) throw error;
       throw new NetworkError();
     } finally {
