@@ -65,15 +65,16 @@ function ObservationEditor({ lakeId }: { lakeId: string }) {
   } | null>(null);
   const id = useRef<string | null>(null);
   const context = JSON.stringify([apiScope, user?.id, lakeId]);
-  const lakeName = lake.data?.name ?? knownLakeName;
+  const liveLakeName = lake.data?.name;
+  // This editor is keyed by account, API and lake. Retain the last verified
+  // name so a transient refetch cannot unmount an active form.
+  if (liveLakeName && liveLakeName !== knownLakeName) {
+    setKnownLakeName(liveLakeName);
+  }
+  const lakeName = liveLakeName ?? knownLakeName;
   const canKeepEditor = Boolean(
     lakeName || local?.initial || recoveredContext === context,
   );
-  // This editor is keyed by account, API and lake. A transient refetch must not
-  // unmount a form the user already opened for a verified lake.
-  useEffect(() => {
-    if (lake.data?.name) setKnownLakeName(lake.data.name);
-  }, [lake.data?.name]);
   useEffect(() => {
     currentContext.current = context;
     return () => {
