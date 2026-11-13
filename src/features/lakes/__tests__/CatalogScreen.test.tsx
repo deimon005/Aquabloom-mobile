@@ -32,6 +32,10 @@ describe('CatalogScreen', () => {
     const view = await render(<CatalogScreen />);
 
     expect(view.getByText('Cargando catálogo de lagos…')).toBeTruthy();
+    expect(view.getByRole('progressbar', { busy: true })).toBeTruthy();
+    expect(
+      view.queryByText('No hay lagos disponibles en el catálogo.'),
+    ).toBeNull();
   });
 
   it('permite reintentar un error sin filtrar detalles internos', async () => {
@@ -41,14 +45,39 @@ describe('CatalogScreen', () => {
     const view = await render(<CatalogScreen />);
 
     expect(view.getByText(/No pudimos cargar el catálogo/)).toBeTruthy();
+    expect(view.getByRole('alert')).toBeTruthy();
+    expect(view.queryByText('private server trace')).toBeNull();
     await fireEvent.press(view.getByRole('button', { name: 'Reintentar' }));
     expect(refetch).toHaveBeenCalledTimes(1);
   });
 
-  it('explica cuando los filtros no producen resultados', async () => {
+  it('diferencia un catálogo vacío de una búsqueda sin coincidencias', async () => {
     const view = await render(<CatalogScreen />);
-
+    expect(
+      view.getByText('No hay lagos disponibles en el catálogo.'),
+    ).toBeTruthy();
+    await fireEvent.changeText(
+      view.getByLabelText('Nombre del lago'),
+      'Panguipulli',
+    );
+    await fireEvent.press(
+      view.getByRole('button', { name: 'Aplicar filtros' }),
+    );
     expect(view.getByText(/No encontramos lagos/)).toBeTruthy();
+    expect(view.getByRole('button', { name: 'Limpiar' })).toBeEnabled();
+  });
+
+  it('no presenta un resultado anterior o vacío como respuesta a los filtros nuevos', async () => {
+    mockedUseLakes.mockReturnValue(
+      queryResult({ isPlaceholderData: true, isFetching: true }),
+    );
+    const view = await render(<CatalogScreen />);
+    expect(
+      view.getByText('Buscando lagos con los nuevos filtros…'),
+    ).toBeTruthy();
+    expect(
+      view.queryByText('No hay lagos disponibles en el catálogo.'),
+    ).toBeNull();
   });
 
   it('aplica filtros y permite limpiarlos', async () => {

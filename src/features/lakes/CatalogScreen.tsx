@@ -48,7 +48,7 @@ export function CatalogScreen() {
     setRegion('');
     setFilters(initialFilters);
   };
-  const hasFilters = Boolean(filters.search || filters.region);
+  const hasFilters = Boolean(filters.search?.trim() || filters.region?.trim());
 
   return (
     <Screen title="Catálogo de lagos">
@@ -56,7 +56,9 @@ export function CatalogScreen() {
         accessibilityRole="search"
         style={[styles.filters, layout.isCompact && styles.compactFilters]}
       >
-        <Text style={styles.sectionTitle}>Buscar en el catálogo</Text>
+        <Text accessibilityRole="header" style={styles.sectionTitle}>
+          Buscar en el catálogo
+        </Text>
         <TextInput
           accessibilityLabel="Nombre del lago"
           accessibilityHint="Filtra el catálogo por nombre"
@@ -107,16 +109,25 @@ export function CatalogScreen() {
         <AsyncState
           kind="error"
           message={readableCatalogError(lakes.error)}
-          onRetry={() => lakes.refetch()}
+          onRetry={() => void lakes.refetch()}
+        />
+      ) : lakes.isPlaceholderData ? (
+        <AsyncState
+          kind="loading"
+          message="Buscando lagos con los nuevos filtros…"
         />
       ) : !lakes.data || lakes.data.items.length === 0 ? (
         <AsyncState
           kind="empty"
-          message="No encontramos lagos para los filtros seleccionados."
+          message={
+            hasFilters
+              ? 'No encontramos lagos para los filtros seleccionados. Puedes limpiarlos y volver a buscar.'
+              : 'No hay lagos disponibles en el catálogo.'
+          }
         />
       ) : (
         <View style={styles.results}>
-          <View style={styles.resultsHeading}>
+          <View style={styles.resultsHeading} accessibilityLiveRegion="polite">
             <Text accessibilityRole="header" style={styles.sectionTitle}>
               {lakes.data.total} {lakes.data.total === 1 ? 'lago' : 'lagos'}
             </Text>
