@@ -36,6 +36,7 @@ async function fixture(initial?: StoredObservation) {
     })),
     takePhoto: jest.fn(async () => photo as typeof photo | null),
     captureLocation: jest.fn(async () => location),
+    openSettings: jest.fn(async () => {}),
   } satisfies CaptureServices;
   const save = jest.fn(async (values: ObservationValues) => saved(values));
   const view = await render(
@@ -81,6 +82,11 @@ it.each([true, false])(
       date,
     );
     expect(save).not.toHaveBeenCalled();
+    expect(
+      Boolean(
+        screen.queryByRole('button', { name: 'Abrir Ajustes de cámara' }),
+      ),
+    ).toBe(!canAskAgain);
     expect(screen.getByLabelText('Nota de terreno').props.value).toBe(
       'Nota conservada',
     );
@@ -224,6 +230,64 @@ it('cancels the initial camera capture without saving, losing fields or enabling
   ).toBeDisabled();
   expect(save).not.toHaveBeenCalled();
   expect(screen.queryByText('Guardado local · Pendiente de envío')).toBeNull();
+});
+it('returns from Settings without an automatic location read and retries only on an explicit action', async () => {
+  const { capture, save } = await fixture();
+  capture.captureLocation.mockRejectedValueOnce(
+    new CaptureError(
+      'settings',
+      'Habilita la ubicación de AquaBloom en Ajustes.',
+    ),
+  );
+  const date = screen.getByLabelText('Fecha y hora de la observación').props
+    .value;
+  await fireEvent.changeText(
+    screen.getByLabelText('Nota de terreno'),
+    'Nota antes de Ajustes',
+  );
+  await fireEvent.press(
+    screen.getByRole('button', { name: 'Capturar ubicación' }),
+  );
+  await fireEvent.press(
+    screen.getByRole('button', { name: 'Abrir Ajustes de ubicación' }),
+  );
+  expect(capture.openSettings).toHaveBeenCalledTimes(1);
+  expect(capture.captureLocation).toHaveBeenCalledTimes(1);
+  expect(screen.getByText(/Al volver de Ajustes/)).toBeTruthy();
+  expect(screen.getByLabelText('Nota de terreno')).toHaveProp(
+    'value',
+    'Nota antes de Ajustes',
+  );
+  expect(screen.getByLabelText('Fecha y hora de la observación')).toHaveProp(
+    'value',
+    date,
+  );
+  await fireEvent.press(
+    screen.getByRole('button', { name: 'Capturar ubicación' }),
+  );
+  expect(capture.captureLocation).toHaveBeenCalledTimes(2);
+  expect(screen.getByText(/Precisión: 6.0 m/)).toBeTruthy();
+  expect(save).not.toHaveBeenCalled();
+});
+it('keeps the form and provides a manual path when opening Settings fails', async () => {
+  const { capture } = await fixture();
+  capture.captureLocation.mockRejectedValueOnce(
+    new CaptureError('settings', 'Ubicación denegada'),
+  );
+  capture.openSettings.mockRejectedValueOnce(
+    new Error('private settings exception'),
+  );
+  await fireEvent.press(
+    screen.getByRole('button', { name: 'Capturar ubicación' }),
+  );
+  await fireEvent.press(
+    screen.getByRole('button', { name: 'Abrir Ajustes de ubicación' }),
+  );
+  expect(screen.getByText(/No pudimos abrir Ajustes/)).toBeTruthy();
+  expect(screen.queryByText('private settings exception')).toBeNull();
+  expect(
+    screen.getByRole('button', { name: 'Guardar borrador local' }),
+  ).toBeEnabled();
 });
 it('replaces one photo, adds current coordinates and saves a complete local pending observation', async () => {
   const { capture, save } = await fixture();

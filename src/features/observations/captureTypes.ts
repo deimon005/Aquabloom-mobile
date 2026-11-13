@@ -7,6 +7,7 @@ export type CaptureServices = {
   cameraPermission: () => Promise<CapturePermission>;
   takePhoto: () => Promise<PhotoCapture | null>;
   captureLocation: () => Promise<ObservationLocation>;
+  openSettings?: () => Promise<void>;
 };
 export class CaptureError extends Error {
   constructor(

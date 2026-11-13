@@ -58,6 +58,7 @@ export function ObservationForm({
   );
   const [location, setLocation] = useState(initial?.values.location ?? null);
   const [capturing, setCapturing] = useState<'photo' | 'location' | null>(null);
+  const [openingSettings, setOpeningSettings] = useState(false);
   const [captureNotice, setCaptureNotice] = useState<{
     field: 'photo' | 'location';
     message: string;
@@ -79,7 +80,7 @@ export function ObservationForm({
   }>({});
   const pending = useRef(false);
   const isSaving = phase === 'saving';
-  const busy = disabled || isSaving || capturing !== null;
+  const busy = disabled || isSaving || capturing !== null || openingSettings;
 
   async function captureField(kind: 'photo' | 'location') {
     if (pending.current || disabled) return;
@@ -131,6 +132,36 @@ export function ObservationForm({
     }
   }
 
+  async function openCaptureSettings(field: 'photo' | 'location') {
+    if (pending.current || disabled || !capture.openSettings) return;
+    pending.current = true;
+    setOpeningSettings(true);
+    try {
+      await capture.openSettings();
+      if (active.current) {
+        setCaptureNotice({
+          field,
+          message:
+            field === 'location'
+              ? 'Al volver de Ajustes, pulsa Capturar ubicación o Actualizar ubicación. Conservamos tus cambios.'
+              : 'Al volver de Ajustes, pulsa Tomar fotografía o Reemplazar fotografía. Conservamos tus cambios.',
+        });
+      }
+    } catch {
+      if (active.current) {
+        setCaptureNotice({
+          field,
+          message:
+            'No pudimos abrir Ajustes. Revisa los permisos de AquaBloom desde el dispositivo; tus cambios siguen aquí.',
+          requiresSettings: true,
+        });
+      }
+    } finally {
+      pending.current = false;
+      if (active.current) setOpeningSettings(false);
+    }
+  }
+
   function captureFeedback(field: 'photo' | 'location') {
     if (capturing === field) {
       return (
@@ -143,13 +174,27 @@ export function ObservationForm({
     }
     if (captureNotice?.field !== field) return null;
     return (
-      <Text
-        accessibilityRole="alert"
-        accessibilityLiveRegion="assertive"
-        style={styles.muted}
-      >
-        {captureNotice.message}
-      </Text>
+      <View style={styles.field}>
+        <Text
+          accessibilityRole="alert"
+          accessibilityLiveRegion="assertive"
+          style={styles.muted}
+        >
+          {captureNotice.message}
+        </Text>
+        {captureNotice.requiresSettings && capture.openSettings ? (
+          <AppButton
+            disabled={busy}
+            variant="secondary"
+            accessibilityHint="Abre los ajustes de AquaBloom sin descartar este formulario"
+            onPress={() => void openCaptureSettings(field)}
+          >
+            {field === 'location'
+              ? 'Abrir Ajustes de ubicación'
+              : 'Abrir Ajustes de cámara'}
+          </AppButton>
+        ) : null}
+      </View>
     );
   }
 

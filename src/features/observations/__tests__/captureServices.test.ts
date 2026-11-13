@@ -63,6 +63,23 @@ it('does not read a position after permanent permission denial', async () => {
   expect(Location.requestForegroundPermissionsAsync).not.toHaveBeenCalled();
   expect(Location.getCurrentPositionAsync).not.toHaveBeenCalled();
 });
+it('reads the current permission again after the user changes it in Settings', async () => {
+  jest
+    .mocked(Location.getForegroundPermissionsAsync)
+    .mockResolvedValueOnce({
+      granted: false,
+      canAskAgain: false,
+    } as Location.LocationPermissionResponse)
+    .mockResolvedValueOnce(permission as Location.LocationPermissionResponse);
+  await expect(captureServices.captureLocation()).rejects.toThrow('Ajustes');
+  expect(Location.getCurrentPositionAsync).not.toHaveBeenCalled();
+  await expect(captureServices.captureLocation()).resolves.toMatchObject({
+    accuracy: 8,
+  });
+  expect(Location.getForegroundPermissionsAsync).toHaveBeenCalledTimes(2);
+  expect(Location.requestForegroundPermissionsAsync).not.toHaveBeenCalled();
+  expect(Location.getCurrentPositionAsync).toHaveBeenCalledTimes(1);
+});
 it('requests only foreground permission when it can be asked again', async () => {
   jest.mocked(Location.getForegroundPermissionsAsync).mockResolvedValue({
     granted: false,
