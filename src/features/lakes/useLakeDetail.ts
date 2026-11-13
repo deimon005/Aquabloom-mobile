@@ -1,6 +1,6 @@
 import { useQuery, type QueryFunctionContext } from '@tanstack/react-query';
-import { fetchLakeDetail } from './catalogApi';
-import { isCatalogId, lakeDetailSchema } from './catalogSchemas';
+import { fetchLakeDetail, parseLakeDetail } from './catalogApi';
+import { isCatalogId } from './catalogSchemas';
 import { cachedCatalog } from '../offline/catalogCache';
 
 export const lakeDetailKey = (id: string) =>
@@ -15,7 +15,7 @@ export function lakeDetailQueryOptions(id: string, loader = fetchLakeDetail) {
       cachedCatalog(
         lakeDetailKey(id),
         () => loader(id, signal),
-        (value) => lakeDetailSchema.parse(value),
+        (value) => parseLakeDetail(id, value),
         signal,
       ),
   };

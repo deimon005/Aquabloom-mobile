@@ -7,7 +7,13 @@ import { stationRoute } from './catalogNavigation';
 import { useStations } from './useStations';
 import { OfflineNotice } from '../offline/OfflineNotice';
 
-export function StationsList({ lakeId }: { lakeId: string }) {
+export function StationsList({
+  lakeId,
+  lakeName,
+}: {
+  lakeId: string;
+  lakeName: string;
+}) {
   const stations = useStations(lakeId);
   if (stations.isPending)
     return <AsyncState kind="loading" message="Cargando estaciones…" />;
@@ -27,7 +33,7 @@ export function StationsList({ lakeId }: { lakeId: string }) {
         ) : null}
         <AsyncState
           kind="empty"
-          message="Este lago no tiene estaciones registradas."
+          message={`No hay estaciones de monitoreo registradas para ${lakeName}.`}
         />
       </>
     );

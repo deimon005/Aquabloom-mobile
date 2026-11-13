@@ -14,7 +14,15 @@ export async function fetchLakeDetail(
   const lakeId = catalogId.parse(id).toLowerCase();
   if (!request)
     throw new Error('Configura EXPO_PUBLIC_API_URL para consultar los lagos.');
-  return lakeDetailSchema.parse(await request('/lakes/' + lakeId, { signal }));
+  return parseLakeDetail(lakeId, await request('/lakes/' + lakeId, { signal }));
+}
+
+export function parseLakeDetail(id: string, value: unknown) {
+  const lake = lakeDetailSchema.parse(value);
+  if (lake.id.toLowerCase() !== id.toLowerCase()) {
+    throw new Error('La respuesta corresponde a otro lago.');
+  }
+  return lake;
 }
 
 export async function fetchStations(

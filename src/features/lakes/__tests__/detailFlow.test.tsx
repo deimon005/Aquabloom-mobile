@@ -64,14 +64,40 @@ it('opens observations with the selected lake without inventing another identity
   });
 });
 
-it('shows an empty station list', async () => {
+it('shows the Panguipulli name, region and a distinct empty station state', async () => {
   request.mockImplementation(async (path: string) =>
-    path.endsWith('/stations') ? [] : lake,
+    path.endsWith('/stations') ? [] : { ...lake, name: 'Lago Panguipulli' },
   );
   await mount(<LakeDetailScreen id={lakeId} />);
   expect(
-    await screen.findByText('Este lago no tiene estaciones registradas.'),
+    await screen.findByRole('header', { name: 'Lago Panguipulli' }),
   ).toBeTruthy();
+  expect(screen.getByText('Región: Los Ríos')).toBeTruthy();
+  expect(
+    await screen.findByText(
+      'No hay estaciones de monitoreo registradas para Lago Panguipulli.',
+    ),
+  ).toBeTruthy();
+  expect(screen.queryByRole('button', { name: 'Reintentar' })).toBeNull();
+  expect(
+    screen.getByRole('button', { name: 'Observaciones de terreno' }),
+  ).toBeEnabled();
+});
+
+it('does not treat a failed station request as an empty collection', async () => {
+  request.mockImplementation(async (path: string) => {
+    if (path.endsWith('/stations'))
+      throw new ApiError(503, 'private gateway trace');
+    return { ...lake, name: 'Lago Panguipulli' };
+  });
+  await mount(<LakeDetailScreen id={lakeId} />);
+  expect(
+    await screen.findByRole('button', { name: 'Reintentar' }),
+  ).toBeTruthy();
+  expect(
+    screen.queryByText(/No hay estaciones de monitoreo registradas/),
+  ).toBeNull();
+  expect(screen.getByText('Región: Los Ríos')).toBeTruthy();
 });
 
 it('handles a station that does not belong to the route', async () => {

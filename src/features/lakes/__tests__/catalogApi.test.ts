@@ -1,4 +1,4 @@
-import { fetchLakeDetail, fetchStations } from '../catalogApi';
+import { fetchLakeDetail, fetchStations, parseLakeDetail } from '../catalogApi';
 import { lakeDetailQueryOptions } from '../useLakeDetail';
 import { stationsQueryOptions } from '../useStations';
 import { lake, lakeId, station } from './fixtures';
@@ -21,6 +21,13 @@ it('loads stations from the existing lake endpoint', async () => {
   expect(request).toHaveBeenCalledWith('/lakes/' + lakeId + '/stations', {
     signal: undefined,
   });
+});
+it('rejects detail from a different UUID, including when parsing cached data', async () => {
+  const differentLake = { ...lake, id: station.id };
+  await expect(
+    fetchLakeDetail(lakeId, undefined, async () => differentLake),
+  ).rejects.toThrow('otro lago');
+  expect(() => parseLakeDetail(lakeId, differentLake)).toThrow('otro lago');
 });
 it('rejects malformed responses and stations belonging to another lake', async () => {
   await expect(

@@ -57,7 +57,7 @@ export function LakeDetailScreen({ id }: { id: string }) {
             Observaciones de terreno
           </AppButton>
           <Text accessibilityRole="header">Estaciones de monitoreo</Text>
-          <StationsList lakeId={id} />
+          <StationsList lakeId={id} lakeName={lake.data.name} />
         </>
       ) : null}
       <Link href="/catalog">Volver al catálogo</Link>
