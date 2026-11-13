@@ -48,6 +48,7 @@ function ObservationEditor({ lakeId }: { lakeId: string }) {
   const [attempt, setAttempt] = useState(0);
   const [editor, setEditor] = useState(0);
   const [recoveredContext, setRecoveredContext] = useState<string | null>(null);
+  const [knownLakeName, setKnownLakeName] = useState<string | null>(null);
   const [drafts, setDrafts] = useState<{
     context: string;
     records: StoredObservation[];
@@ -64,6 +65,15 @@ function ObservationEditor({ lakeId }: { lakeId: string }) {
   } | null>(null);
   const id = useRef<string | null>(null);
   const context = JSON.stringify([apiScope, user?.id, lakeId]);
+  const lakeName = lake.data?.name ?? knownLakeName;
+  const canKeepEditor = Boolean(
+    lakeName || local?.initial || recoveredContext === context,
+  );
+  // This editor is keyed by account, API and lake. A transient refetch must not
+  // unmount a form the user already opened for a verified lake.
+  useEffect(() => {
+    if (lake.data?.name) setKnownLakeName(lake.data.name);
+  }, [lake.data?.name]);
   useEffect(() => {
     currentContext.current = context;
     return () => {
@@ -198,17 +208,13 @@ function ObservationEditor({ lakeId }: { lakeId: string }) {
           kind="empty"
           message="Inicia sesión para crear o recuperar tus borradores."
         />
-      ) : lake.isError &&
-        recoveredContext !== context &&
-        local?.context === context &&
-        !local.initial ? (
+      ) : lake.isError && !canKeepEditor && local?.context === context ? (
         <AsyncState
           kind="error"
           message={catalogError(lake.error, 'el lago')}
           onRetry={() => void lake.refetch()}
         />
-      ) : local?.context !== context ||
-        (lake.isPending && !local.initial && recoveredContext !== context) ? (
+      ) : local?.context !== context || (lake.isPending && !canKeepEditor) ? (
         <AsyncState kind="loading" message="Preparando observación…" />
       ) : local.error ? (
         <AsyncState
@@ -219,13 +225,14 @@ function ObservationEditor({ lakeId }: { lakeId: string }) {
             setAttempt((value) => value + 1);
           }}
         />
-      ) : lake.data || local.initial || recoveredContext === context ? (
+      ) : canKeepEditor ? (
         <>
           {lake.isOffline ? <OfflineNotice savedAt={lake.savedAt} /> : null}
-          {!lake.data ? (
-            <Text>
-              Recuperado del dispositivo. El catálogo del lago no está
-              disponible; puedes editar tu borrador.
+          {!lake.data || lake.isError ? (
+            <Text accessibilityLiveRegion="polite">
+              {lakeName
+                ? 'El catálogo del lago no está disponible. Puedes continuar editando tu borrador.'
+                : 'Recuperado del dispositivo. El catálogo del lago no está disponible; puedes editar tu borrador.'}
             </Text>
           ) : null}
           <Text>
@@ -266,7 +273,7 @@ function ObservationEditor({ lakeId }: { lakeId: string }) {
           <ObservationForm
             key={`${context}:${editor}`}
             lakeId={lakeId}
-            lakeName={lake.data?.name ?? lakeId}
+            lakeName={lakeName ?? lakeId}
             lakeFeature={lake.data ? lakeFeature(lake.data) : null}
             initial={local.initial}
             durability={observationStore.durability}

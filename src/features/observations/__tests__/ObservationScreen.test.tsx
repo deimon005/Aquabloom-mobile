@@ -179,6 +179,40 @@ it('does not open storage or the form for an invalid lake', async () => {
   expect(screen.getByText('El enlace del lago no es válido.')).toBeTruthy();
   expect(observationStore.latest).not.toHaveBeenCalled();
 });
+it('keeps unsaved edits and pending local state across catalog failure and reconnect', async () => {
+  const online = jest.mocked(useLakeDetail).getMockImplementation()!();
+  const view = await render(<ObservationScreen lakeId={lakeId} />);
+  const note = await screen.findByLabelText('Nota de terreno');
+  await fireEvent.changeText(note, 'Conservar la nota sin conexión');
+  jest.mocked(useLakeDetail).mockReturnValue({
+    ...online,
+    data: undefined,
+    isError: true,
+    error: new Error('offline'),
+  } as ReturnType<typeof useLakeDetail>);
+  await view.rerender(<ObservationScreen lakeId={lakeId} />);
+  expect(
+    screen.getByDisplayValue('Conservar la nota sin conexión'),
+  ).toBeTruthy();
+  expect(screen.getByText('En edición · Cambios sin guardar')).toBeTruthy();
+  expect(observationStore.save).not.toHaveBeenCalled();
+  await fireEvent.press(
+    screen.getByRole('button', { name: 'Guardar borrador local' }),
+  );
+  await screen.findByText('Guardado local · Pendiente de envío');
+  jest.mocked(useLakeDetail).mockReturnValue(online);
+  await view.rerender(<ObservationScreen lakeId={lakeId} />);
+  expect(
+    screen.getByDisplayValue('Conservar la nota sin conexión'),
+  ).toBeTruthy();
+  expect(screen.getByText('Guardado local · Pendiente de envío')).toBeTruthy();
+  expect(
+    screen.getByText(
+      'Captura incompleta · Faltan fotografía disponible y ubicación.',
+    ),
+  ).toBeTruthy();
+  expect(observationStore.save).toHaveBeenCalledTimes(1);
+});
 it('blocks overwrite after recovery failure and permits an explicit retry', async () => {
   jest
     .mocked(observationStore.latest)
