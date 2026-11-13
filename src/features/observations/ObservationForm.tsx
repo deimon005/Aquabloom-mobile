@@ -47,6 +47,8 @@ export function ObservationForm({
   const fieldId = useId();
   const dateLabelId = `observation-date-${fieldId}`;
   const noteLabelId = `observation-note-${fieldId}`;
+  const dateInput = useRef<TextInput>(null);
+  const noteInput = useRef<TextInput>(null);
   const [dateText, setDateText] = useState(() =>
     formatObservationDate(
       initial ? new Date(initial.values.observedAt) : new Date(),
@@ -218,20 +220,24 @@ export function ObservationForm({
       photoUri,
     });
     if (!result.success) {
+      const dateError = observedAt
+        ? undefined
+        : 'Ingresa una fecha real con formato AAAA-MM-DD HH:mm.';
+      const noteError =
+        note.trim().length > 2000
+          ? 'La nota admite hasta 2000 caracteres.'
+          : undefined;
       setErrors({
-        date: observedAt
-          ? undefined
-          : 'Ingresa una fecha real con formato AAAA-MM-DD HH:mm.',
-        note:
-          note.trim().length > 2000
-            ? 'La nota admite hasta 2000 caracteres.'
-            : undefined,
+        date: dateError,
+        note: noteError,
         save: result.error.issues.some(
           (issue) => !['note', 'observedAt'].includes(String(issue.path[0])),
         )
           ? 'Revisa el lago y los campos de captura del borrador.'
           : undefined,
       });
+      if (dateError) dateInput.current?.focus();
+      else if (noteError) noteInput.current?.focus();
       return;
     }
     pending.current = true;
@@ -281,19 +287,29 @@ export function ObservationForm({
           Fecha y hora de la observación
         </Text>
         <TextInput
+          ref={dateInput}
           accessibilityLabel="Fecha y hora de la observación"
           accessibilityLabelledBy={dateLabelId}
+          accessibilityHint={
+            errors.date ?? 'Usa año, mes, día, hora y minutos en hora local.'
+          }
           aria-invalid={Boolean(errors.date)}
           accessibilityState={{ disabled: busy }}
           editable={!busy}
           autoCorrect={false}
-          returnKeyType="done"
+          returnKeyType="next"
+          submitBehavior="submit"
+          onSubmitEditing={() => noteInput.current?.focus()}
           placeholder="AAAA-MM-DD HH:mm"
           value={dateText}
           onChangeText={(value) => {
             setDateText(value);
             setPhase('editing');
-            setErrors({});
+            setErrors((previous) => ({
+              ...previous,
+              date: undefined,
+              save: undefined,
+            }));
           }}
           style={[styles.input, errors.date && styles.invalid]}
         />
@@ -301,7 +317,11 @@ export function ObservationForm({
           Hora local del dispositivo; se conserva como fecha UTC al guardar.
         </Text>
         {errors.date ? (
-          <Text accessibilityRole="alert" style={styles.error}>
+          <Text
+            accessibilityRole="alert"
+            accessibilityLiveRegion="assertive"
+            style={styles.error}
+          >
             {errors.date}
           </Text>
         ) : null}
@@ -312,8 +332,12 @@ export function ObservationForm({
         </Text>
         <Text style={styles.muted}>Opcional; hasta 2000 caracteres.</Text>
         <TextInput
+          ref={noteInput}
           accessibilityLabel="Nota de terreno"
           accessibilityLabelledBy={noteLabelId}
+          accessibilityHint={
+            errors.note ?? 'Campo opcional, admite hasta 2000 caracteres.'
+          }
           aria-invalid={Boolean(errors.note)}
           accessibilityState={{ disabled: busy }}
           editable={!busy}
@@ -323,13 +347,21 @@ export function ObservationForm({
           onChangeText={(value) => {
             setNote(value);
             setPhase('editing');
-            setErrors({});
+            setErrors((previous) => ({
+              ...previous,
+              note: undefined,
+              save: undefined,
+            }));
           }}
           style={[styles.input, styles.note, errors.note && styles.invalid]}
         />
         <Text style={styles.muted}>{note.length} / 2000 caracteres</Text>
         {errors.note ? (
-          <Text accessibilityRole="alert" style={styles.error}>
+          <Text
+            accessibilityRole="alert"
+            accessibilityLiveRegion="assertive"
+            style={styles.error}
+          >
             {errors.note}
           </Text>
         ) : null}
@@ -381,7 +413,11 @@ export function ObservationForm({
       />
       {captureFeedback('photo')}
       {errors.save ? (
-        <Text accessibilityRole="alert" style={styles.error}>
+        <Text
+          accessibilityRole="alert"
+          accessibilityLiveRegion="assertive"
+          style={styles.error}
+        >
           {errors.save}
         </Text>
       ) : null}

@@ -113,6 +113,30 @@ it('does not persist an impossible calendar date or oversized note', async () =>
   expect(
     screen.getByText('La nota admite hasta 2000 caracteres.'),
   ).toBeTruthy();
+  expect(screen.getByLabelText('Fecha y hora de la observación')).toHaveProp(
+    'aria-invalid',
+    true,
+  );
+  expect(screen.getByLabelText('Nota de terreno')).toHaveProp(
+    'accessibilityHint',
+    'La nota admite hasta 2000 caracteres.',
+  );
+  await fireEvent.changeText(
+    screen.getByLabelText('Fecha y hora de la observación'),
+    '2026-11-13 10:00',
+  );
+  expect(screen.getByLabelText('Fecha y hora de la observación')).toHaveProp(
+    'aria-invalid',
+    false,
+  );
+  expect(screen.getByLabelText('Nota de terreno')).toHaveProp(
+    'aria-invalid',
+    true,
+  );
+  expect(screen.getByRole('alert')).toHaveProp(
+    'accessibilityLiveRegion',
+    'assertive',
+  );
   expect(save).not.toHaveBeenCalled();
 });
 it('keeps edits after storage failure and supports retry without claiming success', async () => {
