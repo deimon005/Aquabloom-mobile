@@ -1,4 +1,3 @@
-import NetInfo from '@react-native-community/netinfo';
 import { onlineManager } from '@tanstack/react-query';
 import {
   createContext,
@@ -7,10 +6,8 @@ import {
   useState,
   type PropsWithChildren,
 } from 'react';
-import {
-  resolveConnectivityStatus,
-  type ConnectivityStatus,
-} from '../features/connectivity/connectivity';
+import type { ConnectivityStatus } from '../features/connectivity/connectivity';
+import { subscribeConnectivity } from '../features/connectivity/subscribeConnectivity';
 
 const ConnectivityContext = createContext<ConnectivityStatus>('unknown');
 
@@ -19,8 +16,7 @@ export function ConnectivityProvider({ children }: PropsWithChildren) {
 
   useEffect(
     () =>
-      NetInfo.addEventListener((state) => {
-        const nextStatus = resolveConnectivityStatus(state);
+      subscribeConnectivity((nextStatus) => {
         setStatus(nextStatus);
         if (nextStatus !== 'unknown') {
           onlineManager.setOnline(nextStatus === 'online');
