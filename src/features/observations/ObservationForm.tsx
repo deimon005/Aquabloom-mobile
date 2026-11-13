@@ -1,4 +1,4 @@
-import { useEffect, useId, useRef, useState } from 'react';
+import { useEffect, useId, useLayoutEffect, useRef, useState } from 'react';
 import { StyleSheet, Text, TextInput, View } from 'react-native';
 import { AppButton } from '../../components/AppButton';
 import { tokens } from '../../theme/tokens';
@@ -49,6 +49,7 @@ export function ObservationForm({
   const noteLabelId = `observation-note-${fieldId}`;
   const dateInput = useRef<TextInput>(null);
   const noteInput = useRef<TextInput>(null);
+  const focusAfterValidation = useRef<'date' | 'note' | null>(null);
   const [dateText, setDateText] = useState(() =>
     formatObservationDate(
       initial ? new Date(initial.values.observedAt) : new Date(),
@@ -81,6 +82,13 @@ export function ObservationForm({
     note?: string;
     save?: string;
   }>({});
+  useLayoutEffect(() => {
+    const field = focusAfterValidation.current;
+    if (!field) return;
+    focusAfterValidation.current = null;
+    const target = field === 'date' ? dateInput : noteInput;
+    target.current?.focus();
+  }, [errors]);
   const pending = useRef(false);
   const isSaving = phase === 'saving';
   const busy = disabled || isSaving || capturing !== null || openingSettings;
@@ -227,6 +235,11 @@ export function ObservationForm({
         note.trim().length > 2000
           ? 'La nota admite hasta 2000 caracteres.'
           : undefined;
+      focusAfterValidation.current = dateError
+        ? 'date'
+        : noteError
+          ? 'note'
+          : null;
       setErrors({
         date: dateError,
         note: noteError,
@@ -236,8 +249,6 @@ export function ObservationForm({
           ? 'Revisa el lago y los campos de captura del borrador.'
           : undefined,
       });
-      if (dateError) dateInput.current?.focus();
-      else if (noteError) noteInput.current?.focus();
       return;
     }
     pending.current = true;

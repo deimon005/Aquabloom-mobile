@@ -34,7 +34,8 @@ export function Screen({
             { paddingHorizontal: layout.horizontalPadding },
           ]}
           keyboardShouldPersistTaps="handled"
-          keyboardDismissMode="on-drag"
+          // RN Web treats any scroll as a drag, including scrolling caused by focus().
+          keyboardDismissMode={Platform.OS === 'web' ? 'none' : 'on-drag'}
         >
           <Text
             accessibilityRole="header"
