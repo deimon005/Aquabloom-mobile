@@ -74,6 +74,25 @@ Ajustes, comprobar que la posición sigue vacía hasta pulsar **Capturar
 ubicación**. Adjuntar evidencia a AQU-289 evitando capturas de la pantalla
 de inicio de sesión. Devolver la escala y TalkBack a su configuración inicial.
 
+## Arranque Android y bloqueo de catálogo
+
+El [APK de arranque](https://github.com/deimon005/Aquabloom-mobile/actions/runs/43536959087),
+commit `f4b4b9f`, se instaló con ADB en Android 16 x86_64. La actividad
+de AquaBloom abrió y mostró Inicio. El paso a Catálogo mostró el mensaje
+de error y permitió reintentar.
+
+La comprobación independiente desde el PC devolvió HTTP 500 tanto para
+`/lakes?page=1&limit=1` como para `/lakes?text=Panguipulli&page=1&limit=20`.
+`/health` devolvió HTTP 200 con estado `degraded` y error de base de datos.
+El catálogo impide seleccionar un lago y entrar a Observaciones en ese
+entorno. El recorrido de permisos, el registro de TalkBack y la evidencia
+para AQU-289 quedan pendientes hasta disponer de un catálogo operativo.
+
+La [compilación del código corregido](https://github.com/deimon005/Aquabloom-mobile/actions/runs/43538685749)
+corresponde a `20f83c7`. Pasaron formato, lint, tipos, 296 pruebas de
+Jest, 29 pruebas de persistencia, 2 controles de permisos generados y 4
+recorridos web. También pasó la exportación del bundle de Android.
+
 ## Comandos
 
 ```sh
