@@ -2,7 +2,7 @@
 
 Lineup contrastado con el proyecto **Sprint 3 - Mobile** en Linear el
 13 de noviembre de 2026. Se excluyen las semanas 3 y 4 y las tareas de
-otros integrantes. La entrega se prepara en `franco`, sin merge a `main`.
+otros integrantes. La continuación está en [franco-sprint3-semanas-1-2](https://github.com/deimon005/Aquabloom-mobile/tree/franco-sprint3-semanas-1-2).
 
 | Tarea                                                                                                          | Criterio y evidencia de esta entrega                                                                                                                                                  | Qué falta comprobar                                                                                       |
 | -------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
@@ -37,9 +37,15 @@ orden de exploración ni foco de TalkBack. Referencia para la implementación:
 
 ## Protocolo de verificación nativa pendiente
 
-En este entorno no se encontró ADB ni un Android SDK configurado. No se
-instaló un APK ni se probó hardware. Cuando haya dispositivo, usar un build
-del commit a verificar y una cuenta y observaciones de prueba:
+Se preparó un Pixel 6 virtual x86_64 con Android 16 (API 36), conectado por
+ADB, con TalkBack 16.0 y escala inicial 1,0. La prueba requiere un APK
+de la revisión que se quiere certificar y una cuenta de prueba con catálogo.
+El emulador entrega diálogos de permisos y ajustes del sistema Android.
+La cámara y la ubicación que se introduzcan serán simuladas.
+
+Antes de empezar, registrar el SHA del build, la escala configurada y el
+origen de los datos de prueba. Usar una fecha y nota sintéticas y un
+borrador nuevo para que la conservación de campos sea observable.
 
 1. En Panguipulli, escribir fecha y nota. Pulsar **Tomar fotografía** y
    denegar. Comprobar que se anuncia cómo continuar, los campos siguen
@@ -55,6 +61,19 @@ del commit a verificar y una cuenta y observaciones de prueba:
    de cada caso; adjuntar a AQU-289 la evidencia real de permisos. Omitir
    ubicación personal, credenciales y fotos privadas de las capturas.
 
+Para AQU-320, registrar con prioridad los hallazgos observados en el orden
+de lectura, foco visible y texto al 150 % y al máximo disponible. Para
+AQU-332, recorrer el guardado con TalkBack activo: activar Guardar con
+una fecha imposible, comprobar el texto anunciado y el foco, corregir el
+valor, avanzar a Nota y guardar. Volver a abrir el borrador para comprobar
+que los cambios quedaron en el dispositivo.
+
+Para AQU-329 y AQU-330, capturar los diálogos y el resultado al volver al
+formulario, con la misma fecha y nota. Si se prueba la concesión desde
+Ajustes, comprobar que la posición sigue vacía hasta pulsar **Capturar
+ubicación**. Adjuntar evidencia a AQU-289 evitando capturas de la pantalla
+de inicio de sesión. Devolver la escala y TalkBack a su configuración inicial.
+
 ## Comandos
 
 ```sh
@@ -68,7 +87,7 @@ no consumen producción. Los resultados de Jest, SQLite y la introspección de
 permisos no reemplazan el ensayo nativo. La exportación genera un bundle,
 no un APK instalado.
 
-### Resultado local del 13 de noviembre
+### Resultado de la entrega original del 13 de noviembre
 
 - `pnpm run check`: formato, ESLint, TypeScript, 282 pruebas Jest en 47
   suites, 29 pruebas SQLite/archivos temporales y 2 controles de permisos
