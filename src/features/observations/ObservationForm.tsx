@@ -119,8 +119,9 @@ export function ObservationForm({
         if (!photo) {
           setCaptureNotice({
             field: kind,
-            message:
-              'Captura cancelada. Conservamos la fotografía anterior y los demás campos.',
+            message: photoUri
+              ? 'Captura cancelada. Conservamos la fotografía anterior y los demás campos.'
+              : 'Captura cancelada. Conservamos los campos. Puedes volver a tomar una foto o guardar el borrador sin ella.',
           });
           return;
         }
@@ -421,8 +422,9 @@ export function ObservationForm({
         busy={busy}
         onCapture={() => void captureField('photo')}
         onUnavailable={setUnavailablePhotoUri}
-      />
-      {captureFeedback('photo')}
+      >
+        {captureFeedback('photo')}
+      </PhotoPreview>
       {errors.save ? (
         <Text
           accessibilityRole="alert"

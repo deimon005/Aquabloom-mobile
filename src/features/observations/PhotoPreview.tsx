@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, type ReactNode } from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import { AppButton } from '../../components/AppButton';
 import { tokens } from '../../theme/tokens';
@@ -8,11 +8,13 @@ export function PhotoPreview({
   busy,
   onCapture,
   onUnavailable,
+  children,
 }: {
   uri: string | null;
   busy: boolean;
   onCapture: () => void;
   onUnavailable: (uri: string) => void;
+  children?: ReactNode;
 }) {
   const [failedUri, setFailedUri] = useState<string | null>(null);
   return (
@@ -59,6 +61,7 @@ export function PhotoPreview({
       >
         {uri ? 'Reemplazar fotografía' : 'Tomar fotografía'}
       </AppButton>
+      {children}
     </View>
   );
 }

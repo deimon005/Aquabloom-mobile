@@ -228,6 +228,9 @@ it('cancels the initial camera capture without saving, losing fields or enabling
   expect(
     screen.getByRole('button', { name: 'Finalizar observación' }),
   ).toBeDisabled();
+  expect(
+    screen.getByText(/Captura cancelada\. Conservamos los campos/),
+  ).toBeTruthy();
   expect(save).not.toHaveBeenCalled();
   expect(screen.queryByText('Guardado local · Pendiente de envío')).toBeNull();
 });
