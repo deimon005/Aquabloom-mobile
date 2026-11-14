@@ -56,6 +56,9 @@ export function ObservationForm({
   const noteLabelId = `observation-note-${fieldId}`;
   const dateInput = useRef<TextInput>(null);
   const noteInput = useRef<TextInput>(null);
+  const [focusedField, setFocusedField] = useState<'date' | 'note' | null>(
+    null,
+  );
   const focusAfterValidation = useRef<'date' | 'note' | null>(null);
   const [dateText, setDateText] = useState(() =>
     formatObservationDate(
@@ -313,6 +316,8 @@ export function ObservationForm({
         </Text>
         <TextInput
           ref={dateInput}
+          onFocus={() => setFocusedField('date')}
+          onBlur={() => setFocusedField(null)}
           accessibilityLabel="Fecha y hora de la observación"
           accessibilityLabelledBy={dateLabelId}
           accessibilityHint={
@@ -336,7 +341,11 @@ export function ObservationForm({
               save: undefined,
             }));
           }}
-          style={[styles.input, errors.date && styles.invalid]}
+          style={[
+            styles.input,
+            focusedField === 'date' && styles.focused,
+            errors.date && styles.invalid,
+          ]}
         />
         <Text style={styles.muted}>
           Hora local del dispositivo; se conserva como fecha UTC al guardar.
@@ -358,6 +367,8 @@ export function ObservationForm({
         <Text style={styles.muted}>Opcional; hasta 2000 caracteres.</Text>
         <TextInput
           ref={noteInput}
+          onFocus={() => setFocusedField('note')}
+          onBlur={() => setFocusedField(null)}
           accessibilityLabel="Nota de terreno"
           accessibilityLabelledBy={noteLabelId}
           accessibilityHint={
@@ -378,7 +389,12 @@ export function ObservationForm({
               save: undefined,
             }));
           }}
-          style={[styles.input, styles.note, errors.note && styles.invalid]}
+          style={[
+            styles.input,
+            styles.note,
+            focusedField === 'note' && styles.focused,
+            errors.note && styles.invalid,
+          ]}
         />
         <Text style={styles.muted}>{note.length} / 2000 caracteres</Text>
         {errors.note ? (
@@ -483,6 +499,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   note: { minHeight: 112, textAlignVertical: 'top' },
+  focused: {
+    outlineColor: tokens.colors.text,
+    outlineOffset: 2,
+    outlineWidth: 2,
+    outlineStyle: 'solid',
+  },
   invalid: { borderColor: tokens.colors.error },
   error: { color: tokens.colors.error },
   reserved: {
