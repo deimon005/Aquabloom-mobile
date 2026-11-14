@@ -29,4 +29,4 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - name: Build Android APK
-        run: npx --yes eas-cli@24.8.0 build --platform android --profile preview --non-interactive
+        run: pnpm dlx eas-cli@24.8.0 build --platform android --profile preview --non-interactive
