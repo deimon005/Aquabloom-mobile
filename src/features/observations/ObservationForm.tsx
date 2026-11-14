@@ -1,5 +1,12 @@
 import { useEffect, useId, useLayoutEffect, useRef, useState } from 'react';
-import { StyleSheet, Text, TextInput, View } from 'react-native';
+import {
+  AccessibilityInfo,
+  Platform,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from 'react-native';
 import { AppButton } from '../../components/AppButton';
 import { tokens } from '../../theme/tokens';
 import { LakeMap } from '../map/LakeMap';
@@ -87,7 +94,13 @@ export function ObservationForm({
     if (!field) return;
     focusAfterValidation.current = null;
     const target = field === 'date' ? dateInput : noteInput;
-    target.current?.focus();
+    const input = target.current;
+    if (!input) return;
+    input.focus();
+    if (Platform.OS === 'android') {
+      // Input focus opens the keyboard. Notify TalkBack of the same target.
+      AccessibilityInfo.sendAccessibilityEvent(input, 'focus');
+    }
   }, [errors]);
   const pending = useRef(false);
   const isSaving = phase === 'saving';
