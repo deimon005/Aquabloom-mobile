@@ -381,6 +381,27 @@ it('does not allow saving while permission or capture is still pending', async (
   await act(async () => finish({ granted: true, canAskAgain: true }));
   expect(screen.getByLabelText('Nota de terreno')).toBeEnabled();
 });
+it('keeps unrelated validation errors after a successful sensor capture', async () => {
+  const { save } = await fixture();
+  const date = screen.getByLabelText('Fecha y hora de la observación');
+  const note = screen.getByLabelText('Nota de terreno');
+  await fireEvent.changeText(date, '2026-02-30 12:00');
+  await fireEvent.changeText(note, 'a'.repeat(2001));
+  await fireEvent.press(
+    screen.getByRole('button', { name: 'Guardar borrador local' }),
+  );
+  await fireEvent.press(
+    screen.getByRole('button', { name: 'Capturar ubicación' }),
+  );
+  expect(screen.getByText(/Precisión: 6.0 m/)).toBeTruthy();
+  expect(date).toHaveProp('aria-invalid', true);
+  expect(note).toHaveProp('aria-invalid', true);
+  expect(screen.getByText(/Ingresa una fecha real/)).toBeTruthy();
+  expect(
+    screen.getByText('La nota admite hasta 2000 caracteres.'),
+  ).toBeTruthy();
+  expect(save).not.toHaveBeenCalled();
+});
 it('ignores a late photo result after leaving the form', async () => {
   const { capture, view, save } = await fixture();
   let finish!: (value: typeof photo) => void;

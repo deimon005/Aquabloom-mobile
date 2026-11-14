@@ -132,7 +132,7 @@ export function ObservationForm({
         setLocation(position);
       }
       setPhase('editing');
-      setErrors({});
+      setErrors((previous) => ({ ...previous, save: undefined }));
     } catch (error) {
       if (active.current) {
         setCaptureNotice({
