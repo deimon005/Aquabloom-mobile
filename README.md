@@ -191,6 +191,30 @@ Observaciones, los casos de uso reciben los puertos de borradores y fotografías
 Las implementaciones `.web.ts` se ubican junto a sus variantes nativas para
 que Metro seleccione la correcta.
 
+### Guías por módulo
+
+- [Observaciones](src/features/observations/README.md) describe los casos de uso, los puertos y los adaptadores de captura.
+- [Catálogo](src/features/lakes/README.md) ubica los DTOs, modelos, filtros y parsers.
+- [Mapa](src/features/map/README.md) explica las capas, GeoJSON y las variantes nativa y web.
+- [Consulta científica](src/features/scientific/README.md) separa propuesta OpenAPI, modelos y ejemplos locales.
+- [Sesión](src/features/auth/README.md) indica cómo se conectan proveedores, UI y almacenamiento de credenciales.
+- [Datos sin conexión](src/features/offline/README.md) distingue caché, conectividad y borradores.
+
+### Historial y verificación de la migración
+
+| Commit                                                                  | Cambio                                                                                |
+| ----------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
+| [e7b80a6](https://github.com/deimon005/Aquabloom-mobile/commit/e7b80a6) | Separación de Observaciones, sus puertos y adaptadores, caché y conectividad.         |
+| [94cf679](https://github.com/deimon005/Aquabloom-mobile/commit/94cf679) | Modelos de dominio, DTOs de catálogo y ciencia y geometría de mapa.                   |
+| [4b55c04](https://github.com/deimon005/Aquabloom-mobile/commit/4b55c04) | Capas de sesión y traslado de clientes compartidos a infraestructura.                 |
+| [fc110a7](https://github.com/deimon005/Aquabloom-mobile/commit/fc110a7) | Reglas de ESLint para mantener los límites de dominio y los puertos de Observaciones. |
+
+La [revisión integrada](https://github.com/deimon005/Aquabloom-mobile/commit/454a00c)
+pasó formato, lint, TypeScript, 297 pruebas de Jest, 29 de persistencia,
+2 de configuración, 4 recorridos de Playwright y el empaquetado con
+`pnpm run export:android`. La [matriz del Sprint 3](docs/sprint3-franco-matriz.md)
+registra lo que queda por comprobar en Android.
+
 Cada unidad revisable se integra mediante PR enlazado a Linear y con evidencia
 local. Mobile CI se ejecuta exclusivamente de forma manual (`workflow_dispatch`):
 no consume GitHub Actions al enviar commits ni al abrir un PR. La validación
