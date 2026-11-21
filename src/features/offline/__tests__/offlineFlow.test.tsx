@@ -11,7 +11,7 @@ import {
   QueryClientProvider,
 } from '@tanstack/react-query';
 import type { ReactElement } from 'react';
-import { api } from '../../../lib/api';
+import { api } from '../../../infrastructure/http/api';
 import { CatalogScreen } from '../../lakes/presentation/CatalogScreen';
 import { LakeDetailScreen } from '../../lakes/presentation/LakeDetailScreen';
 import { lake, lakeId, station } from '../../lakes/__tests__/fixtures';
@@ -21,7 +21,7 @@ import {
   setCatalogIdentity,
 } from '../data/catalogCache';
 
-jest.mock('../../../lib/api', () => ({ api: jest.fn() }));
+jest.mock('../../../infrastructure/http/api', () => ({ api: jest.fn() }));
 jest.mock('expo-router', () => ({
   Link: jest.requireActual('react-native').Text,
   router: { push: jest.fn() },

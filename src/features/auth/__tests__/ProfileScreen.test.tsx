@@ -1,11 +1,11 @@
 import { fireEvent, render, screen } from '@testing-library/react-native';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthError } from '@supabase/supabase-js';
-import { AuthProvider, type AuthClient } from '../AuthProvider';
-import { ProfileScreen } from '../ProfileScreen';
+import { AuthProvider, type AuthClient } from '../application/AuthProvider';
+import { ProfileScreen } from '../presentation/ProfileScreen';
 import { authFixture, sessionFor } from './authFixture';
 
-jest.mock('../../../lib/supabase', () => ({ supabase: null }));
+jest.mock('../../../infrastructure/auth/supabase', () => ({ supabase: null }));
 jest.mock('expo-router', () => ({
   Link: jest.requireActual('react-native').Text,
 }));

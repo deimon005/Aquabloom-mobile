@@ -1,4 +1,4 @@
-import { isCatalogId } from '../../domain/catalogId';
+import { isCatalogId } from '../../../domain/catalogId';
 
 // Only known internal destinations may be supplied through a deep link.
 export function loginDestination(value: string | string[] | undefined) {

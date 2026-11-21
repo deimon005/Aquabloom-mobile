@@ -4,7 +4,7 @@ import {
   screen,
   waitFor,
 } from '@testing-library/react-native';
-import { LoginForm } from '../LoginForm';
+import { LoginForm } from '../presentation/LoginForm';
 
 async function fillLogin(email: string, password: string) {
   await fireEvent.changeText(

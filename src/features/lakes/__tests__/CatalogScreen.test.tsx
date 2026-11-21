@@ -2,7 +2,7 @@ import { fireEvent, render } from '@testing-library/react-native';
 import { router } from 'expo-router';
 import { CatalogScreen } from '../presentation/CatalogScreen';
 import { useLakes } from '../application/useLakes';
-import { ApiError } from '../../../lib/http';
+import { ApiError } from '../../../infrastructure/http/http';
 
 jest.mock('expo-router', () => ({ router: { push: jest.fn() } }));
 jest.mock('../application/useLakes', () => ({ useLakes: jest.fn() }));

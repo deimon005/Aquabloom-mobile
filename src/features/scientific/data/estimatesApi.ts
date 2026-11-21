@@ -1,4 +1,4 @@
-import { api } from '../../../lib/api';
+import { api } from '../../../infrastructure/http/api';
 import { catalogId } from '../../../domain/catalogId';
 import type { EstimateListResponse } from '../domain/estimate';
 import { parseLakeEstimates } from './dto/estimateDto';

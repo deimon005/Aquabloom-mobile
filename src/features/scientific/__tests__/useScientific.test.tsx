@@ -1,9 +1,9 @@
-import { ApiError, NetworkError } from '../../../lib/http';
+import { ApiError, NetworkError } from '../../../infrastructure/http/http';
 import { catalogCache } from '../../offline/data/catalogCache';
 import { Text } from 'react-native';
 import { render } from '@testing-library/react-native';
 import { onlineManager, useQuery } from '@tanstack/react-query';
-import { useCurrentUser } from '../../auth/useCurrentUser';
+import { useCurrentUser } from '../../auth/application/useCurrentUser';
 import { useEstimates, useScientificJob } from '../application/useScientific';
 import {
   loadEstimates,
@@ -23,7 +23,9 @@ jest.mock('../../offline/data/catalogCache', () => ({
     remove: jest.fn(async () => undefined),
   },
 }));
-jest.mock('../../auth/useCurrentUser', () => ({ useCurrentUser: jest.fn() }));
+jest.mock('../../auth/application/useCurrentUser', () => ({
+  useCurrentUser: jest.fn(),
+}));
 jest.mock('../application/scientificSource', () => ({
   loadEstimates: jest.fn(),
   loadJob: jest.fn(),

@@ -1,7 +1,7 @@
 import type { QueryClient } from '@tanstack/react-query';
 import type { AuthClient } from './AuthProvider';
 import { AuthConfigurationError } from './signIn';
-import { clearCatalogCache } from '../offline/data/catalogCache';
+import { clearCatalogCache } from '../../offline/data/catalogCache';
 
 export async function signOutAndClearCache(
   client: AuthClient | null,

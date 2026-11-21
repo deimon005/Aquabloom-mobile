@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { AppState, Platform } from 'react-native';
-import { supabase } from '../../lib/supabase';
+import { supabase } from '../../../infrastructure/auth/supabase';
 import { bindSessionLifecycle } from './bindSessionLifecycle';
 
 export function SessionLifecycle() {

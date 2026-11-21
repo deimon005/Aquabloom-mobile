@@ -1,10 +1,10 @@
 import { QueryClient } from '@tanstack/react-query';
 import { AuthError } from '@supabase/supabase-js';
-import { signOutAndClearCache } from '../signOut';
+import { signOutAndClearCache } from '../application/signOut';
 import { authFixture } from './authFixture';
 import * as persistentCache from '../../offline/data/catalogCache';
 
-jest.mock('../../../lib/supabase', () => ({ supabase: null }));
+jest.mock('../../../infrastructure/auth/supabase', () => ({ supabase: null }));
 
 afterEach(() => jest.restoreAllMocks());
 

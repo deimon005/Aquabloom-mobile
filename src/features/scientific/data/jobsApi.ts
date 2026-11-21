@@ -1,4 +1,4 @@
-import { api } from '../../../lib/api';
+import { api } from '../../../infrastructure/http/api';
 import { catalogId } from '../../../domain/catalogId';
 import type { ScientificJob } from '../domain/job';
 import { parseScientificJob } from './dto/jobDto';

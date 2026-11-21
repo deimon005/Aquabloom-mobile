@@ -1,11 +1,11 @@
 import { useConnectivity } from '../../../providers/ConnectivityProvider';
-import { ApiError, NetworkError } from '../../../lib/http';
+import { ApiError, NetworkError } from '../../../infrastructure/http/http';
 import { loadCachedCatalog } from '../../offline/data/cache';
 import { catalogCache } from '../../offline/data/catalogCache';
 import { parseLakeEstimates } from '../data/dto/estimateDto';
 import { onlineManager, useQuery } from '@tanstack/react-query';
 import { env } from '../../../config/env';
-import { useCurrentUser } from '../../auth/useCurrentUser';
+import { useCurrentUser } from '../../auth/application/useCurrentUser';
 import { isCatalogId } from '../../../domain/catalogId';
 import {
   loadEstimates,

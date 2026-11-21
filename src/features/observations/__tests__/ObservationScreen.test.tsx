@@ -1,13 +1,13 @@
 import { act, fireEvent, render, screen } from '@testing-library/react-native';
 import { ObservationScreen } from '../presentation/ObservationScreen';
-import { useCurrentUser } from '../../auth/useCurrentUser';
+import { useCurrentUser } from '../../auth/application/useCurrentUser';
 import { useLakeDetail } from '../../lakes/application/useLakeDetail';
 import { observationStore } from '../data/observationStore';
 import { photoPersistence } from '../data/photoPersistence';
 
 jest.mock('../../map/presentation/LakeMap', () => ({ LakeMap: () => null }));
 
-jest.mock('../../auth/useCurrentUser');
+jest.mock('../../auth/application/useCurrentUser');
 jest.mock('../data/captureServices', () => ({
   captureServices: {
     cameraPermission: jest.fn(),

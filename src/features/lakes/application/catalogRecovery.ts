@@ -1,4 +1,7 @@
-import { ApiError, RequestTimeoutError } from '../../../lib/http';
+import {
+  ApiError,
+  RequestTimeoutError,
+} from '../../../infrastructure/http/http';
 
 export function isCatalogStartupError(error: unknown) {
   return (

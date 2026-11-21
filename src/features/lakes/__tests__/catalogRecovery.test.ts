@@ -1,4 +1,8 @@
-import { ApiError, NetworkError, RequestTimeoutError } from '../../../lib/http';
+import {
+  ApiError,
+  NetworkError,
+  RequestTimeoutError,
+} from '../../../infrastructure/http/http';
 import { OfflineCacheMissError } from '../../offline/data/cache';
 import {
   catalogRetryDelay,

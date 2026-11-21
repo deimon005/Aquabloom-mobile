@@ -1,4 +1,7 @@
-import { AuthConfigurationError, signInWithPassword } from '../signIn';
+import {
+  AuthConfigurationError,
+  signInWithPassword,
+} from '../application/signIn';
 
 const credentials = {
   email: 'franco@example.com',

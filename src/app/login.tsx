@@ -1,9 +1,9 @@
 import { Redirect, useLocalSearchParams } from 'expo-router';
 import { Screen } from '../components/Screen';
-import { LoginForm } from '../features/auth/LoginForm';
-import { signInWithPassword } from '../features/auth/signIn';
-import { useCurrentUser } from '../features/auth/useCurrentUser';
-import { loginDestination } from '../features/auth/loginDestination';
+import { LoginForm } from '../features/auth/presentation/LoginForm';
+import { signInWithPassword } from '../features/auth/application/signIn';
+import { useCurrentUser } from '../features/auth/application/useCurrentUser';
+import { loginDestination } from '../features/auth/application/loginDestination';
 import { AsyncState } from '../components/AsyncState';
 
 export default function Login() {

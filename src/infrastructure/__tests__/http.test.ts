@@ -1,4 +1,4 @@
-import { ApiError, createHttpClient } from '../http';
+import { ApiError, createHttpClient } from '../http/http';
 
 describe('HTTP client', () => {
   const fetcher = jest.fn();

@@ -1,6 +1,6 @@
 import * as SecureStore from 'expo-secure-store';
 import { createClient } from '@supabase/supabase-js';
-import { sessionStorage } from '../sessionStorage';
+import { sessionStorage } from '../auth/sessionStorage';
 import { sessionFor } from '../../features/auth/__tests__/authFixture';
 
 const values = new Map<string, string>();

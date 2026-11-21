@@ -1,12 +1,12 @@
 import { Text } from 'react-native';
 import { render, screen } from '@testing-library/react-native';
 import { Redirect } from 'expo-router';
-import { RequireSession } from '../RequireSession';
-import { useCurrentUser } from '../useCurrentUser';
+import { RequireSession } from '../presentation/RequireSession';
+import { useCurrentUser } from '../application/useCurrentUser';
 import { sessionFor } from './authFixture';
-import { loginDestination } from '../loginDestination';
+import { loginDestination } from '../application/loginDestination';
 
-jest.mock('../useCurrentUser');
+jest.mock('../application/useCurrentUser');
 jest.mock('expo-router', () => ({ Redirect: jest.fn(() => null) }));
 const state = (overrides: Partial<ReturnType<typeof useCurrentUser>> = {}) => {
   jest.mocked(useCurrentUser).mockReturnValue({

@@ -1,10 +1,10 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { fireEvent, render, screen } from '@testing-library/react-native';
-import { HealthScreen } from '../HealthScreen';
-import { createHttpClient } from '../../../lib/http';
-import { api } from '../../../lib/api';
+import { HealthScreen } from '../presentation/HealthScreen';
+import { createHttpClient } from '../../../infrastructure/http/http';
+import { api } from '../../../infrastructure/http/api';
 
-jest.mock('../../../lib/api', () => ({ api: jest.fn() }));
+jest.mock('../../../infrastructure/http/api', () => ({ api: jest.fn() }));
 jest.mock('../../../config/env', () => ({ environment: { success: true } }));
 
 const mockApi = jest.mocked(api!);

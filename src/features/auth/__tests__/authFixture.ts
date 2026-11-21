@@ -1,5 +1,5 @@
 import type { AuthChangeEvent, Session, User } from '@supabase/supabase-js';
-import type { AuthClient } from '../AuthProvider';
+import type { AuthClient } from '../application/AuthProvider';
 
 export function sessionFor(id = 'jose', email = 'jose@example.com'): Session {
   const user: User = {

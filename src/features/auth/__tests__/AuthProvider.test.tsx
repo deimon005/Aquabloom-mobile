@@ -5,10 +5,14 @@ import {
   QueryClientProvider,
   useQuery,
 } from '@tanstack/react-query';
-import { AuthProvider, useCurrentUser, type AuthClient } from '../AuthProvider';
+import {
+  AuthProvider,
+  useCurrentUser,
+  type AuthClient,
+} from '../application/AuthProvider';
 import { authFixture, sessionFor } from './authFixture';
 
-jest.mock('../../../lib/supabase', () => ({ supabase: null }));
+jest.mock('../../../infrastructure/auth/supabase', () => ({ supabase: null }));
 
 function CurrentUser() {
   const { user, status } = useCurrentUser();

@@ -1,4 +1,4 @@
-import { AuthConfigurationError } from './signIn';
+import { AuthConfigurationError } from '../application/signIn';
 
 type AuthFailure = {
   code?: unknown;

@@ -1,5 +1,5 @@
-import { getAuthErrorMessage } from '../authErrorMessage';
-import { AuthConfigurationError } from '../signIn';
+import { getAuthErrorMessage } from '../presentation/authErrorMessage';
+import { AuthConfigurationError } from '../application/signIn';
 
 it.each([
   [

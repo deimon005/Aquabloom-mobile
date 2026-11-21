@@ -7,7 +7,9 @@ describe('Supabase bootstrap', () => {
     jest.isolateModules(() => {
       jest.doMock('../../config/env', () => ({ env: {} }));
       const { supabase } =
-        jest.requireActual<typeof import('../supabase')>('../supabase');
+        jest.requireActual<typeof import('../auth/supabase')>(
+          '../auth/supabase',
+        );
       expect(supabase).toBeNull();
     });
   });
@@ -15,7 +17,7 @@ describe('Supabase bootstrap', () => {
   it('creates a usable client with an initially empty secure session', async () => {
     let session!: ReturnType<
       NonNullable<
-        (typeof import('../supabase'))['supabase']
+        (typeof import('../auth/supabase'))['supabase']
       >['auth']['getSession']
     >;
     jest.isolateModules(() => {
@@ -26,7 +28,9 @@ describe('Supabase bootstrap', () => {
         },
       }));
       const { supabase } =
-        jest.requireActual<typeof import('../supabase')>('../supabase');
+        jest.requireActual<typeof import('../auth/supabase')>(
+          '../auth/supabase',
+        );
       expect(supabase).not.toBeNull();
       expect(supabase!.from('lakes')).toBeDefined();
       session = supabase!.auth.getSession();

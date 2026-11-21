@@ -2,13 +2,13 @@ import { render, fireEvent, screen } from '@testing-library/react-native';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { router } from 'expo-router';
 import type { ReactElement } from 'react';
-import { api } from '../../../lib/api';
-import { ApiError } from '../../../lib/http';
+import { api } from '../../../infrastructure/http/api';
+import { ApiError } from '../../../infrastructure/http/http';
 import { LakeDetailScreen } from '../presentation/LakeDetailScreen';
 import { StationScreen } from '../presentation/StationScreen';
 import { lake, lakeId, station, stationId } from './fixtures';
 
-jest.mock('../../../lib/api', () => ({ api: jest.fn() }));
+jest.mock('../../../infrastructure/http/api', () => ({ api: jest.fn() }));
 jest.mock('expo-router', () => ({
   Link: jest.requireActual('react-native').Text,
   router: { push: jest.fn() },

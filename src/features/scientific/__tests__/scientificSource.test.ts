@@ -7,7 +7,7 @@ import {
   loadJob,
   scientificSource,
 } from '../application/scientificSource';
-import { ApiError } from '../../../lib/http';
+import { ApiError } from '../../../infrastructure/http/http';
 import {
   metadata,
   scientificError,

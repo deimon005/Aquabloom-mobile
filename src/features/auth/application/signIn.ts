@@ -1,5 +1,5 @@
-import { supabase } from '../../lib/supabase';
-import type { LoginCredentials } from './loginSchema';
+import { supabase } from '../../../infrastructure/auth/supabase';
+import type { LoginCredentials } from '../domain/loginSchema';
 
 export class AuthConfigurationError extends Error {
   constructor() {

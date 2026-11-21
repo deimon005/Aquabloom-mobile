@@ -1,9 +1,9 @@
 import { Button, Text } from 'react-native';
 import { useQuery } from '@tanstack/react-query';
-import { Screen } from '../../components/Screen';
-import { AsyncState } from '../../components/AsyncState';
-import { api } from '../../lib/api';
-import { environment } from '../../config/env';
+import { Screen } from '../../../components/Screen';
+import { AsyncState } from '../../../components/AsyncState';
+import { api } from '../../../infrastructure/http/api';
+import { environment } from '../../../config/env';
 
 export function HealthScreen() {
   const health = useQuery({

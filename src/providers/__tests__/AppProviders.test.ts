@@ -1,4 +1,4 @@
-import { ApiError } from '../../lib/http';
+import { ApiError } from '../../infrastructure/http/http';
 import {
   createAppQueryClient,
   queryCachePolicy,

@@ -7,10 +7,10 @@ import {
 } from '@tanstack/react-query';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { ConnectivityBanner } from '../features/connectivity/presentation/ConnectivityBanner';
-import { ApiError } from '../lib/http';
+import { ApiError } from '../infrastructure/http/http';
 import { ConnectivityProvider } from './ConnectivityProvider';
-import { AuthProvider } from '../features/auth/AuthProvider';
-import { SessionLifecycle } from '../features/auth/SessionLifecycle';
+import { AuthProvider } from '../features/auth/application/AuthProvider';
+import { SessionLifecycle } from '../features/auth/application/SessionLifecycle';
 import { OfflineCacheMissError } from '../features/offline/data/cache';
 
 export const queryCachePolicy = {

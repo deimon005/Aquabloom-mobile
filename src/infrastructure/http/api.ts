@@ -1,6 +1,6 @@
-import { env } from '../config/env';
+import { env } from '../../config/env';
 import { createHttpClient } from './http';
-import { supabase } from './supabase';
+import { supabase } from '../auth/supabase';
 
 export const api = env.apiUrl
   ? createHttpClient(env.apiUrl, async () => {

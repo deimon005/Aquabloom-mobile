@@ -2,10 +2,10 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { StyleSheet, Text, TextInput, View } from 'react-native';
-import { AppButton } from '../../components/AppButton';
-import { tokens } from '../../theme/tokens';
+import { AppButton } from '../../../components/AppButton';
+import { tokens } from '../../../theme/tokens';
 import { getAuthErrorMessage } from './authErrorMessage';
-import { loginSchema, type LoginCredentials } from './loginSchema';
+import { loginSchema, type LoginCredentials } from '../domain/loginSchema';
 
 type LoginFormProps = {
   onSubmit: (credentials: LoginCredentials) => Promise<void>;

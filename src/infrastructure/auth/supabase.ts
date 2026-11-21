@@ -1,7 +1,7 @@
 import 'react-native-url-polyfill/auto';
 import { createClient } from '@supabase/supabase-js';
 import { Platform } from 'react-native';
-import { env } from '../config/env';
+import { env } from '../../config/env';
 import { sessionStorage } from './sessionStorage';
 
 export const supabase =

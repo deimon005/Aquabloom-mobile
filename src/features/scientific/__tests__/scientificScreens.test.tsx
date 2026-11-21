@@ -11,7 +11,7 @@ import {
   demoEstimateId,
 } from '../application/scientificSource';
 import { scientificJobStatuses } from '../domain/job';
-import { ApiError } from '../../../lib/http';
+import { ApiError } from '../../../infrastructure/http/http';
 import type { EstimatePoint } from '../domain/estimate';
 jest.mock('../application/useScientific');
 jest.mock('expo-router', () => ({

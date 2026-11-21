@@ -7,13 +7,13 @@ import {
   screen,
   waitFor,
 } from '@testing-library/react-native';
-import { AuthProvider, useCurrentUser } from '../AuthProvider';
-import { LoginForm } from '../LoginForm';
-import { ProfileScreen } from '../ProfileScreen';
-import { signInWithPassword } from '../signIn';
+import { AuthProvider, useCurrentUser } from '../application/AuthProvider';
+import { LoginForm } from '../presentation/LoginForm';
+import { ProfileScreen } from '../presentation/ProfileScreen';
+import { signInWithPassword } from '../application/signIn';
 import { sessionFor } from './authFixture';
 
-jest.mock('../../../lib/supabase', () => ({ supabase: null }));
+jest.mock('../../../infrastructure/auth/supabase', () => ({ supabase: null }));
 jest.mock('expo-router', () => ({
   Link: jest.requireActual('react-native').Text,
 }));

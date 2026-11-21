@@ -1,4 +1,4 @@
-import { api } from '../../../lib/api';
+import { api } from '../../../infrastructure/http/api';
 import { lakeDetailSchema, stationsSchema } from './dto/catalogSchemas';
 import { catalogId } from '../../../domain/catalogId';
 

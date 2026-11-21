@@ -1,5 +1,5 @@
 import { useLocalSearchParams } from 'expo-router';
-import { RequireSession } from '../../../features/auth/RequireSession';
+import { RequireSession } from '../../../features/auth/presentation/RequireSession';
 import { ScientificJobScreen } from '../../../features/scientific/presentation/ScientificJobScreen';
 export default function JobRoute() {
   const params = useLocalSearchParams<{ jobId: string; demo?: string }>();

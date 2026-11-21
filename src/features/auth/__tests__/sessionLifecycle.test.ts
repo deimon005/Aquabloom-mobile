@@ -1,5 +1,5 @@
 import type { AppStateStatus } from 'react-native';
-import { bindSessionLifecycle } from '../bindSessionLifecycle';
+import { bindSessionLifecycle } from '../application/bindSessionLifecycle';
 
 it('refreshes only in foreground and releases the listener and timer on unmount', async () => {
   let listener!: (state: AppStateStatus) => void;

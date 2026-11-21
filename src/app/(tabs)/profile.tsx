@@ -1,5 +1,5 @@
-import { ProfileScreen } from '../../features/auth/ProfileScreen';
-import { RequireSession } from '../../features/auth/RequireSession';
+import { ProfileScreen } from '../../features/auth/presentation/ProfileScreen';
+import { RequireSession } from '../../features/auth/presentation/RequireSession';
 
 export default function Profile() {
   return (

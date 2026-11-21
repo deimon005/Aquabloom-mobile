@@ -1,8 +1,8 @@
 import type { PropsWithChildren } from 'react';
 import { Redirect } from 'expo-router';
-import { useCurrentUser } from './useCurrentUser';
-import { AsyncState } from '../../components/AsyncState';
-import { Screen } from '../../components/Screen';
+import { useCurrentUser } from '../application/useCurrentUser';
+import { AsyncState } from '../../../components/AsyncState';
+import { Screen } from '../../../components/Screen';
 
 export function RequireSession({
   children,

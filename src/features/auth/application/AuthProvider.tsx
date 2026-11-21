@@ -10,11 +10,11 @@ import {
 } from 'react';
 import type { Session, SupabaseClient, User } from '@supabase/supabase-js';
 import { useQueryClient } from '@tanstack/react-query';
-import { AsyncState } from '../../components/AsyncState';
-import { Screen } from '../../components/Screen';
-import { supabase } from '../../lib/supabase';
+import { AsyncState } from '../../../components/AsyncState';
+import { Screen } from '../../../components/Screen';
+import { supabase } from '../../../infrastructure/auth/supabase';
 import { signOutAndClearCache } from './signOut';
-import { setCatalogIdentity } from '../offline/data/catalogCache';
+import { setCatalogIdentity } from '../../offline/data/catalogCache';
 
 export type AuthClient = {
   auth: Pick<

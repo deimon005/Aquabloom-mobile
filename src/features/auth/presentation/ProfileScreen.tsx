@@ -1,9 +1,9 @@
 import { Link } from 'expo-router';
 import { Button, StyleSheet, Text, View } from 'react-native';
-import { AsyncState } from '../../components/AsyncState';
-import { Screen } from '../../components/Screen';
-import { tokens } from '../../theme/tokens';
-import { useCurrentUser } from './useCurrentUser';
+import { AsyncState } from '../../../components/AsyncState';
+import { Screen } from '../../../components/Screen';
+import { tokens } from '../../../theme/tokens';
+import { useCurrentUser } from '../application/useCurrentUser';
 
 export function ProfileScreen() {
   const { user, status, signOut, signOutError } = useCurrentUser();

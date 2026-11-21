@@ -1,5 +1,5 @@
 import { useLocalSearchParams } from 'expo-router';
-import { RequireSession } from '../../../../features/auth/RequireSession';
+import { RequireSession } from '../../../../features/auth/presentation/RequireSession';
 import { EstimateScreen } from '../../../../features/scientific/presentation/EstimateScreen';
 export default function EstimateRoute() {
   const params = useLocalSearchParams<{

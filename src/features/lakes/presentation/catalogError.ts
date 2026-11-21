@@ -1,4 +1,4 @@
-import { ApiError } from '../../../lib/http';
+import { ApiError } from '../../../infrastructure/http/http';
 import { OfflineCacheMissError } from '../../offline/data/cache';
 export function catalogError(error: unknown, resource: string) {
   if (error instanceof OfflineCacheMissError) return error.message;

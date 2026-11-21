@@ -5,7 +5,7 @@ import { AppButton } from '../../../components/AppButton';
 import { Screen } from '../../../components/Screen';
 import { AsyncState } from '../../../components/AsyncState';
 import { env } from '../../../config/env';
-import { useCurrentUser } from '../../auth/useCurrentUser';
+import { useCurrentUser } from '../../auth/application/useCurrentUser';
 import { isCatalogId } from '../../../domain/catalogId';
 import { catalogError } from '../../lakes/presentation/catalogError';
 import { useLakeDetail } from '../../lakes/application/useLakeDetail';
