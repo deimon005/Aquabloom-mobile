@@ -85,6 +85,8 @@ test('scientific demo is explicit, traceable, keyboard navigable and never reque
   await page
     .getByRole('link', { name: 'Volver a estimaciones del lago', exact: true })
     .click();
+  await page.context().setOffline(true);
+  await expect(page.getByText('Sin conexión', { exact: true })).toBeVisible();
   await page
     .getByRole('button', { name: 'Ver trabajo de demostración', exact: true })
     .click();

@@ -47,13 +47,24 @@ export function ScientificJobScreen({
           }
           retrying={query.isFetching}
         />
+      ) : query.isPaused && !query.data ? (
+        <AsyncState
+          kind="empty"
+          message="Sin conexión. La consulta del trabajo continuará al recuperar internet."
+        />
       ) : query.isPending ? (
         <AsyncState kind="loading" message="Cargando trabajo…" />
       ) : (
         <>
+          {query.isPaused ? (
+            <AsyncState
+              kind="empty"
+              message="Sin conexión. El estado mostrado corresponde a la última consulta."
+            />
+          ) : null}
           <JobState job={query.data} />
           <AppButton
-            disabled={query.isFetching}
+            disabled={query.isFetching || query.isPaused}
             accessibilityHint="Consulta de nuevo el trabajo existente sin iniciarlo"
             onPress={() => void query.refetch()}
           >

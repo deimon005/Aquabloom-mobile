@@ -76,6 +76,7 @@ export function useScientificJob(jobId: string, source: ScientificSource) {
       jobId.toLowerCase(),
     ],
     enabled: Boolean(user) && isCatalogId(jobId) && source !== 'disabled',
+    networkMode: source === 'demo' ? 'always' : 'online',
     queryFn: ({ signal }) => loadJob(source, jobId, signal),
     retry: false,
     refetchOnWindowFocus: false,
