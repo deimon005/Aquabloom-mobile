@@ -167,8 +167,10 @@ pnpm start
 src/app/             rutas y layouts de Expo Router
 src/components/      primitivas visuales compartidas
 src/config/          lectura y validación del entorno público
-src/features/        autenticación, catálogo, conectividad y módulos de dominio
-src/lib/             clientes HTTP, API y Supabase
+src/features/        módulos por funcionalidad y capas por responsabilidad
+src/domain/          validación de identificadores compartidos
+src/infrastructure/  clientes HTTP, API, Supabase y almacenamiento de sesión
+src/types/           tipos generados de OpenAPI
 src/providers/       QueryClient, ciclo de vida y estado global de red
 src/theme/           tokens y reglas responsive
 contracts/           OpenAPI versionado
@@ -176,6 +178,18 @@ scripts/             generación de código
 tools/openapi/       workspace del generador con dependencias aisladas
 docs/                alcance, evidencia y decisiones del sprint
 ```
+
+Cada módulo puede tener `domain` (modelos y reglas), `application`
+(casos de uso, puertos y consultas), `data` (adaptadores y DTOs) y
+`presentation` (pantallas y componentes). Las carpetas corresponden a
+responsabilidades presentes en el módulo. Las rutas de Expo Router delegan
+a la presentación, y los proveedores conectan la app con infraestructura.
+
+Para cambiar un contrato HTTP, actualizar el OpenAPI versionado y los esquemas
+en `data/dto`. Las vistas y la geometría usan modelos del dominio. En
+Observaciones, los casos de uso reciben los puertos de borradores y fotografías.
+Las implementaciones `.web.ts` se ubican junto a sus variantes nativas para
+que Metro seleccione la correcta.
 
 Cada unidad revisable se integra mediante PR enlazado a Linear y con evidencia
 local. Mobile CI se ejecuta exclusivamente de forma manual (`workflow_dispatch`):
@@ -186,7 +200,7 @@ reproducible se realiza con `pnpm run check`, `pnpm run doctor` y
 El cliente HTTP añade el prefijo configurado, cancela solicitudes y aplica un
 límite de 15 segundos. React Query comparte políticas de caché y reintento. El
 estado global de conectividad pausa consultas al quedar offline y presenta un
-banner accesible hasta recuperar internet. El catálogo consume tipos generados
+banner accesible hasta recuperar internet. Los DTOs del catálogo usan tipos generados
 desde `contracts/openapi.json`.
 
 ## Android y EAS

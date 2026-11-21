@@ -1,6 +1,6 @@
 # Auth (AQU-17–28)
 
-El cliente en `src/lib/supabase.ts` persiste la sesión con SecureStore en Android/iOS
+El cliente en `src/infrastructure/auth/supabase.ts` persiste la sesión con SecureStore en Android/iOS
 y usa memoria en web. El formulario
 de login usa Supabase; `AuthProvider` carga la sesión, escucha sus eventos y
 expone `useCurrentUser`. La configuración del cliente es fija durante la vida
