@@ -143,7 +143,7 @@ it('does not infer missing origin or imply that missing warnings validate a resu
           scene_id: null,
           model_id: ' ',
           model_version: null,
-          warnings: [],
+          warnings: ['  '],
         },
       ],
     },

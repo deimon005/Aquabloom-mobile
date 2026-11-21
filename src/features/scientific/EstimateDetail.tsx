@@ -8,6 +8,9 @@ import {
 import { tokens } from '../../theme/tokens';
 
 export function EstimateDetail({ estimate }: { estimate: EstimatePoint }) {
+  const warnings = estimate.warnings
+    .map((warning) => warning.trim())
+    .filter(Boolean);
   const fields = [
     ['Resultado', estimate.id],
     ['Lago', estimate.lake_id],
@@ -56,8 +59,8 @@ export function EstimateDetail({ estimate }: { estimate: EstimatePoint }) {
         Incertidumbre calibrada: no informada en el contrato disponible. No se
         calcula ni inventa un intervalo de confianza.
       </Text>
-      {estimate.warnings.length ? (
-        estimate.warnings.map((warning, index) => (
+      {warnings.length ? (
+        warnings.map((warning, index) => (
           <Text key={index} accessibilityRole="alert" style={styles.field}>
             {warning}
           </Text>
