@@ -23,3 +23,14 @@ AuthProvider y perfil con transporte HTTP simulado. No requieren credenciales.
 SessionLifecycle controla el refresco por AppState. RequireSession protege /profile y redirige al login; catálogo y mapa permanecen públicos. Nunca se guardan tokens en SQLite. El cierre y los
 cambios de usuario limpian la caché persistente. Ver `docs/demian-session.md`
 para la persistencia y `docs/jose-auth-delivery.md` para la entrega previa.
+
+## Rutas de código después del refactor
+
+- [domain/loginSchema.ts](domain/loginSchema.ts) contiene la validación de los campos de inicio de sesión.
+- [application](application) contiene `AuthProvider`, `SessionLifecycle`, el inicio y cierre de sesión, el destino de retorno y la lectura del usuario.
+- [presentation](presentation) contiene `LoginForm`, `ProfileScreen`, `RequireSession` y mensajes de error.
+- `src/lib/supabase.ts` y las variantes de almacenamiento pasaron a [infraestructura de autenticación](../../infrastructure/auth). `src/lib/api.ts` y `src/lib/http.ts` pasaron a [infraestructura HTTP](../../infrastructure/http).
+
+[AppProviders](../../providers/AppProviders.tsx) conecta QueryClient, conectividad, el ciclo de vida de sesión y el estado del usuario. La [ruta de login](../../app/login.tsx) compone el formulario con el caso de inicio de sesión. Las rutas privadas conectan su pantalla a `RequireSession`.
+
+Las [pruebas de autenticación](__tests__) comprueban sesión, navegación y limpieza de caché. Las [pruebas de infraestructura](../../infrastructure/__tests__) verifican almacenamiento y cliente HTTP con transporte de prueba.
