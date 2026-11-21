@@ -9,7 +9,12 @@ import { isCatalogId } from '../lakes/catalogSchemas';
 import { useEstimates } from './useScientific';
 import { demoJobIds, scientificSource } from './scientificSource';
 import { ScientificNotice } from './ScientificNotice';
-import { scientificDate, scientificError } from './scientificPresentation';
+import {
+  canRetryScientific,
+  hasEstimateCoordinates,
+  scientificDate,
+  scientificError,
+} from './scientificPresentation';
 import { tokens } from '../../theme/tokens';
 
 export function EstimatesScreen({
@@ -53,7 +58,12 @@ export function EstimatesScreen({
         <AsyncState
           kind="error"
           message={scientificError(query.error)}
-          onRetry={() => void query.refetch()}
+          onRetry={
+            canRetryScientific(query.error)
+              ? () => void query.refetch()
+              : undefined
+          }
+          retrying={query.isFetching}
         />
       ) : query.isPending || !query.data ? (
         <AsyncState kind="loading" message="Cargando estimaciones…" />
@@ -79,6 +89,9 @@ export function EstimatesScreen({
               Valor: {estimate.value} {estimate.unit}
             </Text>
             <Text>Estado informado: {estimate.status}</Text>
+            {!hasEstimateCoordinates(estimate) ? (
+              <Text>Sin coordenadas para mostrar en el mapa.</Text>
+            ) : null}
             <AppButton
               accessibilityHint="Abre escena, modelo, dataset y advertencias de esta estimación"
               onPress={() =>

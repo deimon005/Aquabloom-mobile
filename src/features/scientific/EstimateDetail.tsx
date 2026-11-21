@@ -1,6 +1,10 @@
 import { StyleSheet, Text, View } from 'react-native';
 import type { EstimatePoint } from './estimatesApi';
-import { metadata, scientificDate } from './scientificPresentation';
+import {
+  hasEstimateCoordinates,
+  metadata,
+  scientificDate,
+} from './scientificPresentation';
 import { tokens } from '../../theme/tokens';
 
 export function EstimateDetail({ estimate }: { estimate: EstimatePoint }) {
@@ -8,6 +12,12 @@ export function EstimateDetail({ estimate }: { estimate: EstimatePoint }) {
     ['Resultado', estimate.id],
     ['Lago', estimate.lake_id],
     ['Punto o estación', estimate.point_id],
+    [
+      'Coordenadas',
+      hasEstimateCoordinates(estimate)
+        ? [estimate.latitude, estimate.longitude].join(', ')
+        : 'No informadas',
+    ],
     ['Fecha', scientificDate(estimate.observed_at)],
     ['Variable', estimate.variable],
     ['Valor', `${estimate.value} ${estimate.unit}`],

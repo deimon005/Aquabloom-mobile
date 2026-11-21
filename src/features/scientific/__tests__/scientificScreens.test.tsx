@@ -58,6 +58,9 @@ it('lists date, point, zero-safe value/unit and status then routes to the same s
   });
   await render(<EstimatesScreen lakeId={lakeId} demo="1" />);
   expect(screen.getByText('Valor: 0 mg/m³')).toBeTruthy();
+  expect(
+    screen.getByText('Sin coordenadas para mostrar en el mapa.'),
+  ).toBeTruthy();
   expect(screen.getByText(/Fecha: .*UTC/)).toBeTruthy();
   expect(screen.getByText('Estado informado: experimental')).toBeTruthy();
   expect(screen.getByText(/DEMOSTRACIÓN LOCAL/)).toBeTruthy();
@@ -84,7 +87,7 @@ it('shows a genuine empty result', async () => {
     screen.getByText('No hay estimaciones disponibles para este lago.'),
   ).toBeTruthy();
 });
-it('hides stale results on failure, reports permission safely and retries', async () => {
+it('hides stale results on failure, reports permission safely and omits retry', async () => {
   estimates.mockReturnValue({
     data: { items: [estimate] },
     isError: true,
@@ -99,6 +102,18 @@ it('hides stale results on failure, reports permission safely and retries', asyn
   ).toBeTruthy();
   expect(screen.queryByText('private SQL')).toBeNull();
   expect(screen.queryByText('Valor: 4.2 mg/m³')).toBeNull();
+  expect(screen.queryByRole('button', { name: 'Reintentar' })).toBeNull();
+  expect(refetch).not.toHaveBeenCalled();
+});
+it('separates a temporary failure from an empty list and allows retry', async () => {
+  estimates.mockReturnValue({
+    isError: true,
+    error: new ApiError(503, 'private server error'),
+    refetch,
+  });
+  await render(<EstimatesScreen lakeId={lakeId} demo="1" />);
+  expect(screen.getByText(/temporalmente no disponible/)).toBeTruthy();
+  expect(screen.queryByText(/No hay estimaciones/)).toBeNull();
   await fireEvent.press(screen.getByRole('button', { name: 'Reintentar' }));
   expect(refetch).toHaveBeenCalledTimes(1);
 });

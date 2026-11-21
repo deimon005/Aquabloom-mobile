@@ -7,7 +7,11 @@ import { useScientificJob } from './useScientific';
 import { scientificSource, demoJobIds } from './scientificSource';
 import { scientificJobStatuses } from './jobsApi';
 import { ScientificNotice } from './ScientificNotice';
-import { scientificError, jobLabels } from './scientificPresentation';
+import {
+  canRetryScientific,
+  scientificError,
+  jobLabels,
+} from './scientificPresentation';
 import { JobState } from './JobState';
 
 export function ScientificJobScreen({
@@ -36,7 +40,12 @@ export function ScientificJobScreen({
         <AsyncState
           kind="error"
           message={scientificError(query.error)}
-          onRetry={() => void query.refetch()}
+          onRetry={
+            canRetryScientific(query.error)
+              ? () => void query.refetch()
+              : undefined
+          }
+          retrying={query.isFetching}
         />
       ) : query.isPending ? (
         <AsyncState kind="loading" message="Cargando trabajo…" />

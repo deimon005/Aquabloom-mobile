@@ -6,7 +6,7 @@ import { isCatalogId } from '../lakes/catalogSchemas';
 import { useEstimates } from './useScientific';
 import { scientificSource } from './scientificSource';
 import { ScientificNotice } from './ScientificNotice';
-import { scientificError } from './scientificPresentation';
+import { canRetryScientific, scientificError } from './scientificPresentation';
 import { EstimateDetail } from './EstimateDetail';
 
 export function EstimateScreen({
@@ -43,7 +43,12 @@ export function EstimateScreen({
         <AsyncState
           kind="error"
           message={scientificError(query.error)}
-          onRetry={() => void query.refetch()}
+          onRetry={
+            canRetryScientific(query.error)
+              ? () => void query.refetch()
+              : undefined
+          }
+          retrying={query.isFetching}
         />
       ) : query.isPending ? (
         <AsyncState kind="loading" message="Cargando estimación…" />
