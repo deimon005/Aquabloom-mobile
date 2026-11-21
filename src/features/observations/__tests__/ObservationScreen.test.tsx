@@ -1,21 +1,21 @@
 import { act, fireEvent, render, screen } from '@testing-library/react-native';
-import { ObservationScreen } from '../ObservationScreen';
+import { ObservationScreen } from '../presentation/ObservationScreen';
 import { useCurrentUser } from '../../auth/useCurrentUser';
 import { useLakeDetail } from '../../lakes/useLakeDetail';
-import { observationStore } from '../observationStore';
-import { photoPersistence } from '../photoPersistence';
+import { observationStore } from '../data/observationStore';
+import { photoPersistence } from '../data/photoPersistence';
 
 jest.mock('../../map/LakeMap', () => ({ LakeMap: () => null }));
 
 jest.mock('../../auth/useCurrentUser');
-jest.mock('../captureServices', () => ({
+jest.mock('../data/captureServices', () => ({
   captureServices: {
     cameraPermission: jest.fn(),
     takePhoto: jest.fn(),
     captureLocation: jest.fn(),
   },
 }));
-jest.mock('../photoPersistence', () => ({
+jest.mock('../data/photoPersistence', () => ({
   photoPersistence: {
     prepare: jest.fn(),
     removeCreated: jest.fn(),
@@ -23,7 +23,7 @@ jest.mock('../photoPersistence', () => ({
   },
 }));
 jest.mock('../../lakes/useLakeDetail');
-jest.mock('../observationStore', () => ({
+jest.mock('../data/observationStore', () => ({
   observationStore: {
     durability: 'device',
     latest: jest.fn(),

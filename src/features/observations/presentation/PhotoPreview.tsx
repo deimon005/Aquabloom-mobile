@@ -1,7 +1,7 @@
 import { useState, type ReactNode } from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
-import { AppButton } from '../../components/AppButton';
-import { tokens } from '../../theme/tokens';
+import { AppButton } from '../../../components/AppButton';
+import { tokens } from '../../../theme/tokens';
 
 export function PhotoPreview({
   uri,

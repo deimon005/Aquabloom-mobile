@@ -1,7 +1,7 @@
 import { useConnectivity } from '../../providers/ConnectivityProvider';
 import { ApiError, NetworkError } from '../../lib/http';
-import { loadCachedCatalog } from '../offline/cache';
-import { catalogCache } from '../offline/catalogCache';
+import { loadCachedCatalog } from '../offline/data/cache';
+import { catalogCache } from '../offline/data/catalogCache';
 import { parseLakeEstimates } from './estimatesApi';
 import { onlineManager, useQuery } from '@tanstack/react-query';
 import { env } from '../../config/env';

@@ -1,6 +1,6 @@
 import { useQuery, type QueryFunctionContext } from '@tanstack/react-query';
 import { fetchStations, parseStationsForLake } from './catalogApi';
-import { cachedCatalog } from '../offline/catalogCache';
+import { cachedCatalog } from '../offline/data/catalogCache';
 import { isCatalogId } from './catalogSchemas';
 
 export const stationsKey = (id: string) =>

@@ -1,9 +1,12 @@
 import * as ImagePicker from 'expo-image-picker';
 import * as Location from 'expo-location';
 import { Linking } from 'react-native';
-import { createCameraCapture } from './cameraCapture';
-import { CaptureError, type CaptureServices } from './captureTypes';
-import { observationLocationSchema } from './observationSchema';
+import { createCameraCapture } from '../application/cameraCapture';
+import {
+  CaptureError,
+  type CaptureServices,
+} from '../application/captureTypes';
+import { observationLocationSchema } from '../domain/observationSchema';
 
 const camera = createCameraCapture({
   getPermission: ImagePicker.getCameraPermissionsAsync,

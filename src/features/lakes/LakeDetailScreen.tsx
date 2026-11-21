@@ -7,7 +7,7 @@ import { catalogError } from './catalogError';
 import { isCatalogId } from './catalogSchemas';
 import { useLakeDetail } from './useLakeDetail';
 import { StationsList } from './StationsList';
-import { OfflineNotice } from '../offline/OfflineNotice';
+import { OfflineNotice } from '../offline/presentation/OfflineNotice';
 
 export function LakeDetailScreen({ id }: { id: string }) {
   const lake = useLakeDetail(id);

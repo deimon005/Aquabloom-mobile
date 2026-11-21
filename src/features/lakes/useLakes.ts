@@ -6,7 +6,7 @@ import {
 import { normalizeLakeFilters } from './lakeFilters';
 import { fetchLakes } from './lakesApi';
 import type { LakeFilters } from './types';
-import { cachedCatalog } from '../offline/catalogCache';
+import { cachedCatalog } from '../offline/data/catalogCache';
 import { lakeListSchema } from './catalogSchemas';
 import { catalogRetryDelay, shouldRetryCatalog } from './catalogRecovery';
 

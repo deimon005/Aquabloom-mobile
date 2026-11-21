@@ -5,7 +5,7 @@ import { tokens } from '../../theme/tokens';
 import { catalogError } from './catalogError';
 import { stationRoute } from './catalogNavigation';
 import { useStations } from './useStations';
-import { OfflineNotice } from '../offline/OfflineNotice';
+import { OfflineNotice } from '../offline/presentation/OfflineNotice';
 
 export function StationsList({
   lakeId,

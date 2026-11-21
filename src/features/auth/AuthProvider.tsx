@@ -14,7 +14,7 @@ import { AsyncState } from '../../components/AsyncState';
 import { Screen } from '../../components/Screen';
 import { supabase } from '../../lib/supabase';
 import { signOutAndClearCache } from './signOut';
-import { setCatalogIdentity } from '../offline/catalogCache';
+import { setCatalogIdentity } from '../offline/data/catalogCache';
 
 export type AuthClient = {
   auth: Pick<

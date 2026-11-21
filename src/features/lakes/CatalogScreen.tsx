@@ -15,7 +15,7 @@ import { tokens } from '../../theme/tokens';
 import { LakeCard } from './LakeCard';
 import type { LakeFilters } from './types';
 import { useLakes } from './useLakes';
-import { OfflineNotice } from '../offline/OfflineNotice';
+import { OfflineNotice } from '../offline/presentation/OfflineNotice';
 import { catalogError } from './catalogError';
 import { isCatalogStartupError } from './catalogRecovery';
 

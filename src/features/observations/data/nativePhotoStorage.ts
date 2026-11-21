@@ -1,9 +1,9 @@
+import { scopeSegment } from './photoPath';
 import { Directory, File, Paths } from 'expo-file-system';
 import {
-  scopeSegment,
   type PhotoScope,
   type PhotoStorage,
-} from './photoStorage';
+} from '../application/photoStorage';
 
 function directory(scope: PhotoScope) {
   const segments = scopeSegment(

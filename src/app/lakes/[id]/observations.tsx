@@ -1,6 +1,6 @@
 import { useLocalSearchParams } from 'expo-router';
 import { RequireSession } from '../../../features/auth/RequireSession';
-import { ObservationScreen } from '../../../features/observations/ObservationScreen';
+import { ObservationScreen } from '../../../features/observations/presentation/ObservationScreen';
 
 export default function Observations() {
   const { id } = useLocalSearchParams<{ id?: string | string[] }>();

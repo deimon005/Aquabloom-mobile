@@ -1,5 +1,5 @@
-import { nativePhotoStorage } from '../nativePhotoStorage';
-import { scopeSegment } from '../photoStorage';
+import { nativePhotoStorage } from '../data/nativePhotoStorage';
+import { scopeSegment } from '../data/photoPath';
 
 const mockFiles = new Map<string, number>();
 jest.mock('expo-file-system', () => {

@@ -1,5 +1,5 @@
 import { ApiError, NetworkError, RequestTimeoutError } from '../../../lib/http';
-import { OfflineCacheMissError } from '../../offline/cache';
+import { OfflineCacheMissError } from '../../offline/data/cache';
 import { catalogRetryDelay, shouldRetryCatalog } from '../catalogRecovery';
 import { lakesQueryOptions } from '../useLakes';
 

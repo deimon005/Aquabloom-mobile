@@ -1,4 +1,5 @@
-import type { StoredObservation } from './observationSchema';
+import type { ObservationStore } from '../application/observationStorePort';
+import type { StoredObservation } from '../domain/observationSchema';
 
 export type DraftDatabase = {
   execAsync: (sql: string) => Promise<void>;
@@ -14,21 +15,6 @@ export type DraftDatabase = {
     sql: string,
     ...params: (string | number | null)[]
   ) => Promise<T[]>;
-};
-export type ObservationStore = {
-  durability: 'device' | 'session';
-  save: (record: StoredObservation) => Promise<void>;
-  list: (
-    apiScope: string,
-    ownerId: string,
-    lakeId: string,
-  ) => Promise<StoredObservation[]>;
-  remove: (apiScope: string, ownerId: string, id: string) => Promise<void>;
-  latest: (
-    apiScope: string,
-    ownerId: string,
-    lakeId: string,
-  ) => Promise<StoredObservation | null>;
 };
 
 // Dedicated UI adapter; does not migrate or clear the shared catalog cache.

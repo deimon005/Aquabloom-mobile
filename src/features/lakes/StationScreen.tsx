@@ -6,7 +6,7 @@ import { catalogError } from './catalogError';
 import { lakeRoute } from './catalogNavigation';
 import { isCatalogId } from './catalogSchemas';
 import { useStations } from './useStations';
-import { OfflineNotice } from '../offline/OfflineNotice';
+import { OfflineNotice } from '../offline/presentation/OfflineNotice';
 
 export function StationScreen({
   lakeId,

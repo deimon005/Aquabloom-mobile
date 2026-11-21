@@ -2,7 +2,7 @@ import NetInfo from '@react-native-community/netinfo';
 import {
   resolveConnectivityStatus,
   type ConnectivityStatus,
-} from './connectivity';
+} from '../application/connectivity';
 
 export function subscribeConnectivity(
   listener: (status: ConnectivityStatus) => void,

@@ -1,14 +1,17 @@
 import { act, fireEvent, render, screen } from '@testing-library/react-native';
-import { ObservationForm } from '../ObservationForm';
-import { CaptureError, type CaptureServices } from '../captureTypes';
+import { ObservationForm } from '../presentation/ObservationForm';
+import {
+  CaptureError,
+  type CaptureServices,
+} from '../application/captureTypes';
 import type {
   ObservationValues,
   StoredObservation,
-} from '../observationSchema';
+} from '../domain/observationSchema';
 
 jest.mock('../../map/LakeMap', () => ({ LakeMap: () => null }));
 
-jest.mock('../captureServices', () => ({ captureServices: {} }));
+jest.mock('../data/captureServices', () => ({ captureServices: {} }));
 const lakeId = '11111111-1111-4111-8111-111111111111';
 const location = {
   latitude: -39.64,

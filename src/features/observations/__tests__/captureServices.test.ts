@@ -1,6 +1,6 @@
 import * as ImagePicker from 'expo-image-picker';
 import * as Location from 'expo-location';
-import { captureServices } from '../captureServices';
+import { captureServices } from '../data/captureServices';
 
 jest.mock('expo-image-picker', () => ({
   getCameraPermissionsAsync: jest.fn(),

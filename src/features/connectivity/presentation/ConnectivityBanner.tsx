@@ -1,8 +1,8 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useConnectivity } from '../../providers/ConnectivityProvider';
-import { tokens } from '../../theme/tokens';
-import type { ConnectivityStatus } from './connectivity';
+import { useConnectivity } from '../../../providers/ConnectivityProvider';
+import { tokens } from '../../../theme/tokens';
+import type { ConnectivityStatus } from '../application/connectivity';
 
 type ConnectivityBannerProps = {
   status?: ConnectivityStatus;

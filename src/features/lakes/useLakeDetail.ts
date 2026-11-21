@@ -1,7 +1,7 @@
 import { useQuery, type QueryFunctionContext } from '@tanstack/react-query';
 import { fetchLakeDetail, parseLakeDetail } from './catalogApi';
 import { isCatalogId } from './catalogSchemas';
-import { cachedCatalog } from '../offline/catalogCache';
+import { cachedCatalog } from '../offline/data/catalogCache';
 
 export const lakeDetailKey = (id: string) =>
   ['lakes', 'detail', id.toLowerCase()] as const;

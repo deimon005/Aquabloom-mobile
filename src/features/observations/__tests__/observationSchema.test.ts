@@ -3,7 +3,7 @@ import {
   observationDraftSchema,
   parseObservationDate,
   formatObservationDate,
-} from '../observationSchema';
+} from '../domain/observationSchema';
 
 const draft = {
   lakeId: '11111111-1111-4111-8111-111111111111',

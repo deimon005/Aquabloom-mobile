@@ -6,8 +6,8 @@ import {
   useState,
   type PropsWithChildren,
 } from 'react';
-import type { ConnectivityStatus } from '../features/connectivity/connectivity';
-import { subscribeConnectivity } from '../features/connectivity/subscribeConnectivity';
+import type { ConnectivityStatus } from '../features/connectivity/application/connectivity';
+import { subscribeConnectivity } from '../features/connectivity/data/subscribeConnectivity';
 
 const ConnectivityContext = createContext<ConnectivityStatus>('unknown');
 

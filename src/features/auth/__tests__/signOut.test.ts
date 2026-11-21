@@ -2,7 +2,7 @@ import { QueryClient } from '@tanstack/react-query';
 import { AuthError } from '@supabase/supabase-js';
 import { signOutAndClearCache } from '../signOut';
 import { authFixture } from './authFixture';
-import * as persistentCache from '../../offline/catalogCache';
+import * as persistentCache from '../../offline/data/catalogCache';
 
 jest.mock('../../../lib/supabase', () => ({ supabase: null }));
 

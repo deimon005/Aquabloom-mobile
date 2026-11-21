@@ -1,11 +1,11 @@
 import { act, fireEvent, render, screen } from '@testing-library/react-native';
-import { ObservationForm } from '../ObservationForm';
+import { ObservationForm } from '../presentation/ObservationForm';
 import type {
   ObservationValues,
   StoredObservation,
-} from '../observationSchema';
+} from '../domain/observationSchema';
 jest.mock('../../map/LakeMap', () => ({ LakeMap: () => null }));
-jest.mock('../captureServices', () => ({
+jest.mock('../data/captureServices', () => ({
   captureServices: {
     cameraPermission: jest.fn(),
     takePhoto: jest.fn(),

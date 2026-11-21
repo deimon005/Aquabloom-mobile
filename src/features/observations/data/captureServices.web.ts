@@ -1,4 +1,7 @@
-import { CaptureError, type CaptureServices } from './captureTypes';
+import {
+  CaptureError,
+  type CaptureServices,
+} from '../application/captureTypes';
 
 function unsupported(): never {
   throw new CaptureError(

@@ -1,4 +1,4 @@
-import { resolveConnectivityStatus } from '../connectivity';
+import { resolveConnectivityStatus } from '../application/connectivity';
 
 describe('resolveConnectivityStatus', () => {
   it('mantiene el estado indeterminado mientras la plataforma inicializa', () => {

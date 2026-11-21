@@ -1,5 +1,5 @@
 import { ApiError, NetworkError } from '../../../lib/http';
-import { catalogCache } from '../../offline/catalogCache';
+import { catalogCache } from '../../offline/data/catalogCache';
 import { Text } from 'react-native';
 import { render } from '@testing-library/react-native';
 import { onlineManager, useQuery } from '@tanstack/react-query';
@@ -14,7 +14,7 @@ jest.mock('@tanstack/react-query', () => ({
   useQuery: jest.fn(() => ({})),
   onlineManager: { isOnline: jest.fn() },
 }));
-jest.mock('../../offline/catalogCache', () => ({
+jest.mock('../../offline/data/catalogCache', () => ({
   catalogCache: {
     version: () => 0,
     now: () => 100,

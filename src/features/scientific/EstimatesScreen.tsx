@@ -1,4 +1,4 @@
-import { OfflineNotice } from '../offline/OfflineNotice';
+import { OfflineNotice } from '../offline/presentation/OfflineNotice';
 import { useState } from 'react';
 import { Text, TextInput, View } from 'react-native';
 import { Link, router } from 'expo-router';

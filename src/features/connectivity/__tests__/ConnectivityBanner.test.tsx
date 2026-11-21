@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { ConnectivityBanner } from '../ConnectivityBanner';
+import { ConnectivityBanner } from '../presentation/ConnectivityBanner';
 
 function renderBanner(status: 'unknown' | 'online' | 'offline') {
   return render(

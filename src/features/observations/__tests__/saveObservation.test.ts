@@ -1,5 +1,5 @@
-import { saveObservation } from '../saveObservation';
-import type { StoredObservation } from '../observationSchema';
+import { saveObservation } from '../application/saveObservation';
+import type { StoredObservation } from '../domain/observationSchema';
 const record: StoredObservation = {
   version: 1,
   id: '11111111-1111-4111-8111-111111111111',

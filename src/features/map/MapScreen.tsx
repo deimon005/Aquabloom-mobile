@@ -7,7 +7,7 @@ import { useLakeDetail } from '../lakes/useLakeDetail';
 import { useStations } from '../lakes/useStations';
 import { useEstimates } from '../scientific/useScientific';
 import { scientificSource } from '../scientific/scientificSource';
-import { OfflineNotice } from '../offline/OfflineNotice';
+import { OfflineNotice } from '../offline/presentation/OfflineNotice';
 import { catalogError } from '../lakes/catalogError';
 import { LakeMap } from './LakeMap';
 import { estimateFeatures, lakeFeature, stationFeatures } from './geometry';

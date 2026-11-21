@@ -1,6 +1,6 @@
-import type { ObservationStore } from './draftStore';
+import type { ObservationStore } from './observationStorePort';
 import type { PhotoStorage } from './photoStorage';
-import type { StoredObservation } from './observationSchema';
+import type { StoredObservation } from '../domain/observationSchema';
 
 export async function saveObservation(
   record: StoredObservation,

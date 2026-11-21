@@ -1,4 +1,4 @@
-import type { ObservationValues } from './observationSchema';
+import type { ObservationValues } from '../domain/observationSchema';
 
 export type ObservationLocation = NonNullable<ObservationValues['location']>;
 export type CapturePermission = { granted: boolean; canAskAgain: boolean };

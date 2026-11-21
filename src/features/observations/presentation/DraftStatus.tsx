@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from 'react-native';
-import { tokens } from '../../theme/tokens';
+import { tokens } from '../../../theme/tokens';
 import type { DraftPhase } from './ObservationForm';
 
 export function DraftStatus({

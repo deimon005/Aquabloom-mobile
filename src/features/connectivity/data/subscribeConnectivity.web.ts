@@ -1,4 +1,4 @@
-import type { ConnectivityStatus } from './connectivity';
+import type { ConnectivityStatus } from '../application/connectivity';
 
 export function subscribeConnectivity(
   listener: (status: ConnectivityStatus) => void,

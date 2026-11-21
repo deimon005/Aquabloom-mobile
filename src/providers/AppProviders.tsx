@@ -6,12 +6,12 @@ import {
   QueryClientProvider,
 } from '@tanstack/react-query';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { ConnectivityBanner } from '../features/connectivity/ConnectivityBanner';
+import { ConnectivityBanner } from '../features/connectivity/presentation/ConnectivityBanner';
 import { ApiError } from '../lib/http';
 import { ConnectivityProvider } from './ConnectivityProvider';
 import { AuthProvider } from '../features/auth/AuthProvider';
 import { SessionLifecycle } from '../features/auth/SessionLifecycle';
-import { OfflineCacheMissError } from '../features/offline/cache';
+import { OfflineCacheMissError } from '../features/offline/data/cache';
 
 export const queryCachePolicy = {
   staleTime: 60_000,

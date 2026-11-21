@@ -1,5 +1,5 @@
 import { Text } from 'react-native';
-import { tokens } from '../../theme/tokens';
+import { tokens } from '../../../theme/tokens';
 export function OfflineNotice({ savedAt }: { savedAt?: number }) {
   return (
     <Text

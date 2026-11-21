@@ -1,4 +1,4 @@
-import { deleteObservation } from '../deleteObservation';
+import { deleteObservation } from '../application/deleteObservation';
 
 const scope = { apiScope: 'api-a', ownerId: 'jose', draftId: 'draft-a' };
 it('removes managed photos before removing the scoped row', async () => {

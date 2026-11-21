@@ -1,4 +1,4 @@
-import { createCameraCapture } from '../cameraCapture';
+import { createCameraCapture } from '../application/cameraCapture';
 const photo = { uri: 'file:///camera/photo.jpg', width: 1200, height: 800 };
 function fixture() {
   const port = {

@@ -1,4 +1,4 @@
-import { OfflineNotice } from '../offline/OfflineNotice';
+import { OfflineNotice } from '../offline/presentation/OfflineNotice';
 import { Link } from 'expo-router';
 import { Screen } from '../../components/Screen';
 import { AsyncState } from '../../components/AsyncState';

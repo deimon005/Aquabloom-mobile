@@ -1,4 +1,4 @@
-import type { ObservationStore } from './draftStore';
+import type { ObservationStore } from './observationStorePort';
 import type { PhotoStorage, PhotoScope } from './photoStorage';
 
 // Remove only this draft's managed directory, including old replacements.

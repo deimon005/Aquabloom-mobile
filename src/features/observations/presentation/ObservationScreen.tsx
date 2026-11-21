@@ -1,26 +1,26 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'expo-router';
 import { Text, View } from 'react-native';
-import { AppButton } from '../../components/AppButton';
-import { Screen } from '../../components/Screen';
-import { AsyncState } from '../../components/AsyncState';
-import { env } from '../../config/env';
-import { useCurrentUser } from '../auth/useCurrentUser';
-import { isCatalogId } from '../lakes/catalogSchemas';
-import { catalogError } from '../lakes/catalogError';
-import { useLakeDetail } from '../lakes/useLakeDetail';
-import { lakeFeature } from '../map/geometry';
-import { OfflineNotice } from '../offline/OfflineNotice';
+import { AppButton } from '../../../components/AppButton';
+import { Screen } from '../../../components/Screen';
+import { AsyncState } from '../../../components/AsyncState';
+import { env } from '../../../config/env';
+import { useCurrentUser } from '../../auth/useCurrentUser';
+import { isCatalogId } from '../../lakes/catalogSchemas';
+import { catalogError } from '../../lakes/catalogError';
+import { useLakeDetail } from '../../lakes/useLakeDetail';
+import { lakeFeature } from '../../map/geometry';
+import { OfflineNotice } from '../../offline/presentation/OfflineNotice';
 import { ObservationForm } from './ObservationForm';
-import { observationStore } from './observationStore';
-import { photoPersistence } from './photoPersistence';
-import { saveObservation } from './saveObservation';
-import { deleteObservation } from './deleteObservation';
+import { observationStore } from '../data/observationStore';
+import { photoPersistence } from '../data/photoPersistence';
+import { saveObservation } from '../application/saveObservation';
+import { deleteObservation } from '../application/deleteObservation';
 import {
   storedObservationSchema,
   type ObservationValues,
   type StoredObservation,
-} from './observationSchema';
+} from '../domain/observationSchema';
 
 // Local identifiers are not credentials. The repository keeps updates on this UUID.
 function draftId() {

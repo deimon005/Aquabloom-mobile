@@ -1,6 +1,6 @@
 import { onlineManager } from '@tanstack/react-query';
-import { env } from '../../config/env';
-import { ApiError, NetworkError } from '../../lib/http';
+import { env } from '../../../config/env';
+import { ApiError, NetworkError } from '../../../lib/http';
 import { createCatalogCache, loadCachedCatalog } from './cache';
 import { openCacheDatabase } from './database';
 

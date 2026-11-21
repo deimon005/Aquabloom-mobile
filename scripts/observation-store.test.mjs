@@ -16,9 +16,9 @@ import { join } from 'node:path';
 import {
   createDraftStore,
   createSessionDraftStore,
-} from '../src/features/observations/draftStore.ts';
-import { saveObservation } from '../src/features/observations/saveObservation.ts';
-import { deleteObservation } from '../src/features/observations/deleteObservation.ts';
+} from '../src/features/observations/data/draftStore.ts';
+import { saveObservation } from '../src/features/observations/application/saveObservation.ts';
+import { deleteObservation } from '../src/features/observations/application/deleteObservation.ts';
 
 const parse = (value) => value;
 const record = (overrides = {}) => ({

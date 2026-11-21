@@ -7,19 +7,19 @@ import {
   TextInput,
   View,
 } from 'react-native';
-import { AppButton } from '../../components/AppButton';
-import { tokens } from '../../theme/tokens';
-import { LakeMap } from '../map/LakeMap';
-import type { LakeFeature } from '../map/geometry';
+import { AppButton } from '../../../components/AppButton';
+import { tokens } from '../../../theme/tokens';
+import { LakeMap } from '../../map/LakeMap';
+import type { LakeFeature } from '../../map/geometry';
 import { DraftStatus } from './DraftStatus';
 import { PhotoPreview } from './PhotoPreview';
-import { captureServices } from './captureServices';
-import { captureCompleteness } from './captureCompleteness';
+import { captureServices } from '../data/captureServices';
+import { captureCompleteness } from '../domain/captureCompleteness';
 import {
   CaptureError,
   captureMessage,
   type CaptureServices,
-} from './captureTypes';
+} from '../application/captureTypes';
 import {
   formatObservationDate,
   observationDraftSchema,
@@ -27,7 +27,7 @@ import {
   parseObservationDate,
   type ObservationValues,
   type StoredObservation,
-} from './observationSchema';
+} from '../domain/observationSchema';
 
 export type DraftPhase = 'editing' | 'saving' | 'saved';
 type Props = {

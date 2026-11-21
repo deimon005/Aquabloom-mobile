@@ -1,4 +1,4 @@
-import { OfflineCacheMissError } from '../offline/cache';
+import { OfflineCacheMissError } from '../offline/data/cache';
 import { ApiError } from '../../lib/http';
 import type { EstimatePoint } from './estimatesApi';
 import type { ScientificJobStatus } from './jobsApi';

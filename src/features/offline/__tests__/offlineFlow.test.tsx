@@ -19,7 +19,7 @@ import {
   catalogCache,
   cachedCatalog,
   setCatalogIdentity,
-} from '../catalogCache';
+} from '../data/catalogCache';
 
 jest.mock('../../../lib/api', () => ({ api: jest.fn() }));
 jest.mock('expo-router', () => ({
