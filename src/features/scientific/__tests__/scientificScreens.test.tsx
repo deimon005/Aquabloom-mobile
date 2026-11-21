@@ -1,15 +1,19 @@
 import { render, screen, fireEvent } from '@testing-library/react-native';
 import { router } from 'expo-router';
-import { EstimatesScreen } from '../EstimatesScreen';
-import { EstimateScreen } from '../EstimateScreen';
-import { ScientificJobScreen } from '../ScientificJobScreen';
-import { JobState } from '../JobState';
-import { useEstimates, useScientificJob } from '../useScientific';
-import { demoJobIds, loadEstimates, demoEstimateId } from '../scientificSource';
-import { scientificJobStatuses } from '../jobsApi';
+import { EstimatesScreen } from '../presentation/EstimatesScreen';
+import { EstimateScreen } from '../presentation/EstimateScreen';
+import { ScientificJobScreen } from '../presentation/ScientificJobScreen';
+import { JobState } from '../presentation/JobState';
+import { useEstimates, useScientificJob } from '../application/useScientific';
+import {
+  demoJobIds,
+  loadEstimates,
+  demoEstimateId,
+} from '../application/scientificSource';
+import { scientificJobStatuses } from '../domain/job';
 import { ApiError } from '../../../lib/http';
-import type { EstimatePoint } from '../estimatesApi';
-jest.mock('../useScientific');
+import type { EstimatePoint } from '../domain/estimate';
+jest.mock('../application/useScientific');
 jest.mock('expo-router', () => ({
   Link: jest.requireActual('react-native').Text,
   router: { push: jest.fn(), replace: jest.fn() },

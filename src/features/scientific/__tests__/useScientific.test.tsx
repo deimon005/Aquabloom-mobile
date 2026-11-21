@@ -4,12 +4,12 @@ import { Text } from 'react-native';
 import { render } from '@testing-library/react-native';
 import { onlineManager, useQuery } from '@tanstack/react-query';
 import { useCurrentUser } from '../../auth/useCurrentUser';
-import { useEstimates, useScientificJob } from '../useScientific';
+import { useEstimates, useScientificJob } from '../application/useScientific';
 import {
   loadEstimates,
   loadJob,
   type ScientificSource,
-} from '../scientificSource';
+} from '../application/scientificSource';
 jest.mock('@tanstack/react-query', () => ({
   useQuery: jest.fn(() => ({})),
   onlineManager: { isOnline: jest.fn() },
@@ -24,7 +24,7 @@ jest.mock('../../offline/data/catalogCache', () => ({
   },
 }));
 jest.mock('../../auth/useCurrentUser', () => ({ useCurrentUser: jest.fn() }));
-jest.mock('../scientificSource', () => ({
+jest.mock('../application/scientificSource', () => ({
   loadEstimates: jest.fn(),
   loadJob: jest.fn(),
 }));

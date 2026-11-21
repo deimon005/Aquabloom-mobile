@@ -9,7 +9,7 @@ import type {
   StoredObservation,
 } from '../domain/observationSchema';
 
-jest.mock('../../map/LakeMap', () => ({ LakeMap: () => null }));
+jest.mock('../../map/presentation/LakeMap', () => ({ LakeMap: () => null }));
 
 jest.mock('../data/captureServices', () => ({ captureServices: {} }));
 const lakeId = '11111111-1111-4111-8111-111111111111';

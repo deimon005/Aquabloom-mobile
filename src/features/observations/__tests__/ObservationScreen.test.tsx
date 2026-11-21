@@ -1,11 +1,11 @@
 import { act, fireEvent, render, screen } from '@testing-library/react-native';
 import { ObservationScreen } from '../presentation/ObservationScreen';
 import { useCurrentUser } from '../../auth/useCurrentUser';
-import { useLakeDetail } from '../../lakes/useLakeDetail';
+import { useLakeDetail } from '../../lakes/application/useLakeDetail';
 import { observationStore } from '../data/observationStore';
 import { photoPersistence } from '../data/photoPersistence';
 
-jest.mock('../../map/LakeMap', () => ({ LakeMap: () => null }));
+jest.mock('../../map/presentation/LakeMap', () => ({ LakeMap: () => null }));
 
 jest.mock('../../auth/useCurrentUser');
 jest.mock('../data/captureServices', () => ({
@@ -22,7 +22,7 @@ jest.mock('../data/photoPersistence', () => ({
     removeDraft: jest.fn(),
   },
 }));
-jest.mock('../../lakes/useLakeDetail');
+jest.mock('../../lakes/application/useLakeDetail');
 jest.mock('../data/observationStore', () => ({
   observationStore: {
     durability: 'device',

@@ -1,6 +1,10 @@
-import { fetchLakeDetail, fetchStations, parseLakeDetail } from '../catalogApi';
-import { lakeDetailQueryOptions } from '../useLakeDetail';
-import { stationsQueryOptions } from '../useStations';
+import {
+  fetchLakeDetail,
+  fetchStations,
+  parseLakeDetail,
+} from '../data/catalogApi';
+import { lakeDetailQueryOptions } from '../application/useLakeDetail';
+import { stationsQueryOptions } from '../application/useStations';
 import { lake, lakeId, station } from './fixtures';
 
 it('loads and validates lake detail with cancellation', async () => {

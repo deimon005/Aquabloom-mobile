@@ -1,8 +1,6 @@
-import {
-  fetchScientificJob,
-  parseScientificJob,
-  scientificJobStatuses,
-} from '../jobsApi';
+import { fetchScientificJob } from '../data/jobsApi';
+import { parseScientificJob } from '../data/dto/jobDto';
+import { scientificJobStatuses } from '../domain/job';
 
 const jobId = '44444444-4444-4444-8444-444444444444';
 

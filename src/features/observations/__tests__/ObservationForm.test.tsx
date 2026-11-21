@@ -4,7 +4,7 @@ import type {
   ObservationValues,
   StoredObservation,
 } from '../domain/observationSchema';
-jest.mock('../../map/LakeMap', () => ({ LakeMap: () => null }));
+jest.mock('../../map/presentation/LakeMap', () => ({ LakeMap: () => null }));
 jest.mock('../data/captureServices', () => ({
   captureServices: {
     cameraPermission: jest.fn(),

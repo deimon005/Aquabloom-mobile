@@ -12,8 +12,8 @@ import {
 } from '@tanstack/react-query';
 import type { ReactElement } from 'react';
 import { api } from '../../../lib/api';
-import { CatalogScreen } from '../../lakes/CatalogScreen';
-import { LakeDetailScreen } from '../../lakes/LakeDetailScreen';
+import { CatalogScreen } from '../../lakes/presentation/CatalogScreen';
+import { LakeDetailScreen } from '../../lakes/presentation/LakeDetailScreen';
 import { lake, lakeId, station } from '../../lakes/__tests__/fixtures';
 import {
   catalogCache,

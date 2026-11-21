@@ -1,1 +1,1 @@
-export { MapScreen as default } from '../../features/map/MapScreen';
+export { MapScreen as default } from '../../features/map/presentation/MapScreen';

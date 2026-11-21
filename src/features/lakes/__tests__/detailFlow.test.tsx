@@ -4,8 +4,8 @@ import { router } from 'expo-router';
 import type { ReactElement } from 'react';
 import { api } from '../../../lib/api';
 import { ApiError } from '../../../lib/http';
-import { LakeDetailScreen } from '../LakeDetailScreen';
-import { StationScreen } from '../StationScreen';
+import { LakeDetailScreen } from '../presentation/LakeDetailScreen';
+import { StationScreen } from '../presentation/StationScreen';
 import { lake, lakeId, station, stationId } from './fixtures';
 
 jest.mock('../../../lib/api', () => ({ api: jest.fn() }));

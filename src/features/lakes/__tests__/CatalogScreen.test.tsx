@@ -1,11 +1,11 @@
 import { fireEvent, render } from '@testing-library/react-native';
 import { router } from 'expo-router';
-import { CatalogScreen } from '../CatalogScreen';
-import { useLakes } from '../useLakes';
+import { CatalogScreen } from '../presentation/CatalogScreen';
+import { useLakes } from '../application/useLakes';
 import { ApiError } from '../../../lib/http';
 
 jest.mock('expo-router', () => ({ router: { push: jest.fn() } }));
-jest.mock('../useLakes', () => ({ useLakes: jest.fn() }));
+jest.mock('../application/useLakes', () => ({ useLakes: jest.fn() }));
 
 const mockedUseLakes = jest.mocked(useLakes);
 const refetch = jest.fn();

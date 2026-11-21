@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { catalogId } from '../../lakes/catalogSchemas';
+import { catalogId } from '../../../domain/catalogId';
 
 const utcDate = z.iso.datetime({
   offset: true,

@@ -1,4 +1,5 @@
-import { fetchLakeEstimates, parseLakeEstimates } from '../estimatesApi';
+import { fetchLakeEstimates } from '../data/estimatesApi';
+import { parseLakeEstimates } from '../data/dto/estimateDto';
 
 const lakeId = '11111111-1111-4111-8111-111111111111';
 const estimate = {

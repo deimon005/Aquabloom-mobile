@@ -1,5 +1,5 @@
-import { fetchLakes, type LakesRequester } from '../lakesApi';
-import type { LakeListResponse } from '../types';
+import { fetchLakes, type LakesRequester } from '../data/lakesApi';
+import type { LakeListResponse } from '../domain/types';
 
 const response: LakeListResponse = {
   items: [],

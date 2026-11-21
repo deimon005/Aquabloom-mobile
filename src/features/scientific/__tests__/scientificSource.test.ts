@@ -1,19 +1,23 @@
-import { fetchLakeEstimates } from '../estimatesApi';
-import { fetchScientificJob, scientificJobStatuses } from '../jobsApi';
+import { fetchLakeEstimates } from '../data/estimatesApi';
+import { fetchScientificJob } from '../data/jobsApi';
+import { scientificJobStatuses } from '../domain/job';
 import {
   demoJobIds,
   loadEstimates,
   loadJob,
   scientificSource,
-} from '../scientificSource';
+} from '../application/scientificSource';
 import { ApiError } from '../../../lib/http';
-import { metadata, scientificError } from '../scientificPresentation';
-jest.mock('../estimatesApi', () => ({
-  ...jest.requireActual('../estimatesApi'),
+import {
+  metadata,
+  scientificError,
+} from '../presentation/scientificPresentation';
+jest.mock('../data/estimatesApi', () => ({
+  ...jest.requireActual('../data/estimatesApi'),
   fetchLakeEstimates: jest.fn(),
 }));
-jest.mock('../jobsApi', () => ({
-  ...jest.requireActual('../jobsApi'),
+jest.mock('../data/jobsApi', () => ({
+  ...jest.requireActual('../data/jobsApi'),
   fetchScientificJob: jest.fn(),
 }));
 const lakeId = '11111111-1111-4111-8111-111111111111';

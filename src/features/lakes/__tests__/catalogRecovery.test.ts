@@ -1,7 +1,10 @@
 import { ApiError, NetworkError, RequestTimeoutError } from '../../../lib/http';
 import { OfflineCacheMissError } from '../../offline/data/cache';
-import { catalogRetryDelay, shouldRetryCatalog } from '../catalogRecovery';
-import { lakesQueryOptions } from '../useLakes';
+import {
+  catalogRetryDelay,
+  shouldRetryCatalog,
+} from '../application/catalogRecovery';
+import { lakesQueryOptions } from '../application/useLakes';
 
 it.each([502, 503, 504])(
   'reintenta %s dos veces con espera acotada',

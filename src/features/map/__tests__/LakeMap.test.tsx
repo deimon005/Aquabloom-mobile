@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from '@testing-library/react-native';
-import { LakeMap } from '../LakeMap';
+import { LakeMap } from '../presentation/LakeMap';
 
 jest.mock('@maplibre/maplibre-react-native', () => {
   const { View } = jest.requireActual('react-native');

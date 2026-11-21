@@ -3,9 +3,9 @@ import {
   lakeFeature,
   lakeBounds,
   stationFeatures,
-} from '../geometry';
+} from '../domain/geometry';
 import { lake, station } from '../../lakes/__tests__/fixtures';
-import type { EstimatePoint } from '../../scientific/estimatesApi';
+import type { EstimatePoint } from '../../scientific/domain/estimate';
 
 it('maps only valid estimate coordinates and retains the result identifier', () => {
   const estimate: EstimatePoint = {

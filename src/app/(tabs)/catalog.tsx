@@ -1,1 +1,1 @@
-export { CatalogScreen as default } from '../../features/lakes/CatalogScreen';
+export { CatalogScreen as default } from '../../features/lakes/presentation/CatalogScreen';

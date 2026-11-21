@@ -1,5 +1,5 @@
-import { lakeKeys, lakesQueryOptions } from '../useLakes';
-import type { LakeListResponse } from '../types';
+import { lakeKeys, lakesQueryOptions } from '../application/useLakes';
+import type { LakeListResponse } from '../domain/types';
 
 const response: LakeListResponse = {
   items: [],

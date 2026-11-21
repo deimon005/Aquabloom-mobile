@@ -2,7 +2,7 @@ import {
   defaultLakeFilters,
   normalizeLakeFilters,
   serializeLakeFilters,
-} from '../lakeFilters';
+} from '../application/lakeFilters';
 
 describe('filtros del catálogo de lagos', () => {
   it('normaliza texto, paginación y límite del contrato', () => {

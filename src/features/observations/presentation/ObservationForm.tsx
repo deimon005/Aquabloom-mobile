@@ -9,8 +9,8 @@ import {
 } from 'react-native';
 import { AppButton } from '../../../components/AppButton';
 import { tokens } from '../../../theme/tokens';
-import { LakeMap } from '../../map/LakeMap';
-import type { LakeFeature } from '../../map/geometry';
+import { LakeMap } from '../../map/presentation/LakeMap';
+import type { LakeFeature } from '../../map/domain/geometry';
 import { DraftStatus } from './DraftStatus';
 import { PhotoPreview } from './PhotoPreview';
 import { captureServices } from '../data/captureServices';

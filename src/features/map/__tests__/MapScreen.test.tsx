@@ -1,18 +1,18 @@
 import { act, fireEvent, render, screen } from '@testing-library/react-native';
-import { MapScreen } from '../MapScreen';
-import { LakeMap } from '../LakeMap';
-import { useLakes } from '../../lakes/useLakes';
-import { useLakeDetail } from '../../lakes/useLakeDetail';
-import { useStations } from '../../lakes/useStations';
-import { useEstimates } from '../../scientific/useScientific';
+import { MapScreen } from '../presentation/MapScreen';
+import { LakeMap } from '../presentation/LakeMap';
+import { useLakes } from '../../lakes/application/useLakes';
+import { useLakeDetail } from '../../lakes/application/useLakeDetail';
+import { useStations } from '../../lakes/application/useStations';
+import { useEstimates } from '../../scientific/application/useScientific';
 import { lake, station } from '../../lakes/__tests__/fixtures';
 
-jest.mock('../LakeMap', () => ({ LakeMap: jest.fn(() => null) }));
-jest.mock('../../lakes/useLakes');
-jest.mock('../../lakes/useLakeDetail');
-jest.mock('../../lakes/useStations');
-jest.mock('../../scientific/useScientific');
-jest.mock('../../scientific/scientificSource', () => ({
+jest.mock('../presentation/LakeMap', () => ({ LakeMap: jest.fn(() => null) }));
+jest.mock('../../lakes/application/useLakes');
+jest.mock('../../lakes/application/useLakeDetail');
+jest.mock('../../lakes/application/useStations');
+jest.mock('../../scientific/application/useScientific');
+jest.mock('../../scientific/application/scientificSource', () => ({
   scientificSource: () => 'proposal',
 }));
 jest.mock('expo-router', () => ({
