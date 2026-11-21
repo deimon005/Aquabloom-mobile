@@ -106,6 +106,9 @@ it('renders lineage, missing versions, uncertainty warning and no-toxicity quali
   await render(
     <EstimateScreen lakeId={lakeId} estimateId={demoEstimateId} demo="1" />,
   );
+  expect(screen.getByRole('header', { name: 'Procedencia' })).toBeTruthy();
+  expect(screen.getByText('Valor: 4.2')).toBeTruthy();
+  expect(screen.getByText('Unidad: mg/m³')).toBeTruthy();
   expect(screen.getByText('Escena de origen: scene-demo')).toBeTruthy();
   expect(screen.getByText('Versión de modelo: 0.0-demo')).toBeTruthy();
   expect(screen.getByText('Dataset: No informado')).toBeTruthy();
