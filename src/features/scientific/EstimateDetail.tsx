@@ -23,7 +23,11 @@ export function EstimateDetail({ estimate }: { estimate: EstimatePoint }) {
     ],
     ['Fecha', scientificDate(estimate.observed_at)],
     ['Variable', estimate.variable],
-    ['Valor', `${estimate.value} ${estimate.unit}`],
+    ['Valor', String(estimate.value)],
+    ['Unidad', estimate.unit],
+    ['Estado informado', estimate.status],
+  ];
+  const provenance = [
     ['Escena de origen', metadata(estimate.scene_id)],
     ['Modelo', metadata(estimate.model_id)],
     ['Versión de modelo', metadata(estimate.model_version)],
