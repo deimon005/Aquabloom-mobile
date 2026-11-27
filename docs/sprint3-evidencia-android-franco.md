@@ -58,3 +58,10 @@ recorrido y se repitió el paso de foco entre campos en el APK
   nombre accesible desde el catálogo. El borrador sigue siendo editable.
 - **Baja, mejora pendiente.** Las pestañas muestran un glifo de reemplazo
   en el emulador. Sus etiquetas Inicio, Catálogo, Mapa y Perfil son legibles.
+
+### Comprobación adicional al 200 %
+
+En el APK `57d30fb`, con la red desactivada y la fuente del sistema al
+200 %, el aviso de desconexión, el título y la guía de recuperación se
+mostraron en varias líneas. TalkBack enfocó **Ver borradores guardados**
+y presentó la etiqueta completa. [Foco y salida de voz al 200 %](./evidencia-android-franco/qa-200-talkback-borradores.png).
