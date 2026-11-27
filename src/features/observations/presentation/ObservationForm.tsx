@@ -41,6 +41,15 @@ type Props = {
   disabled?: boolean;
 };
 
+function focusObservationInput(input: TextInput | null) {
+  if (!input) return;
+  input.focus();
+  if (Platform.OS === 'android') {
+    // Keep Android accessibility focus aligned with the editing focus.
+    AccessibilityInfo.sendAccessibilityEvent(input, 'focus');
+  }
+}
+
 export function ObservationForm({
   lakeId,
   lakeName,
@@ -97,13 +106,7 @@ export function ObservationForm({
     if (!field) return;
     focusAfterValidation.current = null;
     const target = field === 'date' ? dateInput : noteInput;
-    const input = target.current;
-    if (!input) return;
-    input.focus();
-    if (Platform.OS === 'android') {
-      // Input focus opens the keyboard. Notify TalkBack of the same target.
-      AccessibilityInfo.sendAccessibilityEvent(input, 'focus');
-    }
+    focusObservationInput(target.current);
   }, [errors]);
   const pending = useRef(false);
   const isSaving = phase === 'saving';
@@ -329,7 +332,7 @@ export function ObservationForm({
           autoCorrect={false}
           returnKeyType="next"
           submitBehavior="submit"
-          onSubmitEditing={() => noteInput.current?.focus()}
+          onSubmitEditing={() => focusObservationInput(noteInput.current)}
           placeholder="AAAA-MM-DD HH:mm"
           value={dateText}
           onChangeText={(value) => {
@@ -487,7 +490,7 @@ const styles = StyleSheet.create({
   heading: { color: tokens.colors.text, fontSize: 20, fontWeight: '700' },
   label: { color: tokens.colors.text, fontWeight: '600', fontSize: 16 },
   lake: { color: tokens.colors.primary, fontSize: 18, fontWeight: '700' },
-  muted: { color: tokens.colors.muted, lineHeight: 22 },
+  muted: { color: tokens.colors.muted },
   input: {
     minHeight: 48,
     padding: tokens.spacing.md,

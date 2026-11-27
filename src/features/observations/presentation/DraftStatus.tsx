@@ -53,5 +53,5 @@ const styles = StyleSheet.create({
     borderRadius: tokens.radius,
   },
   heading: { color: tokens.colors.primary, fontWeight: '700', fontSize: 16 },
-  text: { color: tokens.colors.muted, lineHeight: 22 },
+  text: { color: tokens.colors.muted },
 });
