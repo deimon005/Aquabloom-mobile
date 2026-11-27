@@ -24,8 +24,8 @@ Los enlaces identifican las tarjetas del proyecto Sprint 3 - Mobile.
 
 La [evidencia de Android](./sprint3-evidencia-android-franco.md) contiene el
 recorrido, la revisión de accesibilidad y los enlaces de cada captura. El
-[APK de QA de la rama](https://expo.dev/accounts/deimon005/projects/aquabloom-mobile/builds/c5706537-4034-42b7-a8ba-06a0c76b898d)
-se generó desde `57d30fb`. Usa un paquete separado y datos sintéticos.
+[APK de QA de la rama](https://expo.dev/accounts/deimon005/projects/aquabloom-mobile/builds/30f847f7-66a2-4413-9338-d05d1f95c65e)
+se generó desde `7fb2cc2` e incluye la corrección de AQU-288. Usa un paquete separado y datos sintéticos.
 
 El 26 de noviembre el preview conectado al backend seguía devolviendo
 HTTP 500 en `/lakes?page=1&limit=1` y `/health` informaba `degraded`. La
