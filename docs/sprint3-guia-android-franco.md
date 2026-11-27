@@ -39,3 +39,33 @@ El arranque se verificó anteriormente en Android 16 con el APK
 en el APK con acceso funcional al catálogo, que devolvió HTTP 500 en
 la última comprobación. La evidencia por tarjeta está en la
 [matriz de cierre](./sprint3-franco-matriz.md).
+
+## Repetir el recorrido cuando el catálogo de preview falla
+
+Ejecutar **Android Preview (Expo)** en la rama que se está probando con el
+perfil **android-qa**. Usar el enlace de Expo del job y registrar el SHA.
+El paquete de QA se instala como `com.aquabloom.mobile.qa` y usa el nombre
+**AquaBloom QA**. En las instrucciones de ADB, cambiar el nombre del paquete
+por el de QA. La cuenta de prueba es `franco@example.test` con la contraseña
+sintética `fixture-password`.
+
+El catálogo de QA provoca tres respuestas 503 al consultar la lista por
+primera vez. Esperar el mensaje de error, pulsar **Reintentar** y abrir
+**Panguipulli (prueba QA)**. Los permisos, preferencias de accesibilidad
+y SQLite pertenecen al sistema Android del emulador. La cuenta, el
+catálogo, la escena de cámara y la posición del emulador son de prueba.
+
+1. Anotar la fecha y la nota antes y después de denegar cámara. Capturar
+   el diálogo del sistema, el aviso de AquaBloom y la nota conservada.
+2. Denegar ubicación hasta que la app ofrezca Ajustes. Habilitar ubicación
+   en primer plano y volver. Comprobar que la posición sigue vacía hasta
+   pulsar **Capturar ubicación**. Usar una posición simulada conocida.
+3. Activar TalkBack y texto al 150 %. Recorrer fecha, nota, error de fecha
+   y acción de guardar. Comprobar el texto anunciado y el foco cuando
+   aparece el error. Corregirlo, guardar y salir de la app. Al reabrirla,
+   recuperar el mismo borrador y verificar la nota.
+4. Con TalkBack, recorrer la lista, ficha y trabajo científico del ejemplo.
+   Cortar la red en la app virtual y comprobar la lectura del aviso.
+5. Registrar los resultados por criterio y restaurar red, fuente y
+   TalkBack del emulador. Distinguir cualquier falla de preview o del
+   servicio real de la evidencia obtenida en QA.
