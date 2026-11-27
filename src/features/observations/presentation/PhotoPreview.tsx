@@ -68,7 +68,7 @@ export function PhotoPreview({
 const styles = StyleSheet.create({
   section: { gap: tokens.spacing.sm },
   label: { color: tokens.colors.text, fontSize: 16, fontWeight: '600' },
-  text: { color: tokens.colors.muted, lineHeight: 22 },
+  text: { color: tokens.colors.muted },
   image: {
     width: '100%',
     height: 220,

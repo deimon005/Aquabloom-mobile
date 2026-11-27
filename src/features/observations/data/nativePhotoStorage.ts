@@ -45,7 +45,7 @@ export const nativePhotoStorage: PhotoStorage = {
       `${Date.now()}-${Math.random().toString(36).slice(2)}${extension}`,
     );
     try {
-      source.copy(target);
+      await source.copy(target);
       if (!target.exists || target.size <= 0 || target.size !== source.size)
         throw new Error('No se pudo conservar la fotografía.');
       return { uri: target.uri, created: true };

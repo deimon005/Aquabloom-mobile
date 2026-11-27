@@ -15,6 +15,16 @@
       "distribution": "internal",
       "android": { "buildType": "apk" }
     },
+    "android-qa": {
+      "extends": "base",
+      "environment": "preview",
+      "distribution": "internal",
+      "env": { "EXPO_PUBLIC_AQUABLOOM_QA": "1" },
+      "android": {
+        "withoutCredentials": true,
+        "gradleCommand": ":app:assembleRelease -PreactNativeArchitectures=x86_64"
+      }
+    },
     "production": {
       "extends": "base",
       "environment": "production",

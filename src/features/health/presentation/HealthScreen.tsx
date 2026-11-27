@@ -5,6 +5,8 @@ import { AsyncState } from '../../../components/AsyncState';
 import { api } from '../../../infrastructure/http/api';
 import { environment } from '../../../config/env';
 
+import { androidQa } from '../../../config/androidQa';
+
 export function HealthScreen() {
   const health = useQuery({
     queryKey: ['health'],
@@ -17,7 +19,11 @@ export function HealthScreen() {
   });
   return (
     <Screen title="AquaBloom Sur">
-      <Text>Base de desarrollo móvil · Sprint 1</Text>
+      <Text>
+        {androidQa
+          ? 'AquaBloom QA · Catálogo y sesión con datos sintéticos'
+          : 'Base de desarrollo móvil · Sprint 1'}
+      </Text>
       {!environment.success ? (
         <AsyncState
           kind="error"

@@ -38,7 +38,9 @@ jest.mock('expo-file-system', () => {
     get extension() {
       return this.uri.slice(this.uri.lastIndexOf('.'));
     }
-    copy(target: File) {
+    async copy(target: File) {
+      // Expo writes the destination asynchronously before resolving.
+      await Promise.resolve();
       mockFiles.set(target.uri, this.size!);
     }
     delete() {

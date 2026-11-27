@@ -1,6 +1,14 @@
 name: Android Preview (Expo)
 on:
   workflow_dispatch:
+    inputs:
+      profile:
+        description: Perfil EAS
+        type: choice
+        options:
+          - preview
+          - android-qa
+        default: preview
 permissions:
   contents: read
 concurrency:
@@ -29,4 +37,6 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - name: Build Android APK
-        run: pnpm dlx eas-cli@24.8.0 build --platform android --profile preview --non-interactive
+        env:
+          BUILD_PROFILE: ${{ inputs.profile }}
+        run: pnpm dlx eas-cli@24.8.0 build --platform android --profile "$BUILD_PROFILE" --non-interactive
