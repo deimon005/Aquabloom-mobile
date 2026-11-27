@@ -1,8 +1,9 @@
 # Lagos (AQU-33–40)
 
-El contrato versionado genera `Lake` y `LakeListResponse`. `useLakes` normaliza
-los filtros, los incorpora en la `queryKey` y propaga `AbortSignal` hasta el
-cliente HTTP. La primera página usa 20 elementos y el contrato limita el máximo
+Los modelos `Lake` y `LakeListResponse` pertenecen a `src/domain/lakes/`. Los casos de
+uso en `src/application/lakes/catalogQueries.ts` normalizan los filtros, construyen las
+claves de caché y propagan `AbortSignal`. Los hooks de `src/presentation/lakes/` conectan
+esos casos de uso con React Query. La primera página usa 20 elementos y el contrato limita el máximo
 a 100.
 
 `useLakeDetail` y `useStations` consultan el detalle y las estaciones del lago.

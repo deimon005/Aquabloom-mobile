@@ -14,7 +14,7 @@ pnpm run api:generate -- ./contracts/openapi.json
 
 El archivo no contiene tokens ni datos privados. Cualquier cambio incompatible
 del backend debe actualizar primero el contrato, regenerar
-`src/types/api.generated.ts` y ejecutar las pruebas del cliente.
+`src/infrastructure/shared/contracts/api.generated.ts` y ejecutar las pruebas del cliente.
 
 `scientific.proposal.openapi.json` es una **propuesta local**, separada del
 catálogo existente. Sus rutas y nombres de campos aún requieren confirmación
@@ -22,7 +22,7 @@ de Web/API en AQU-158/159. Permite preparar tipos y adaptadores sin atribuir
 al servidor una API científica que todavía no publica. Regenerar sus tipos con:
 
 ```sh
-pnpm run api:generate -- ./contracts/scientific.proposal.openapi.json ./src/types/scientific.proposal.generated.ts
+pnpm run api:generate -- ./contracts/scientific.proposal.openapi.json ./src/infrastructure/shared/contracts/scientific.proposal.generated.ts
 ```
 
 Al recibir el OpenAPI oficial, reemplazar esta propuesta y ajustar los

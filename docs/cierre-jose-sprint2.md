@@ -7,7 +7,7 @@ La evidencia automatizada usa datos sintéticos.
 | ----------------------------------------------- | ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Capturar offline y recuperar pendientes         | AQU-292                   | `scripts/observation-store.test.mjs` comprueba persistencia de campos y fotos, recuperación tras reapertura y guardado repetido por UUID.               |
 | Aislar datos locales por cuenta                 | AQU-293                   | Pruebas del almacén y del cambio de sesión, más prueba del alcance de caché científico por usuario y lago.                                              |
-| Consultar resultados con procedencia y unidades | AQU-279, AQU-280, AQU-281 | Ejemplos sintéticos y pruebas de pantallas y adaptadores en `src/features/scientific/__tests__/`.                                                       |
+| Consultar resultados con procedencia y unidades | AQU-279, AQU-280, AQU-281 | Ejemplos sintéticos y pruebas de pantallas y adaptadores en `src/presentation/scientific/__tests__/` y `src/infrastructure/scientific/__tests__/`.      |
 | Recuperar la consulta ante una caída de red     | AQU-283, AQU-292          | `useScientific.test.tsx` verifica la lectura fechada del caché y la consulta al reconectar. La lista y el detalle indican que muestran datos guardados. |
 | Verificar la entrega y dejar evidencia          | AQU-294, AQU-295          | Verificaciones locales de este documento y [protocolo Android](verificacion-android-franco.md).                                                         |
 

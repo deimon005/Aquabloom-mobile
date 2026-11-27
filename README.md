@@ -68,7 +68,7 @@ resolución reproducible del proyecto.
 ## Instalación limpia
 
 ```sh
-git clone https://github.com/Pamtom21/Aquabloom-mobile.git
+git clone https://github.com/deimon005/Aquabloom-mobile.git
 cd Aquabloom-mobile
 pnpm install --frozen-lockfile
 pnpm run api:setup
@@ -127,7 +127,7 @@ pnpm run doctor
 pnpm run export:android
 ```
 
-`check` valida formato, ESLint, TypeScript y Jest. `doctor` revisa compatibilidad
+`check` valida formato, ESLint, TypeScript, Jest, SQLite, configuración nativa y límites entre capas. `doctor` revisa compatibilidad
 con Expo SDK 57. `export:android` genera el bundle JavaScript de Android, no un
 APK. Ninguno de estos pasos necesita secretos.
 
@@ -147,35 +147,42 @@ pnpm start
 
 ## Comandos disponibles
 
-| Comando                                             | Resultado                                                      |
-| --------------------------------------------------- | -------------------------------------------------------------- |
-| `pnpm run web`                                      | Inicia Expo para navegador                                     |
-| `pnpm start`                                        | Inicia Metro para un development build                         |
-| `pnpm run android`                                  | Abre el development build Android ya instalado                 |
-| `pnpm run android:build`                            | Compila e instala localmente con Android SDK/JDK               |
-| `pnpm run check`                                    | Ejecuta formato, lint, tipos y pruebas                         |
-| `pnpm run test`                                     | Ejecuta Jest una vez                                           |
-| `pnpm run test:watch`                               | Ejecuta Jest en modo interactivo                               |
-| `pnpm run doctor`                                   | Comprueba dependencias y configuración Expo                    |
-| `pnpm run export:android`                           | Empaqueta JavaScript y assets para Android                     |
-| `pnpm run api:setup`                                | Instala el workspace aislado del generador OpenAPI             |
-| `pnpm run api:generate -- ./contracts/openapi.json` | Regenera `src/types/api.generated.ts` desde el contrato fijado |
+| Comando                                             | Resultado                                                                                |
+| --------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| `pnpm run web`                                      | Inicia Expo para navegador                                                               |
+| `pnpm start`                                        | Inicia Metro para un development build                                                   |
+| `pnpm run android`                                  | Abre el development build Android ya instalado                                           |
+| `pnpm run android:build`                            | Compila e instala localmente con Android SDK/JDK                                         |
+| `pnpm run check`                                    | Ejecuta formato, lint, tipos y pruebas                                                   |
+| `pnpm run test`                                     | Ejecuta Jest una vez                                                                     |
+| `pnpm run test:watch`                               | Ejecuta Jest en modo interactivo                                                         |
+| `pnpm run doctor`                                   | Comprueba dependencias y configuración Expo                                              |
+| `pnpm run export:android`                           | Empaqueta JavaScript y assets para Android                                               |
+| `pnpm run api:setup`                                | Instala el workspace aislado del generador OpenAPI                                       |
+| `pnpm run api:generate -- ./contracts/openapi.json` | Regenera `src/infrastructure/shared/contracts/api.generated.ts` desde el contrato fijado |
 
 ## Arquitectura
 
 ```text
-src/app/             rutas y layouts de Expo Router
-src/components/      primitivas visuales compartidas
-src/config/          lectura y validación del entorno público
-src/features/        autenticación, catálogo, conectividad y módulos de dominio
-src/lib/             clientes HTTP, API y Supabase
-src/providers/       QueryClient, ciclo de vida y estado global de red
-src/theme/           tokens y reglas responsive
-contracts/           OpenAPI versionado
-scripts/             generación de código
-tools/openapi/       workspace del generador con dependencias aisladas
-docs/                alcance, evidencia y decisiones del sprint
+src/domain/                     modelos, reglas, validaciones y contratos por funcionalidad
+src/application/                casos de uso por funcionalidad
+src/infrastructure/             adaptadores HTTP, SQLite, Supabase y Expo
+src/presentation/               pantallas, formularios, hooks, componentes y tema
+src/composition/                creación e inyección de servicios concretos
+src/app/                        rutas y layouts de Expo Router
+contracts/                      OpenAPI versionado
+scripts/                        generación y verificaciones de arquitectura
+tools/openapi/                  generador con dependencias aisladas
+docs/                           alcance, evidencia y decisiones del sprint
 ```
+
+Cada capa contiene carpetas por funcionalidad: `auth`, `lakes`, `observations`,
+`scientific`, entre otras. El dominio y los casos de uso dependen de contratos
+internos. `composition/services.ts` conecta las implementaciones y
+`AppServicesProvider` las entrega a la presentación mediante contexto.
+Las pantallas no importan infraestructura ni composición. El layout raíz es
+el único punto de las rutas que monta la composición global.
+`pnpm run test:architecture` verifica estos límites.
 
 Cada unidad revisable se integra mediante PR enlazado a Linear y con evidencia
 local. Mobile CI se ejecuta exclusivamente de forma manual (`workflow_dispatch`):

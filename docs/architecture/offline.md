@@ -18,4 +18,4 @@ tienen contexto de organización; este módulo no es caché de datos privados.
 
 Web funciona sin persistencia. `pnpm run test:offline` verifica el motor SQLite
 real en Node; Jest verifica la integración de pantallas y autenticación.
-Consultar [alcance y validación](../../../docs/offline-delivery.md).
+Consultar [alcance y validación](../offline-delivery.md).
