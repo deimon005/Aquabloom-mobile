@@ -64,11 +64,12 @@
     "test:e2e": "playwright test",
     "test:offline": "node --test scripts/offline.test.mjs scripts/observation-store.test.mjs",
     "test:capture-config": "node --test scripts/capture-config.test.mjs",
-    "check": "pnpm run format:check && pnpm run lint && pnpm run typecheck && pnpm run test && pnpm run test:offline && pnpm run test:capture-config",
+    "check": "pnpm run format:check && pnpm run lint && pnpm run typecheck && pnpm run test && pnpm run test:offline && pnpm run test:capture-config && pnpm run test:architecture",
     "export:android": "expo export --platform android --max-workers 2",
     "doctor": "pnpm dlx expo-doctor",
     "api:generate": "node scripts/generate-api.mjs",
-    "api:setup": "pnpm --dir tools/openapi install --frozen-lockfile"
+    "api:setup": "pnpm --dir tools/openapi install --frozen-lockfile",
+    "test:architecture": "node --test scripts/architecture.test.mjs"
   },
   "private": true,
   "packageManager": "pnpm@11.5.0",

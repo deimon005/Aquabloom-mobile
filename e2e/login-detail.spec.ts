@@ -20,7 +20,7 @@ const lake = {
   created_at: '2026-09-01T00:00:00Z',
   updated_at: '2026-09-01T00:00:00Z',
 };
-test('login, return to private profile, catalog and lake detail', async ({
+test('login from guest profile, authenticated profile, catalog and lake detail', async ({
   page,
 }) => {
   let authenticated = false;
@@ -71,7 +71,14 @@ test('login, return to private profile, catalog and lake detail', async ({
     else await route.fulfill({ json: { status: 'ok' } });
   });
   await page.goto('/profile');
-  await expect(page).toHaveURL(/\/login\?returnTo=/);
+  await expect(
+    page.getByText('Inicia sesión para ver tu perfil.', { exact: true }),
+  ).toBeVisible();
+  await expect(
+    page.getByText('demian@example.test', { exact: true }),
+  ).toHaveCount(0);
+  await page.getByRole('link', { name: 'Iniciar sesión', exact: true }).click();
+  await expect(page).toHaveURL(/\/login$/);
   await page
     .getByLabel('Correo electrónico', { exact: true })
     .fill('demian@example.test');
@@ -81,7 +88,9 @@ test('login, return to private profile, catalog and lake detail', async ({
     .click();
   await expect(page).toHaveURL(/\/profile$/);
   await expect(
-    page.getByText('demian@example.test', { exact: true }),
+    page
+      .getByText('demian@example.test', { exact: true })
+      .filter({ visible: true }),
   ).toBeVisible();
   await page.getByRole('tab', { name: 'Catálogo' }).click();
   await page
