@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { androidQa, qaApiUrl, qaAuthUrl } from './androidQa';
 
 const blankToUndefined = (value: unknown) =>
   typeof value === 'string' ? value.trim() || undefined : value;
@@ -35,9 +36,17 @@ export function parseEnv(input: unknown) {
 }
 
 // Expo requires direct property access to inline public variables.
-export const environment = parseEnv({
-  apiUrl: process.env.EXPO_PUBLIC_API_URL,
-  supabaseUrl: process.env.EXPO_PUBLIC_SUPABASE_URL,
-  supabaseKey: process.env.EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY,
-});
+export const environment = parseEnv(
+  androidQa
+    ? {
+        apiUrl: qaApiUrl,
+        supabaseUrl: qaAuthUrl,
+        supabaseKey: 'sb_publishable_aquabloom_qa',
+      }
+    : {
+        apiUrl: process.env.EXPO_PUBLIC_API_URL,
+        supabaseUrl: process.env.EXPO_PUBLIC_SUPABASE_URL,
+        supabaseKey: process.env.EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY,
+      },
+);
 export const env = environment.success ? environment.data : {};
