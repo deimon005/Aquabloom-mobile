@@ -34,10 +34,11 @@ se ve y que la app abre el catálogo. Si el catálogo da error, pulsar
    **Ver borradores guardados**. Elegir el borrador y comprobar los campos.
    Si un guardado falló, conservar la edición y reintentar antes de salir.
 
-El arranque se verificó anteriormente en Android 16 con el APK
-`f4b4b9f`. La guía de permisos y recuperación está pendiente de repetirse
-en el APK con acceso funcional al catálogo, que devolvió HTTP 500 en
-la última comprobación. La evidencia por tarjeta está en la
+La primera instalación y el arranque se comprobaron con el APK normal
+`f4b4b9f`. El reintento, los permisos y la reapertura de borradores se
+comprobaron en Android con el perfil de QA del repositorio. El catálogo
+del preview conectado al backend devolvió HTTP 500. Consulte la
+[evidencia Android](./sprint3-evidencia-android-franco.md) y la
 [matriz de cierre](./sprint3-franco-matriz.md).
 
 ## Repetir el recorrido cuando el catálogo de preview falla
