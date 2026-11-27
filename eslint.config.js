@@ -10,7 +10,7 @@ module.exports = defineConfig([
       'coverage/*',
       'test-results/**',
       'playwright-report/**',
-      'src/types/api.generated.ts',
+      'src/infrastructure/shared/contracts/api.generated.ts',
     ],
   },
 ]);

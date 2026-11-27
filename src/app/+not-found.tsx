@@ -1,5 +1,5 @@
 import { Link } from 'expo-router';
-import { Screen } from '../components/Screen';
+import { Screen } from '../presentation/shared/components/Screen';
 export default function NotFound() {
   return (
     <Screen title="Página no encontrada">

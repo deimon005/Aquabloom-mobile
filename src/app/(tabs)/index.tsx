@@ -1,1 +1,1 @@
-export { HealthScreen as default } from '../../features/health/HealthScreen';
+export { HealthScreen as default } from '../../presentation/health/HealthScreen';

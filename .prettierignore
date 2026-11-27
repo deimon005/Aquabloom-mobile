@@ -6,6 +6,6 @@ package-lock.json
 pnpm-lock.yaml
 android
 ios
-src/types/api.generated.ts
+src/infrastructure/shared/contracts/api.generated.ts
 test-results
 playwright-report

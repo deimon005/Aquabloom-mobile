@@ -4,9 +4,10 @@ import openapiTS, {
   astToString,
 } from '../tools/openapi/node_modules/openapi-typescript/dist/index.mjs';
 
-const [source, output = 'src/types/api.generated.ts'] = process.argv
-  .slice(2)
-  .filter((argument) => argument !== '--');
+const [
+  source,
+  output = 'src/infrastructure/shared/contracts/api.generated.ts',
+] = process.argv.slice(2).filter((argument) => argument !== '--');
 if (!source) {
   console.error('Uso: pnpm run api:generate -- ./contracts/openapi.json');
   process.exit(1);

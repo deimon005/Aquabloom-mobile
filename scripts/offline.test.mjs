@@ -8,7 +8,7 @@ import {
   createCatalogCache,
   loadCachedCatalog,
   OfflineCacheMissError,
-} from '../src/features/offline/cache.ts';
+} from '../src/infrastructure/offline/cache.ts';
 
 function fixture(t, options = {}) {
   const directory = mkdtempSync(join(tmpdir(), 'aquabloom-sqlite-'));

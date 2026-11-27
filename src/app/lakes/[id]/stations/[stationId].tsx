@@ -1,5 +1,5 @@
 import { useLocalSearchParams } from 'expo-router';
-import { StationScreen } from '../../../../features/lakes/StationScreen';
+import { StationScreen } from '../../../../presentation/lakes/StationScreen';
 export default function StationRoute() {
   const { id, stationId } = useLocalSearchParams<{
     id: string;
