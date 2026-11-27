@@ -86,3 +86,13 @@ El cambio pasó `pnpm run check` y `pnpm run test:e2e` (334 casos) y la
 exportación de Android. La implementación de `File.copy` devuelve una
 promesa que se resuelve una vez completada la copia.
 [Referencia de Expo FileSystem](https://docs.expo.dev/versions/latest/sdk/filesystem/#copydestination-options).
+
+## Cancelación del reemplazo de fotografía
+
+Se comparó el SHA-256 del APK instalado con el artefacto de Expo de
+`7fb2cc2`. En un borrador sintético nuevo se guardó una foto, se abrió
+**Reemplazar fotografía** y se volvió desde la cámara sin confirmar.
+El formulario mantuvo la vista previa y mostró el aviso de conservación.
+Al detener y reabrir el proceso, el propio borrador seguía mostrando la
+foto original. [Retorno desde el selector](./evidencia-android-franco/aqu-288-reemplazo-cancelado.png)
+· [Foto persistida tras reabrir](./evidencia-android-franco/aqu-288-foto-anterior-reabierta.png).
